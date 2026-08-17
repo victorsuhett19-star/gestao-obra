@@ -2,13 +2,7 @@ import Link from "next/link";
 import { verifySession, getUser } from "@/lib/dal";
 import { logout } from "@/app/actions/auth";
 import { navItems } from "./nav-items";
-
-const PAPEL_LABEL: Record<string, string> = {
-  ADMIN: "Admin",
-  GESTOR: "Gestor",
-  ENGENHEIRO: "Engenheiro",
-  MESTRE_OBRA: "Mestre de obra",
-};
+import { PAPEL_LABEL } from "@/lib/labels";
 
 export default async function AppLayout({ children }: LayoutProps<"/">) {
   await verifySession();

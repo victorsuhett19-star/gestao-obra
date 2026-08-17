@@ -1,0 +1,319 @@
+// Prisma schema — Sistema de Gestão de Obra (turn-key)
+// SQLite em desenvolvimento; troque o provider para "postgresql" em produção.
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ---------------------------------------------------------------------------
+// Empresa / Usuários
+// ---------------------------------------------------------------------------
+
+model Empresa {
+  id        String   @id @default(cuid())
+  nome      String
+  criadoEm  DateTime @default(now())
+
+  usuarios     Usuario[]
+  obras        Obra[]
+  fornecedores Fornecedor[]
+  materiais    Material[]
+  etapaTemplates EtapaTemplate[]
+}
+
+enum PapelUsuario {
+  ADMIN
+  GESTOR
+  ENGENHEIRO
+  MESTRE_OBRA
+}
+
+model Usuario {
+  id         String       @id @default(cuid())
+  empresaId  String
+  empresa    Empresa      @relation(fields: [empresaId], references: [id])
+  nome       String
+  email      String       @unique
+  senhaHash  String
+  papel      PapelUsuario @default(GESTOR)
+  ativo      Boolean      @default(true)
+  criadoEm   DateTime     @default(now())
+
+  obrasCriadas       Obra[]              @relation("ObraCriadaPor")
+  etapasResponsavel  Etapa[]             @relation("EtapaResponsavel")
+  lancamentos        LancamentoFinanceiro[] @relation("LancamentoCriadoPor")
+  pedidosMaterial    PedidoMaterial[]    @relation("PedidoCriadoPor")
+  fotosEnviadas      Foto[]              @relation("FotoEnviadaPor")
+  diariosCriados     DiarioObra[]        @relation("DiarioCriadoPor")
+}
+
+// ---------------------------------------------------------------------------
+// Obra
+// ---------------------------------------------------------------------------
+
+enum StatusObra {
+  PLANEJAMENTO
+  EM_ANDAMENTO
+  PAUSADA
+  CONCLUIDA
+  CANCELADA
+}
+
+enum Trade {
+  MARCENARIA
+  OBRA
+  PROJETO
+  MARMORARIA
+  VIDRACARIA
+}
+
+model Obra {
+  id                  String     @id @default(cuid())
+  empresaId           String
+  empresa             Empresa    @relation(fields: [empresaId], references: [id])
+  nome                String
+  endereco            String?
+  clienteNome         String?
+  clienteContato      String?
+  status              StatusObra @default(PLANEJAMENTO)
+  dataInicioPrevista  DateTime?
+  dataFimPrevista     DateTime?
+  dataInicioReal      DateTime?
+  dataFimReal         DateTime?
+  criadoPorId         String?
+  criadoPor           Usuario?   @relation("ObraCriadaPor", fields: [criadoPorId], references: [id])
+  criadoEm            DateTime   @default(now())
+
+  trades              ObraTrade[]
+  etapas              Etapa[]
+  itensOrcamento      ItemOrcamento[]
+  lancamentos         LancamentoFinanceiro[]
+  pedidosMaterial     PedidoMaterial[]
+  fotos               Foto[]
+  diarios             DiarioObra[]
+}
+
+model ObraTrade {
+  id      String @id @default(cuid())
+  obraId  String
+  obra    Obra   @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  trade   Trade
+
+  @@unique([obraId, trade])
+}
+
+// ---------------------------------------------------------------------------
+// Cronograma (EAP)
+// ---------------------------------------------------------------------------
+
+model EtapaTemplate {
+  id         String   @id @default(cuid())
+  empresaId  String
+  empresa    Empresa  @relation(fields: [empresaId], references: [id])
+  trade      Trade
+  nome       String
+  ordem      Int      @default(0)
+  paiId      String?
+  pai        EtapaTemplate?  @relation("EtapaTemplateFilhos", fields: [paiId], references: [id])
+  filhos     EtapaTemplate[] @relation("EtapaTemplateFilhos")
+}
+
+enum StatusEtapa {
+  NAO_INICIADA
+  EM_ANDAMENTO
+  CONCLUIDA
+  ATRASADA
+}
+
+model Etapa {
+  id                  String      @id @default(cuid())
+  obraId              String
+  obra                Obra        @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  paiId               String?
+  pai                 Etapa?      @relation("EtapaFilhos", fields: [paiId], references: [id])
+  filhos              Etapa[]     @relation("EtapaFilhos")
+  nome                String
+  ordem               Int         @default(0)
+  dataInicioPrevista  DateTime?
+  dataFimPrevista     DateTime?
+  dataInicioReal      DateTime?
+  dataFimReal         DateTime?
+  percentualConcluido Int         @default(0)
+  status              StatusEtapa @default(NAO_INICIADA)
+  responsavelId       String?
+  responsavel         Usuario?    @relation("EtapaResponsavel", fields: [responsavelId], references: [id])
+  criadoEm            DateTime    @default(now())
+
+  itensOrcamento      ItemOrcamento[]
+  fotos               Foto[]
+}
+
+// ---------------------------------------------------------------------------
+// Orçamento & financeiro
+// ---------------------------------------------------------------------------
+
+enum CategoriaOrcamento {
+  MATERIAL
+  MAO_DE_OBRA
+  SERVICO
+  EQUIPAMENTO
+  OUTROS
+}
+
+model ItemOrcamento {
+  id             String             @id @default(cuid())
+  obraId         String
+  obra           Obra               @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  etapaId        String?
+  etapa          Etapa?             @relation(fields: [etapaId], references: [id])
+  categoria      CategoriaOrcamento @default(OUTROS)
+  descricao      String
+  unidade        String?
+  quantidade     Float              @default(1)
+  valorUnitario  Float              @default(0)
+  valorTotal     Float              @default(0)
+  criadoEm       DateTime           @default(now())
+
+  lancamentos    LancamentoFinanceiro[]
+}
+
+enum TipoLancamento {
+  CUSTO
+  RECEITA
+  PAGAMENTO
+}
+
+model LancamentoFinanceiro {
+  id              String          @id @default(cuid())
+  obraId          String
+  obra            Obra            @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  itemOrcamentoId String?
+  itemOrcamento   ItemOrcamento?  @relation(fields: [itemOrcamentoId], references: [id])
+  tipo            TipoLancamento  @default(CUSTO)
+  categoria       String?
+  descricao       String
+  valor           Float
+  data            DateTime        @default(now())
+  formaPagamento  String?
+  comprovanteUrl  String?
+  criadoPorId     String?
+  criadoPor       Usuario?        @relation("LancamentoCriadoPor", fields: [criadoPorId], references: [id])
+  criadoEm        DateTime        @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Materiais & fornecedores
+// ---------------------------------------------------------------------------
+
+model Fornecedor {
+  id           String   @id @default(cuid())
+  empresaId    String
+  empresa      Empresa  @relation(fields: [empresaId], references: [id])
+  nome         String
+  cnpjCpf      String?
+  contato      String?
+  telefone     String?
+  email        String?
+  especialidade String?
+  criadoEm     DateTime @default(now())
+
+  pedidos      PedidoMaterial[]
+}
+
+model Material {
+  id              String   @id @default(cuid())
+  empresaId       String
+  empresa         Empresa  @relation(fields: [empresaId], references: [id])
+  nome            String
+  unidade         String
+  categoria       String?
+  precoReferencia Float?
+  criadoEm        DateTime @default(now())
+
+  itensPedido     ItemPedidoMaterial[]
+}
+
+enum StatusPedido {
+  RASCUNHO
+  ENVIADO
+  CONFIRMADO
+  ENTREGUE
+  CANCELADO
+}
+
+model PedidoMaterial {
+  id                    String       @id @default(cuid())
+  obraId                String
+  obra                  Obra         @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  fornecedorId          String
+  fornecedor            Fornecedor   @relation(fields: [fornecedorId], references: [id])
+  status                StatusPedido @default(RASCUNHO)
+  dataPedido            DateTime     @default(now())
+  dataEntregaPrevista   DateTime?
+  dataEntregaReal       DateTime?
+  valorTotal            Float        @default(0)
+  criadoPorId           String?
+  criadoPor             Usuario?     @relation("PedidoCriadoPor", fields: [criadoPorId], references: [id])
+  criadoEm              DateTime     @default(now())
+
+  itens                 ItemPedidoMaterial[]
+}
+
+model ItemPedidoMaterial {
+  id             String         @id @default(cuid())
+  pedidoId       String
+  pedido         PedidoMaterial @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+  materialId     String
+  material       Material       @relation(fields: [materialId], references: [id])
+  quantidade     Float
+  valorUnitario  Float
+  valorTotal     Float
+}
+
+// ---------------------------------------------------------------------------
+// Fotos & diário de obra
+// ---------------------------------------------------------------------------
+
+model Foto {
+  id           String      @id @default(cuid())
+  obraId       String
+  obra         Obra        @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  etapaId      String?
+  etapa        Etapa?      @relation(fields: [etapaId], references: [id])
+  diarioId     String?
+  diario       DiarioObra? @relation(fields: [diarioId], references: [id])
+  url          String
+  legenda      String?
+  dataFoto     DateTime    @default(now())
+  enviadoPorId String?
+  enviadoPor   Usuario?    @relation("FotoEnviadaPor", fields: [enviadoPorId], references: [id])
+  criadoEm     DateTime    @default(now())
+}
+
+enum Clima {
+  ENSOLARADO
+  NUBLADO
+  CHUVOSO
+  IMPRATICAVEL
+}
+
+model DiarioObra {
+  id                   String   @id @default(cuid())
+  obraId               String
+  obra                 Obra     @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  data                 DateTime @default(now())
+  clima                Clima?
+  maoDeObraPresente    Int?
+  atividadesRealizadas String
+  ocorrencias          String?
+  criadoPorId          String?
+  criadoPor            Usuario? @relation("DiarioCriadoPor", fields: [criadoPorId], references: [id])
+  criadoEm             DateTime @default(now())
+
+  fotos                Foto[]
+}

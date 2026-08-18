@@ -12,12 +12,10 @@ export function EmpresaSwitcher({
 }) {
   const formRef = useRef<HTMLFormElement>(null);
 
+  // Com uma única empresa não há nada pra escolher — não mostra nada no
+  // menu. O seletor só aparece quando o usuário tem acesso a mais de uma.
   if (empresas.length <= 1) {
-    return (
-      <p className="truncate px-2 text-xs text-slate-500">
-        {empresas[0]?.nome ?? ""}
-      </p>
-    );
+    return null;
   }
 
   return (

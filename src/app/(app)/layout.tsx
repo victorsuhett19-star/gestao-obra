@@ -27,10 +27,12 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
         userPapel={user ? (PAPEL_LABEL[user.papel] ?? user.papel) : ""}
         logoutAction={logout}
         empresaSwitcher={
-          <EmpresaSwitcher
-            empresas={empresas}
-            empresaAtivaId={empresaAtivaId ?? ""}
-          />
+          empresas.length > 1 ? (
+            <EmpresaSwitcher
+              empresas={empresas}
+              empresaAtivaId={empresaAtivaId ?? ""}
+            />
+          ) : undefined
         }
       />
 

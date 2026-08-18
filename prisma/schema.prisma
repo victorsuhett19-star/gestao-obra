@@ -84,6 +84,10 @@ model Usuario {
   papel      PapelUsuario @default(GESTOR)
   ativo      Boolean      @default(true)
   criadoEm   DateTime     @default(now())
+  // Lista de módulos (chaves de MODULOS em src/lib/permissoes.ts) separados por
+  // vírgula que este usuário pode visualizar. null = sem restrição customizada
+  // ainda (comportamento antigo: vê tudo). ADMIN sempre vê tudo, ignora este campo.
+  modulosVisiveis String?
 
   obrasCriadas       Obra[]              @relation("ObraCriadaPor")
   etapasResponsavel  Etapa[]             @relation("EtapaResponsavel")

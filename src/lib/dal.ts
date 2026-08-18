@@ -30,6 +30,7 @@ export const getUser = cache(async () => {
         email: true,
         papel: true,
         empresaId: true,
+        modulosVisiveis: true,
       },
     });
     return user;

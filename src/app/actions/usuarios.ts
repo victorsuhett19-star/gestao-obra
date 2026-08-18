@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/dal";
 import { getEmpresaAtivaId } from "@/lib/empresa";
 import { UsuarioFormSchema, type UsuarioFormState } from "@/lib/definitions";
+import { MODULOS, type ModuloKey } from "@/lib/permissoes";
 
 export async function saveUsuario(
   _state: UsuarioFormState,
@@ -42,6 +43,16 @@ export async function saveUsuario(
     return { errors: { email: ["Já existe um usuário com este e-mail."] } };
   }
 
+  // Admin sempre vê tudo (modulosVisiveis fica null e é ignorado). Para os
+  // demais papéis, salva exatamente o que foi marcado no formulário — mesmo
+  // que fique uma lista vazia (usuário sem acesso a nenhum módulo além do
+  // dashboard, até o admin liberar algo).
+  const chavesValidas = new Set(MODULOS.map((m) => m.key));
+  const modulosMarcados = formData
+    .getAll("modulos")
+    .filter((v): v is ModuloKey => typeof v === "string" && chavesValidas.has(v as ModuloKey));
+  const modulosVisiveis = papel === "ADMIN" ? null : modulosMarcados.join(",");
+
   if (isEdicao) {
     await prisma.usuario.update({
       where: { id: usuarioId as string },
@@ -49,6 +60,7 @@ export async function saveUsuario(
         nome,
         email,
         papel,
+        modulosVisiveis,
         ...(senha ? { senhaHash: await bcrypt.hash(senha, 10) } : {}),
       },
     });
@@ -62,6 +74,7 @@ export async function saveUsuario(
         nome,
         email,
         papel,
+        modulosVisiveis,
         senhaHash: await bcrypt.hash(senha as string, 10),
         empresaId: empresaAtivaId,
       },

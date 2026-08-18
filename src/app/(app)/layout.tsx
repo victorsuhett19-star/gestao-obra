@@ -1,5 +1,6 @@
 import { verifySession, getUser } from "@/lib/dal";
 import { getEmpresaAtivaId, getEmpresasDoUsuario } from "@/lib/empresa";
+import { podeVerModulo } from "@/lib/permissoes";
 import { logout } from "@/app/actions/auth";
 import { navItems } from "./nav-items";
 import { PAPEL_LABEL } from "@/lib/labels";
@@ -14,10 +15,14 @@ export default async function AppLayout({ children }: LayoutProps<"/">) {
     getEmpresasDoUsuario(),
   ]);
 
+  const itensVisiveis = navItems.filter(
+    (item) => !item.modulo || podeVerModulo(user, item.modulo)
+  );
+
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 sm:flex-row">
       <Sidebar
-        navItems={navItems}
+        navItems={itensVisiveis}
         userNome={user?.nome ?? "Usuário"}
         userPapel={user ? (PAPEL_LABEL[user.papel] ?? user.papel) : ""}
         logoutAction={logout}

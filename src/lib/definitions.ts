@@ -288,3 +288,51 @@ export const STATUS_ITEM_VISTORIA = [
 export type VistoriaFormState =
   | { errors?: { itens?: string[] }; message?: string }
   | undefined;
+
+export const STATUS_ATENDIMENTO = [
+  "ENTRADA_LEADS",
+  "CONTATO_REALIZADO",
+  "PROPOSTA_ENVIADA",
+  "NEGOCIACAO",
+  "GANHO",
+  "PERDIDO",
+] as const;
+
+export const ORIGEM_ATENDIMENTO = [
+  "LEAD",
+  "CLIENTE_DE_PORTA",
+  "JA_CLIENTE",
+  "INDICACAO",
+] as const;
+
+export const AtendimentoFormSchema = z.object({
+  nomeCliente: z.string().min(2, { error: "Informe o nome do cliente." }).trim(),
+  telefone: z.string().trim().optional().or(z.literal("")),
+  email: z
+    .email({ error: "E-mail inválido." })
+    .trim()
+    .optional()
+    .or(z.literal("")),
+  ambienteDesejado: z.string().trim().optional().or(z.literal("")),
+  origem: z.enum(ORIGEM_ATENDIMENTO, { error: "Selecione a origem." }),
+  vendedorId: z.string().trim().optional().or(z.literal("")),
+  valorEstimado: z.string().trim().optional().or(z.literal("")),
+});
+
+export type AtendimentoFormState =
+  | { errors?: { nomeCliente?: string[]; email?: string[] }; message?: string }
+  | undefined;
+
+export const TIPO_EVENTO = ["REUNIAO", "VISITA", "ENTREGA", "OUTRO"] as const;
+
+export const EventoFormSchema = z.object({
+  titulo: z.string().min(2, { error: "Informe o título do evento." }).trim(),
+  tipo: z.enum(TIPO_EVENTO, { error: "Selecione um tipo." }),
+  data: z.string().min(1, { error: "Informe a data." }).trim(),
+  hora: z.string().trim().optional().or(z.literal("")),
+  obraId: z.string().trim().optional().or(z.literal("")),
+});
+
+export type EventoFormState =
+  | { errors?: { titulo?: string[]; data?: string[] }; message?: string }
+  | undefined;

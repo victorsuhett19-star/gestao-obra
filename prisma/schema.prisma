@@ -25,6 +25,8 @@ model Empresa {
   materiais    Material[]
   etapaTemplates EtapaTemplate[]
   colaboradores  Colaborador[]
+  atendimentos   Atendimento[]
+  eventos        Evento[]
 }
 
 // Equipe de campo (montadores, conferentes etc.) — diferente de Usuario, que é
@@ -71,6 +73,8 @@ model Usuario {
   diariosCriados     DiarioObra[]        @relation("DiarioCriadoPor")
   itensConferencia   ItemConferencia[]   @relation("ItemConferenciaResponsavel")
   vistoriasResponsavel VistoriaFinal[]   @relation("VistoriaResponsavel")
+  atendimentosVendedor Atendimento[]     @relation("AtendimentoVendedor")
+  eventosCriados       Evento[]          @relation("EventoCriadoPor")
 }
 
 // ---------------------------------------------------------------------------
@@ -126,6 +130,8 @@ model Obra {
   itensConferencia     ItemConferencia[]
   registrosMontagem    RegistroMontagem[]
   vistoriasFinal       VistoriaFinal[]
+  atendimentoOrigem    Atendimento?
+  eventos              Evento[]
 }
 
 model ObraTrade {
@@ -491,4 +497,71 @@ model ItemVistoria {
   ambiente    String
   status      StatusItemVistoria @default(PENDENTE)
   observacao  String?
+}
+
+// ---------------------------------------------------------------------------
+// Atendimento (CRM / funil de vendas) — leads e clientes potenciais antes de
+// virarem uma Obra contratada. Ao fechar negócio, o atendimento é convertido
+// em Obra (link 1:1 opcional via obraId).
+// ---------------------------------------------------------------------------
+
+enum OrigemAtendimento {
+  LEAD
+  CLIENTE_DE_PORTA
+  JA_CLIENTE
+  INDICACAO
+}
+
+enum StatusAtendimento {
+  ENTRADA_LEADS
+  CONTATO_REALIZADO
+  PROPOSTA_ENVIADA
+  NEGOCIACAO
+  GANHO
+  PERDIDO
+}
+
+model Atendimento {
+  id                String            @id @default(cuid())
+  empresaId         String
+  empresa           Empresa           @relation(fields: [empresaId], references: [id])
+  nomeCliente       String
+  telefone          String?
+  email             String?
+  ambienteDesejado  String?
+  origem            OrigemAtendimento @default(LEAD)
+  vendedorId        String?
+  vendedor          Usuario?          @relation("AtendimentoVendedor", fields: [vendedorId], references: [id])
+  status            StatusAtendimento @default(ENTRADA_LEADS)
+  valorEstimado     Float?
+  motivoPerda       String?
+  obraId            String?           @unique
+  obra              Obra?             @relation(fields: [obraId], references: [id])
+  criadoEm          DateTime          @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Agenda — eventos simples da equipe (reuniões, visitas etc.), podendo se
+// referir a uma obra específica.
+// ---------------------------------------------------------------------------
+
+enum TipoEvento {
+  REUNIAO
+  VISITA
+  ENTREGA
+  OUTRO
+}
+
+model Evento {
+  id          String     @id @default(cuid())
+  empresaId   String
+  empresa     Empresa    @relation(fields: [empresaId], references: [id])
+  titulo      String
+  tipo        TipoEvento @default(REUNIAO)
+  data        DateTime
+  obraId      String?
+  obra        Obra?      @relation(fields: [obraId], references: [id])
+  criadoPorId String?
+  criadoPor   Usuario?   @relation("EventoCriadoPor", fields: [criadoPorId], references: [id])
+  criadoEm    DateTime   @default(now())
 }

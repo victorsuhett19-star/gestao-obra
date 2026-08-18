@@ -119,6 +119,29 @@ export const STATUS_ITEM_VISTORIA_COLOR: Record<string, string> = {
   CONCLUIDO_COM_OCORRENCIA: "bg-amber-100 text-amber-700",
 };
 
+export const STATUS_ATENDIMENTO_LABEL: Record<string, string> = {
+  ENTRADA_LEADS: "Entrada de leads",
+  CONTATO_REALIZADO: "Contato realizado",
+  PROPOSTA_ENVIADA: "Proposta enviada",
+  NEGOCIACAO: "Negociação",
+  GANHO: "Ganho",
+  PERDIDO: "Perdido",
+};
+
+export const ORIGEM_ATENDIMENTO_LABEL: Record<string, string> = {
+  LEAD: "🎯 Lead",
+  CLIENTE_DE_PORTA: "🚶 Cliente de porta",
+  JA_CLIENTE: "🔄 Já é cliente",
+  INDICACAO: "👥 Indicação",
+};
+
+export const TIPO_EVENTO_LABEL: Record<string, string> = {
+  REUNIAO: "Reunião",
+  VISITA: "Visita",
+  ENTREGA: "Entrega",
+  OUTRO: "Outro",
+};
+
 export function formatBRL(valor: number) {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",

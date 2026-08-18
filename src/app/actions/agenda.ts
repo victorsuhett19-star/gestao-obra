@@ -44,12 +44,18 @@ export async function saveEvento(
     },
   });
 
+  const voltarPara = formData.get("voltarPara");
+  const destino =
+    typeof voltarPara === "string" && voltarPara ? voltarPara : "/agenda";
+
   revalidatePath("/agenda");
-  redirect("/agenda");
+  if (obraId) revalidatePath(`/projetos/${obraId}/agenda`);
+  redirect(destino);
 }
 
 export async function deleteEvento(eventoId: string) {
   await requireRole(["ADMIN", "GESTOR"]);
-  await prisma.evento.delete({ where: { id: eventoId } });
+  const evento = await prisma.evento.delete({ where: { id: eventoId } });
   revalidatePath("/agenda");
+  if (evento.obraId) revalidatePath(`/projetos/${evento.obraId}/agenda`);
 }

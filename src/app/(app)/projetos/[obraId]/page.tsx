@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getUser } from "@/lib/dal";
-import { STATUS_ETAPA_PROJETO_LABEL, STATUS_OBRA_LABEL, formatDateOnly } from "@/lib/labels";
+import { STATUS_ETAPA_PROJETO_LABEL, formatDateOnly } from "@/lib/labels";
 import {
   gerarFluxoObra,
   avancarEtapa,
@@ -56,26 +55,6 @@ export default async function ProjetoDetalhePage({
 
   return (
     <div className="flex flex-col gap-6">
-      <div>
-        <Link href="/projetos" className="text-sm text-slate-500 hover:underline">
-          ← Projetos
-        </Link>
-        <div className="mt-1 flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h1 className="text-xl font-semibold text-slate-900">{obra.nome}</h1>
-            <p className="text-sm text-slate-500">
-              {obra.clienteNome} · {STATUS_OBRA_LABEL[obra.status]}
-            </p>
-          </div>
-          <Link
-            href={`/obras/${obra.id}`}
-            className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100"
-          >
-            Ver cadastro completo da obra →
-          </Link>
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="rounded-2xl border border-slate-200 bg-white p-5 lg:col-span-2">
           <div className="flex items-center justify-between">

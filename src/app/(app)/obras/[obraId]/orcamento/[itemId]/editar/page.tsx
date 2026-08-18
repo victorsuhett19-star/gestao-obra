@@ -10,8 +10,11 @@ export const metadata: Metadata = {
 
 export default async function EditarItemOrcamentoPage({
   params,
+  searchParams,
 }: PageProps<"/obras/[obraId]/orcamento/[itemId]/editar">) {
   const { obraId, itemId } = await params;
+  const sp = await searchParams;
+  const voltarPara = typeof sp.voltarPara === "string" ? sp.voltarPara : undefined;
 
   const [item, etapas] = await Promise.all([
     prisma.itemOrcamento.findUnique({ where: { id: itemId } }),
@@ -29,13 +32,13 @@ export default async function EditarItemOrcamentoPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <BackLink href={`/obras/${obraId}/orcamento`} label="Orçamento" />
+        <BackLink href={voltarPara ?? `/obras/${obraId}/orcamento`} label="Orçamento" />
         <h2 className="mt-1 text-lg font-semibold text-slate-900">
           Editar item de orçamento
         </h2>
       </div>
       <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-6">
-        <ItemOrcamentoForm obraId={obraId} etapas={etapas} item={item} />
+        <ItemOrcamentoForm obraId={obraId} etapas={etapas} item={item} voltarPara={voltarPara} />
       </div>
     </div>
   );

@@ -24,16 +24,19 @@ export function LancamentoForm({
   obraId,
   itensOrcamento,
   lancamento,
+  voltarPara,
 }: {
   obraId: string;
   itensOrcamento: { id: string; descricao: string }[];
   lancamento?: LancamentoInicial;
+  voltarPara?: string;
 }) {
   const [state, action, pending] = useActionState(saveLancamento, undefined);
 
   return (
     <form action={action} className="flex flex-col gap-4">
       <input type="hidden" name="obraId" value={obraId} />
+      {voltarPara && <input type="hidden" name="voltarPara" value={voltarPara} />}
       {lancamento && (
         <input type="hidden" name="lancamentoId" value={lancamento.id} />
       )}

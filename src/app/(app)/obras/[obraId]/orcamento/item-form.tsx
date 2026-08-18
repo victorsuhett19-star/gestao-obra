@@ -19,16 +19,19 @@ export function ItemOrcamentoForm({
   obraId,
   etapas,
   item,
+  voltarPara,
 }: {
   obraId: string;
   etapas: { id: string; nome: string }[];
   item?: ItemInicial;
+  voltarPara?: string;
 }) {
   const [state, action, pending] = useActionState(saveItemOrcamento, undefined);
 
   return (
     <form action={action} className="flex flex-col gap-4">
       <input type="hidden" name="obraId" value={obraId} />
+      {voltarPara && <input type="hidden" name="voltarPara" value={voltarPara} />}
       {item && <input type="hidden" name="itemId" value={item.id} />}
 
       <div className="flex flex-col gap-1.5">

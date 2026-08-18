@@ -62,12 +62,20 @@ export async function saveItemOrcamento(
     await prisma.itemOrcamento.create({ data: payload });
   }
 
+  const voltarPara = formData.get("voltarPara");
+  const destino =
+    typeof voltarPara === "string" && voltarPara
+      ? voltarPara
+      : `/obras/${obraId}/orcamento`;
+
   revalidatePath(`/obras/${obraId}/orcamento`);
-  redirect(`/obras/${obraId}/orcamento`);
+  revalidatePath(`/projetos/${obraId}/orcamento`);
+  redirect(destino);
 }
 
 export async function deleteItemOrcamento(itemId: string, obraId: string) {
   await requireRole(["ADMIN", "GESTOR"]);
   await prisma.itemOrcamento.delete({ where: { id: itemId } });
   revalidatePath(`/obras/${obraId}/orcamento`);
+  revalidatePath(`/projetos/${obraId}/orcamento`);
 }

@@ -141,3 +141,25 @@ export async function excluirAnexo(anexoId: string, obraId: string) {
   await prisma.anexoObra.delete({ where: { id: anexoId } });
   revalidatePath(`/projetos/${obraId}`);
 }
+
+/** Cliente fechou a obra completa (turn-key): adiciona a especialidade OBRA
+ * ao projeto, sem tirar as que já existem — assim ele passa a contar como
+ * turn-key nos relatórios financeiros e aparece com o toolset completo de
+ * Obras (materiais, montagem, conferência, vistoria) além dos tópicos de
+ * Projetos. Não duplica se já tiver a especialidade. */
+export async function marcarTurnkey(obraId: string) {
+  await verifySession();
+
+  const jaTem = await prisma.obraTrade.findUnique({
+    where: { obraId_trade: { obraId, trade: "OBRA" } },
+  });
+  if (jaTem) return;
+
+  await prisma.obraTrade.create({ data: { obraId, trade: "OBRA" } });
+
+  revalidatePath(`/projetos/${obraId}`);
+  revalidatePath(`/obras/${obraId}`);
+  revalidatePath("/projetos");
+  revalidatePath("/obras");
+  revalidatePath("/financeiro/dashboard");
+}

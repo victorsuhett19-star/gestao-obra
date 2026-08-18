@@ -5,11 +5,21 @@ import { saveEvento } from "@/app/actions/agenda";
 import { TIPO_EVENTO } from "@/lib/definitions";
 import { TIPO_EVENTO_LABEL } from "@/lib/labels";
 
-export function EventoForm({ obras }: { obras: { id: string; nome: string }[] }) {
+export function EventoForm({
+  obras,
+  obraIdFixo,
+  voltarPara,
+}: {
+  obras: { id: string; nome: string }[];
+  obraIdFixo?: string;
+  voltarPara?: string;
+}) {
   const [state, action, pending] = useActionState(saveEvento, undefined);
 
   return (
     <form action={action} className="flex flex-col gap-4">
+      {obraIdFixo && <input type="hidden" name="obraId" value={obraIdFixo} />}
+      {voltarPara && <input type="hidden" name="voltarPara" value={voltarPara} />}
       <div className="flex flex-col gap-1.5">
         <label htmlFor="titulo" className="text-sm font-medium text-slate-700">
           Título
@@ -70,24 +80,26 @@ export function EventoForm({ obras }: { obras: { id: string; nome: string }[] })
         </div>
       </div>
 
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="obraId" className="text-sm font-medium text-slate-700">
-          Obra relacionada (opcional)
-        </label>
-        <select
-          id="obraId"
-          name="obraId"
-          defaultValue=""
-          className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
-        >
-          <option value="">Nenhuma</option>
-          {obras.map((o) => (
-            <option key={o.id} value={o.id}>
-              {o.nome}
-            </option>
-          ))}
-        </select>
-      </div>
+      {!obraIdFixo && (
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="obraId" className="text-sm font-medium text-slate-700">
+            Obra relacionada (opcional)
+          </label>
+          <select
+            id="obraId"
+            name="obraId"
+            defaultValue=""
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+          >
+            <option value="">Nenhuma</option>
+            {obras.map((o) => (
+              <option key={o.id} value={o.id}>
+                {o.nome}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {state?.message && (
         <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-700">

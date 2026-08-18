@@ -72,12 +72,21 @@ export async function saveLancamento(
     });
   }
 
+  const voltarPara = formData.get("voltarPara");
+  const destino =
+    typeof voltarPara === "string" && voltarPara
+      ? voltarPara
+      : `/obras/${obraId}/financeiro`;
+
   revalidatePath(`/obras/${obraId}/financeiro`);
-  redirect(`/obras/${obraId}/financeiro`);
+  revalidatePath(`/projetos/${obraId}/financeiro`);
+  redirect(destino);
 }
 
 export async function deleteLancamento(lancamentoId: string, obraId: string) {
   await requireRole(["ADMIN", "GESTOR"]);
   await prisma.lancamentoFinanceiro.delete({ where: { id: lancamentoId } });
   revalidatePath(`/obras/${obraId}/financeiro`);
+  revalidatePath(`/projetos/${obraId}/financeiro`);
+  revalidatePath(`/projetos/${obraId}/dashboard`);
 }

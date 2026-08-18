@@ -9,8 +9,11 @@ export const metadata: Metadata = {
 
 export default async function NovoLancamentoPage({
   params,
+  searchParams,
 }: PageProps<"/obras/[obraId]/financeiro/novo">) {
   const { obraId } = await params;
+  const sp = await searchParams;
+  const voltarPara = typeof sp.voltarPara === "string" ? sp.voltarPara : undefined;
 
   const itensOrcamento = await prisma.itemOrcamento.findMany({
     where: { obraId },
@@ -21,13 +24,13 @@ export default async function NovoLancamentoPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <BackLink href={`/obras/${obraId}/financeiro`} label="Financeiro" />
+        <BackLink href={voltarPara ?? `/obras/${obraId}/financeiro`} label="Financeiro" />
         <h2 className="mt-1 text-lg font-semibold text-slate-900">
           Novo lançamento financeiro
         </h2>
       </div>
       <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-6">
-        <LancamentoForm obraId={obraId} itensOrcamento={itensOrcamento} />
+        <LancamentoForm obraId={obraId} itensOrcamento={itensOrcamento} voltarPara={voltarPara} />
       </div>
     </div>
   );

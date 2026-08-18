@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BackLink } from "@/components/back-link";
 import { ColaboradorForm } from "../colaborador-form";
 
 export const metadata: Metadata = {
@@ -9,7 +10,8 @@ export default function NovoColaboradorPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">
+        <BackLink href="/colaboradores" label="Colaboradores" />
+        <h1 className="mt-1 text-xl font-semibold text-slate-900">
           Novo colaborador
         </h1>
         <p className="text-sm text-slate-500">

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { getEmpresaAtivaId } from "@/lib/empresa";
+import { BackLink } from "@/components/back-link";
 import { ItemConferenciaForm } from "../item-conferencia-form";
 
 export const metadata: Metadata = {
@@ -22,7 +23,8 @@ export default async function NovoItemConferenciaPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold text-slate-900">
+        <BackLink href={`/obras/${obraId}/conferencia`} label="Conferência" />
+        <h2 className="mt-1 text-lg font-semibold text-slate-900">
           Novo item de conferência
         </h2>
       </div>

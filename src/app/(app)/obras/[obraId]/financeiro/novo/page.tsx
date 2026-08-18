@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { BackLink } from "@/components/back-link";
 import { LancamentoForm } from "../lancamento-form";
 
 export const metadata: Metadata = {
@@ -20,7 +21,8 @@ export default async function NovoLancamentoPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold text-slate-900">
+        <BackLink href={`/obras/${obraId}/financeiro`} label="Financeiro" />
+        <h2 className="mt-1 text-lg font-semibold text-slate-900">
           Novo lançamento financeiro
         </h2>
       </div>

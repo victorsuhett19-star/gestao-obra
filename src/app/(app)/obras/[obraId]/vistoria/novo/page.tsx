@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BackLink } from "@/components/back-link";
 import { VistoriaForm } from "../vistoria-form";
 
 export const metadata: Metadata = {
@@ -13,7 +14,8 @@ export default async function NovaVistoriaPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold text-slate-900">
+        <BackLink href={`/obras/${obraId}/vistoria`} label="Vistoria Final" />
+        <h2 className="mt-1 text-lg font-semibold text-slate-900">
           Novo relatório de vistoria
         </h2>
       </div>

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { BackLink } from "@/components/back-link";
 import { UsuarioForm } from "../../usuario-form";
 
 export const metadata: Metadata = {
@@ -21,7 +22,8 @@ export default async function EditarUsuarioPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">
+        <BackLink href="/usuarios" label="Usuários" />
+        <h1 className="mt-1 text-xl font-semibold text-slate-900">
           Editar usuário
         </h1>
       </div>

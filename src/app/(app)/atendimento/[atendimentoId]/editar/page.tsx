@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { getEmpresaAtivaId } from "@/lib/empresa";
+import { BackLink } from "@/components/back-link";
 import { AtendimentoForm } from "../../atendimento-form";
 import { marcarPerdido } from "@/app/actions/atendimento";
 
@@ -31,7 +32,8 @@ export default async function EditarAtendimentoPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">
+        <BackLink href="/atendimento" label="Atendimento" />
+        <h1 className="mt-1 text-xl font-semibold text-slate-900">
           Editar atendimento
         </h1>
       </div>

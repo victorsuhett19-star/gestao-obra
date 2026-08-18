@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BackLink } from "@/components/back-link";
 import { ObraForm } from "../obra-form";
 
 export const metadata: Metadata = {
@@ -9,7 +10,8 @@ export default function NovaObraPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">Nova obra</h1>
+        <BackLink href="/obras" label="Obras" />
+        <h1 className="mt-1 text-xl font-semibold text-slate-900">Nova obra</h1>
         <p className="text-sm text-slate-500">
           Cadastre uma nova obra/projeto para começar a gerenciar o cronograma,
           orçamento e materiais.

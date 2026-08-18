@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { BackLink } from "@/components/back-link";
 import { MaterialForm } from "../material-form";
 
 export const metadata: Metadata = {
@@ -9,7 +10,8 @@ export default function NovoMaterialPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">Novo material</h1>
+        <BackLink href="/materiais" label="Materiais" />
+        <h1 className="mt-1 text-xl font-semibold text-slate-900">Novo material</h1>
       </div>
       <div className="max-w-lg rounded-2xl border border-slate-200 bg-white p-6">
         <MaterialForm />

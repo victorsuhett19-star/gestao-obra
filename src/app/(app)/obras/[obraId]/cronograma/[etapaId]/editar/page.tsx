@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { getEmpresaAtivaId } from "@/lib/empresa";
 import { buildEtapaTree, flattenTree } from "@/lib/etapa-tree";
+import { BackLink } from "@/components/back-link";
 import { EtapaForm } from "../../etapa-form";
 
 export const metadata: Metadata = {
@@ -38,7 +39,8 @@ export default async function EditarEtapaPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold text-slate-900">Editar etapa</h2>
+        <BackLink href={`/obras/${obraId}/cronograma`} label="Cronograma" />
+        <h2 className="mt-1 text-lg font-semibold text-slate-900">Editar etapa</h2>
       </div>
       <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-6">
         <EtapaForm

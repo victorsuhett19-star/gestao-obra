@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { getEmpresaAtivaId } from "@/lib/empresa";
+import { BackLink } from "@/components/back-link";
 import { MontagemForm } from "../montagem-form";
 
 export const metadata: Metadata = {
@@ -22,7 +23,8 @@ export default async function NovaMontagemPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="text-lg font-semibold text-slate-900">Nova montagem</h2>
+        <BackLink href={`/obras/${obraId}/montagem`} label="Montagem" />
+        <h2 className="mt-1 text-lg font-semibold text-slate-900">Nova montagem</h2>
       </div>
       <div className="max-w-3xl rounded-2xl border border-slate-200 bg-white p-6">
         <MontagemForm obraId={obraId} montadores={montadores} />

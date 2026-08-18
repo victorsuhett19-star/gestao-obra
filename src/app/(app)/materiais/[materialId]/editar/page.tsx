@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { BackLink } from "@/components/back-link";
 import { MaterialForm } from "../../material-form";
 
 export const metadata: Metadata = {
@@ -23,7 +24,8 @@ export default async function EditarMaterialPage({
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-xl font-semibold text-slate-900">
+        <BackLink href="/materiais" label="Materiais" />
+        <h1 className="mt-1 text-xl font-semibold text-slate-900">
           Editar material
         </h1>
       </div>

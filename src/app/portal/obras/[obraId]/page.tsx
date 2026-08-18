@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { verifyClientSession, getCliente } from "@/lib/client-dal";
 import { STATUS_ETAPA_PROJETO_LABEL, formatDateOnly } from "@/lib/labels";
 import { uploadAnexoCliente } from "@/app/actions/cliente";
+import { BackLink } from "@/components/back-link";
 import { PortalHeader } from "../../portal-header";
 import { SignatureSection } from "./signature-section";
 
@@ -52,7 +53,8 @@ export default async function PortalObraPage({
       <PortalHeader nome={cliente.nome} />
       <div className="mx-auto flex max-w-3xl flex-col gap-6 p-4 sm:p-8">
         <div>
-          <p className="text-xs font-medium text-slate-500">{obra.nome}</p>
+          <BackLink href="/portal" label="Meus projetos" />
+          <p className="mt-1 text-xs font-medium text-slate-500">{obra.nome}</p>
           <h1 className="text-lg font-semibold text-slate-900">
             Acompanhamento do projeto
           </h1>

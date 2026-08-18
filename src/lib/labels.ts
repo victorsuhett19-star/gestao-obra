@@ -79,6 +79,13 @@ export const STATUS_PEDIDO_COLOR: Record<string, string> = {
   CANCELADO: "bg-red-100 text-red-700",
 };
 
+export const CLIMA_LABEL: Record<string, string> = {
+  ENSOLARADO: "☀️ Ensolarado",
+  NUBLADO: "☁️ Nublado",
+  CHUVOSO: "🌧️ Chuvoso",
+  IMPRATICAVEL: "⛔ Imprático",
+};
+
 export function formatBRL(valor: number) {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",

@@ -220,3 +220,34 @@ export const STATUS_PEDIDO = [
 export type PedidoFormState =
   | { errors?: { fornecedorId?: string[]; itens?: string[] }; message?: string }
   | undefined;
+
+export const CLIMA = ["ENSOLARADO", "NUBLADO", "CHUVOSO", "IMPRATICAVEL"] as const;
+
+export const DiarioFormSchema = z.object({
+  obraId: z.string().min(1),
+  data: z.string().trim().min(1, { error: "Informe a data." }),
+  clima: z.enum(CLIMA).optional().or(z.literal("")),
+  terceirizados: z.string().trim().optional().or(z.literal("")),
+  atividadesRealizadas: z
+    .string()
+    .min(2, { error: "Descreva o que foi feito no dia." })
+    .trim(),
+  necessidades: z.string().trim().optional().or(z.literal("")),
+  colaboradorIds: z.array(z.string()).optional(),
+});
+
+export type DiarioFormState =
+  | {
+      errors?: { atividadesRealizadas?: string[]; data?: string[] };
+      message?: string;
+    }
+  | undefined;
+
+export const ObjetivoFormSchema = z.object({
+  obraId: z.string().min(1),
+  descricao: z.string().min(2, { error: "Descreva o objetivo." }).trim(),
+});
+
+export type ObjetivoFormState =
+  | { errors?: { descricao?: string[] }; message?: string }
+  | undefined;

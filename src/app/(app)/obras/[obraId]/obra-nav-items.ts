@@ -4,5 +4,7 @@ export function obraNavItems(obraId: string): { href: string; label: string }[] 
   return [
     { href: `/obras/${obraId}`, label: "Visão geral" },
     { href: `/obras/${obraId}/cronograma`, label: "Cronograma" },
+    { href: `/obras/${obraId}/orcamento`, label: "Orçamento" },
+    { href: `/obras/${obraId}/financeiro`, label: "Financeiro" },
   ];
 }

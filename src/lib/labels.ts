@@ -42,3 +42,30 @@ export const STATUS_ETAPA_COLOR: Record<string, string> = {
   CONCLUIDA: "bg-emerald-100 text-emerald-700",
   ATRASADA: "bg-red-100 text-red-700",
 };
+
+export const CATEGORIA_ORCAMENTO_LABEL: Record<string, string> = {
+  MATERIAL: "Material",
+  MAO_DE_OBRA: "Mão de obra",
+  SERVICO: "Serviço",
+  EQUIPAMENTO: "Equipamento",
+  OUTROS: "Outros",
+};
+
+export const TIPO_LANCAMENTO_LABEL: Record<string, string> = {
+  CUSTO: "Custo",
+  RECEITA: "Receita",
+  PAGAMENTO: "Pagamento",
+};
+
+export const TIPO_LANCAMENTO_COLOR: Record<string, string> = {
+  CUSTO: "bg-red-100 text-red-700",
+  RECEITA: "bg-emerald-100 text-emerald-700",
+  PAGAMENTO: "bg-blue-100 text-blue-700",
+};
+
+export function formatBRL(valor: number) {
+  return new Intl.NumberFormat("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+  }).format(valor);
+}

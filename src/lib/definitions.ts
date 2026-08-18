@@ -121,3 +121,62 @@ export type EtapaFormState =
       message?: string;
     }
   | undefined;
+
+export const CATEGORIA_ORCAMENTO = [
+  "MATERIAL",
+  "MAO_DE_OBRA",
+  "SERVICO",
+  "EQUIPAMENTO",
+  "OUTROS",
+] as const;
+
+export const ItemOrcamentoFormSchema = z.object({
+  obraId: z.string().min(1),
+  etapaId: z.string().trim().optional().or(z.literal("")),
+  categoria: z.enum(CATEGORIA_ORCAMENTO, { error: "Selecione uma categoria." }),
+  descricao: z.string().min(2, { error: "Informe a descrição." }).trim(),
+  unidade: z.string().trim().optional().or(z.literal("")),
+  quantidade: z
+    .string()
+    .trim()
+    .min(1, { error: "Informe a quantidade." }),
+  valorUnitario: z
+    .string()
+    .trim()
+    .min(1, { error: "Informe o valor unitário." }),
+});
+
+export type ItemOrcamentoFormState =
+  | {
+      errors?: {
+        descricao?: string[];
+        quantidade?: string[];
+        valorUnitario?: string[];
+      };
+      message?: string;
+    }
+  | undefined;
+
+export const TIPO_LANCAMENTO = ["CUSTO", "RECEITA", "PAGAMENTO"] as const;
+
+export const LancamentoFormSchema = z.object({
+  obraId: z.string().min(1),
+  itemOrcamentoId: z.string().trim().optional().or(z.literal("")),
+  tipo: z.enum(TIPO_LANCAMENTO, { error: "Selecione um tipo." }),
+  categoria: z.string().trim().optional().or(z.literal("")),
+  descricao: z.string().min(2, { error: "Informe a descrição." }).trim(),
+  valor: z.string().trim().min(1, { error: "Informe o valor." }),
+  data: z.string().trim().min(1, { error: "Informe a data." }),
+  formaPagamento: z.string().trim().optional().or(z.literal("")),
+});
+
+export type LancamentoFormState =
+  | {
+      errors?: {
+        descricao?: string[];
+        valor?: string[];
+        data?: string[];
+      };
+      message?: string;
+    }
+  | undefined;

@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { verifySession, getUser } from "@/lib/dal";
+import { verifySession, getUser, requireRole } from "@/lib/dal";
 import { STATUS_PEDIDO, type PedidoFormState } from "@/lib/definitions";
 
 export async function savePedido(
@@ -87,7 +87,7 @@ export async function atualizarStatusPedido(
 }
 
 export async function deletePedido(pedidoId: string, obraId: string) {
-  await verifySession();
+  await requireRole(["ADMIN", "GESTOR"]);
   await prisma.pedidoMaterial.delete({ where: { id: pedidoId } });
   revalidatePath(`/obras/${obraId}/materiais`);
 }

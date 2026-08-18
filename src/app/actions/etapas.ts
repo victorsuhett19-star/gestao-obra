@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { verifySession } from "@/lib/dal";
+import { verifySession, requireRole } from "@/lib/dal";
 import { EtapaFormSchema, type EtapaFormState } from "@/lib/definitions";
 
 export async function saveEtapa(
@@ -77,7 +77,7 @@ export async function saveEtapa(
 }
 
 export async function deleteEtapa(etapaId: string, obraId: string) {
-  await verifySession();
+  await requireRole(["ADMIN", "GESTOR"]);
   await prisma.etapa.delete({ where: { id: etapaId } });
   revalidatePath(`/obras/${obraId}/cronograma`);
 }

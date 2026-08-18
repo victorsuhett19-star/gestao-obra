@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { verifySession, getUser } from "@/lib/dal";
+import { verifySession, getUser, requireRole } from "@/lib/dal";
 import type { VistoriaFormState } from "@/lib/definitions";
 
 export async function saveVistoria(
@@ -66,7 +66,7 @@ export async function assinarVistoria(
 }
 
 export async function deleteVistoria(vistoriaId: string, obraId: string) {
-  await verifySession();
+  await requireRole(["ADMIN", "GESTOR"]);
   await prisma.vistoriaFinal.delete({ where: { id: vistoriaId } });
   revalidatePath(`/obras/${obraId}/vistoria`);
 }

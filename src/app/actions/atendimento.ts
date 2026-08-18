@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { verifySession, getUser } from "@/lib/dal";
+import { verifySession, getUser, requireRole } from "@/lib/dal";
 import {
   STATUS_ATENDIMENTO,
   AtendimentoFormSchema,
@@ -129,7 +129,7 @@ export async function converterEmObra(atendimentoId: string) {
 }
 
 export async function deleteAtendimento(atendimentoId: string) {
-  await verifySession();
+  await requireRole(["ADMIN", "GESTOR"]);
   await prisma.atendimento.delete({ where: { id: atendimentoId } });
   revalidatePath("/atendimento");
 }

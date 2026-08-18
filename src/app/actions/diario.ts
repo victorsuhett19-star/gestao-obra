@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { verifySession, getUser } from "@/lib/dal";
+import { verifySession, getUser, requireRole } from "@/lib/dal";
 import { salvarArquivo } from "@/lib/uploads";
 import { DiarioFormSchema, type DiarioFormState } from "@/lib/definitions";
 
@@ -78,7 +78,7 @@ export async function saveDiario(
 }
 
 export async function deleteDiario(diarioId: string, obraId: string) {
-  await verifySession();
+  await requireRole(["ADMIN", "GESTOR"]);
   await prisma.diarioObra.delete({ where: { id: diarioId } });
   revalidatePath(`/obras/${obraId}/diario`);
 }

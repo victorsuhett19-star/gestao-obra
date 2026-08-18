@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { verifySession } from "@/lib/dal";
+import { verifySession, requireRole } from "@/lib/dal";
 import {
   ItemOrcamentoFormSchema,
   type ItemOrcamentoFormState,
@@ -67,7 +67,7 @@ export async function saveItemOrcamento(
 }
 
 export async function deleteItemOrcamento(itemId: string, obraId: string) {
-  await verifySession();
+  await requireRole(["ADMIN", "GESTOR"]);
   await prisma.itemOrcamento.delete({ where: { id: itemId } });
   revalidatePath(`/obras/${obraId}/orcamento`);
 }

@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { verifySession } from "@/lib/dal";
+import { verifySession, requireRole } from "@/lib/dal";
 import {
   STATUS_CONFERENCIA,
   ItemConferenciaFormSchema,
@@ -73,7 +73,7 @@ export async function moverItemConferencia(
 }
 
 export async function deleteItemConferencia(itemId: string, obraId: string) {
-  await verifySession();
+  await requireRole(["ADMIN", "GESTOR"]);
   await prisma.itemConferencia.delete({ where: { id: itemId } });
   revalidatePath(`/obras/${obraId}/conferencia`);
 }

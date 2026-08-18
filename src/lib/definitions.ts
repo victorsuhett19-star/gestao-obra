@@ -60,6 +60,7 @@ export type ObraFormState =
   | {
       errors?: {
         nome?: string[];
+        clienteEmail?: string[];
         status?: string[];
         trades?: string[];
       };

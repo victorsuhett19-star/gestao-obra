@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { verifySession } from "@/lib/dal";
+import { verifySession, requireRole } from "@/lib/dal";
 import type { MontagemFormState } from "@/lib/definitions";
 
 export async function saveMontagem(
@@ -98,7 +98,7 @@ export async function atualizarStatusMontagem(
   registroId: string,
   obraId: string,
   status: "FILA" | "EM_ANDAMENTO" | "CONCLUIDA"
-) {
+): Promise<void> {
   await verifySession();
 
   if (status === "EM_ANDAMENTO") {
@@ -109,10 +109,8 @@ export async function atualizarStatusMontagem(
       where: { registroId, recebido: false },
     });
     if (pendencias > 0 || faltasPendentes > 0) {
-      return {
-        message:
-          "Marque todos os itens extras e faltas de fábrica como recebidos antes de iniciar a montagem.",
-      };
+      // Bloqueado — o banner de aviso na tela já explica o motivo ao usuário.
+      return;
     }
   }
 
@@ -121,11 +119,10 @@ export async function atualizarStatusMontagem(
     data: { status },
   });
   revalidatePath(`/obras/${obraId}/montagem`);
-  return undefined;
 }
 
 export async function deleteMontagem(registroId: string, obraId: string) {
-  await verifySession();
+  await requireRole(["ADMIN", "GESTOR"]);
   await prisma.registroMontagem.delete({ where: { id: registroId } });
   revalidatePath(`/obras/${obraId}/montagem`);
 }

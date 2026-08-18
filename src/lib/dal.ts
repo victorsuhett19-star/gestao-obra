@@ -37,3 +37,19 @@ export const getUser = cache(async () => {
     return null;
   }
 });
+
+/**
+ * Bloqueia a ação se o usuário logado não tiver um dos papéis permitidos.
+ * Use isso em Server Actions destrutivas ou sensíveis (excluir, gerenciar
+ * usuários etc). Lança erro em vez de redirecionar — quem chama decide como
+ * tratar (a action deve exibir mensagem, não estourar uma tela de erro).
+ */
+export async function requireRole(papeisPermitidos: string[]) {
+  const user = await getUser();
+  if (!user || !papeisPermitidos.includes(user.papel)) {
+    throw new Error(
+      "Você não tem permissão para fazer isso — fale com um admin ou gestor."
+    );
+  }
+  return user;
+}

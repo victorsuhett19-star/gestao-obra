@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { verifySession, getUser } from "@/lib/dal";
+import { verifySession, getUser, requireRole } from "@/lib/dal";
 import { EventoFormSchema, type EventoFormState } from "@/lib/definitions";
 
 export async function saveEvento(
@@ -47,7 +47,7 @@ export async function saveEvento(
 }
 
 export async function deleteEvento(eventoId: string) {
-  await verifySession();
+  await requireRole(["ADMIN", "GESTOR"]);
   await prisma.evento.delete({ where: { id: eventoId } });
   revalidatePath("/agenda");
 }

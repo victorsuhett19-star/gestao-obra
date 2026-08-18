@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { verifySession, getUser } from "@/lib/dal";
+import { verifySession, getUser, requireRole } from "@/lib/dal";
 import {
   LancamentoFormSchema,
   type LancamentoFormState,
@@ -77,7 +77,7 @@ export async function saveLancamento(
 }
 
 export async function deleteLancamento(lancamentoId: string, obraId: string) {
-  await verifySession();
+  await requireRole(["ADMIN", "GESTOR"]);
   await prisma.lancamentoFinanceiro.delete({ where: { id: lancamentoId } });
   revalidatePath(`/obras/${obraId}/financeiro`);
 }

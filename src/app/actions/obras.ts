@@ -19,7 +19,12 @@ export async function saveObra(
     nome: formData.get("nome"),
     endereco: formData.get("endereco"),
     clienteNome: formData.get("clienteNome"),
-    clienteContato: formData.get("clienteContato"),
+    clienteTelefone: formData.get("clienteTelefone"),
+    clienteEmail: formData.get("clienteEmail"),
+    clienteCpfCnpj: formData.get("clienteCpfCnpj"),
+    descricao: formData.get("descricao"),
+    condicoesPagamento: formData.get("condicoesPagamento"),
+    prazoExecucaoDias: formData.get("prazoExecucaoDias"),
     status: formData.get("status"),
     dataInicioPrevista: formData.get("dataInicioPrevista"),
     dataFimPrevista: formData.get("dataFimPrevista"),
@@ -30,14 +35,29 @@ export async function saveObra(
     return { errors: validatedFields.error.flatten().fieldErrors };
   }
 
-  const { trades, endereco, clienteNome, clienteContato, ...rest } =
-    validatedFields.data;
+  const {
+    trades,
+    endereco,
+    clienteNome,
+    clienteTelefone,
+    clienteEmail,
+    clienteCpfCnpj,
+    descricao,
+    condicoesPagamento,
+    prazoExecucaoDias,
+    ...rest
+  } = validatedFields.data;
 
   const payload = {
     ...rest,
     endereco: endereco || null,
     clienteNome: clienteNome || null,
-    clienteContato: clienteContato || null,
+    clienteTelefone: clienteTelefone || null,
+    clienteEmail: clienteEmail || null,
+    clienteCpfCnpj: clienteCpfCnpj || null,
+    descricao: descricao || null,
+    condicoesPagamento: condicoesPagamento || null,
+    prazoExecucaoDias: prazoExecucaoDias ? Number(prazoExecucaoDias) : null,
     dataInicioPrevista: rest.dataInicioPrevista
       ? new Date(rest.dataInicioPrevista)
       : null,

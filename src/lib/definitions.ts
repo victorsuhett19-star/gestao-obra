@@ -38,7 +38,16 @@ export const ObraFormSchema = z.object({
   nome: z.string().min(2, { error: "Informe o nome da obra." }).trim(),
   endereco: z.string().trim().optional().or(z.literal("")),
   clienteNome: z.string().trim().optional().or(z.literal("")),
-  clienteContato: z.string().trim().optional().or(z.literal("")),
+  clienteTelefone: z.string().trim().optional().or(z.literal("")),
+  clienteEmail: z
+    .email({ error: "E-mail inválido." })
+    .trim()
+    .optional()
+    .or(z.literal("")),
+  clienteCpfCnpj: z.string().trim().optional().or(z.literal("")),
+  descricao: z.string().trim().optional().or(z.literal("")),
+  condicoesPagamento: z.string().trim().optional().or(z.literal("")),
+  prazoExecucaoDias: z.string().trim().optional().or(z.literal("")),
   status: z.enum(STATUS_OBRA, { error: "Selecione um status." }),
   dataInicioPrevista: z.string().trim().optional().or(z.literal("")),
   dataFimPrevista: z.string().trim().optional().or(z.literal("")),
@@ -53,6 +62,27 @@ export type ObraFormState =
         nome?: string[];
         status?: string[];
         trades?: string[];
+      };
+      message?: string;
+    }
+  | undefined;
+
+export const ColaboradorFormSchema = z.object({
+  nome: z.string().min(2, { error: "Informe o nome do colaborador." }).trim(),
+  funcao: z.string().trim().optional().or(z.literal("")),
+  telefone: z.string().trim().optional().or(z.literal("")),
+  fotoUrl: z
+    .url({ error: "Informe uma URL válida." })
+    .trim()
+    .optional()
+    .or(z.literal("")),
+});
+
+export type ColaboradorFormState =
+  | {
+      errors?: {
+        nome?: string[];
+        fotoUrl?: string[];
       };
       message?: string;
     }

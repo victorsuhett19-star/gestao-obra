@@ -18,8 +18,18 @@ export default async function ObraOverviewPage({
 
   const campos = [
     { label: "Cliente", valor: obra.clienteNome ?? "—" },
-    { label: "Contato do cliente", valor: obra.clienteContato ?? "—" },
+    { label: "CPF/CNPJ do cliente", valor: obra.clienteCpfCnpj ?? "—" },
+    { label: "Telefone do cliente", valor: obra.clienteTelefone ?? "—" },
+    { label: "E-mail do cliente", valor: obra.clienteEmail ?? "—" },
     { label: "Endereço", valor: obra.endereco ?? "—" },
+    {
+      label: "Condições de pagamento",
+      valor: obra.condicoesPagamento ?? "—",
+    },
+    {
+      label: "Prazo de execução",
+      valor: obra.prazoExecucaoDias ? `${obra.prazoExecucaoDias} dias` : "—",
+    },
     { label: "Início previsto", valor: formatDate(obra.dataInicioPrevista) },
     { label: "Fim previsto", valor: formatDate(obra.dataFimPrevista) },
     { label: "Início real", valor: formatDate(obra.dataInicioReal) },
@@ -28,15 +38,25 @@ export default async function ObraOverviewPage({
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-4 rounded-2xl border border-slate-200 bg-white p-6 sm:grid-cols-2">
-      {campos.map((campo) => (
-        <div key={campo.label}>
+    <div className="flex flex-col gap-4">
+      {obra.descricao && (
+        <div className="rounded-2xl border border-slate-200 bg-white p-6">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
-            {campo.label}
+            Descrição do serviço
           </p>
-          <p className="mt-0.5 text-sm text-slate-900">{campo.valor}</p>
+          <p className="mt-0.5 text-sm text-slate-900">{obra.descricao}</p>
         </div>
-      ))}
+      )}
+      <div className="grid grid-cols-1 gap-4 rounded-2xl border border-slate-200 bg-white p-6 sm:grid-cols-2">
+        {campos.map((campo) => (
+          <div key={campo.label}>
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+              {campo.label}
+            </p>
+            <p className="mt-0.5 text-sm text-slate-900">{campo.valor}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -24,6 +24,24 @@ model Empresa {
   fornecedores Fornecedor[]
   materiais    Material[]
   etapaTemplates EtapaTemplate[]
+  colaboradores  Colaborador[]
+}
+
+// Equipe de campo (montadores, conferentes etc.) — diferente de Usuario, que é
+// quem loga no sistema. Um colaborador pode nunca acessar o app, só aparecer
+// marcado como presente no diário de obra.
+model Colaborador {
+  id         String   @id @default(cuid())
+  empresaId  String
+  empresa    Empresa  @relation(fields: [empresaId], references: [id])
+  nome       String
+  funcao     String?
+  telefone   String?
+  fotoUrl    String?
+  ativo      Boolean  @default(true)
+  criadoEm   DateTime @default(now())
+
+  presencas  DiarioColaborador[]
 }
 
 enum PapelUsuario {
@@ -73,29 +91,35 @@ enum Trade {
 }
 
 model Obra {
-  id                  String     @id @default(cuid())
-  empresaId           String
-  empresa             Empresa    @relation(fields: [empresaId], references: [id])
-  nome                String
-  endereco            String?
-  clienteNome         String?
-  clienteContato      String?
-  status              StatusObra @default(PLANEJAMENTO)
-  dataInicioPrevista  DateTime?
-  dataFimPrevista     DateTime?
-  dataInicioReal      DateTime?
-  dataFimReal         DateTime?
-  criadoPorId         String?
-  criadoPor           Usuario?   @relation("ObraCriadaPor", fields: [criadoPorId], references: [id])
-  criadoEm            DateTime   @default(now())
+  id                   String     @id @default(cuid())
+  empresaId            String
+  empresa              Empresa    @relation(fields: [empresaId], references: [id])
+  nome                 String
+  endereco             String?
+  clienteNome          String?
+  clienteTelefone      String?
+  clienteEmail         String?
+  clienteCpfCnpj       String?
+  descricao            String?
+  condicoesPagamento   String?
+  prazoExecucaoDias    Int?
+  status               StatusObra @default(PLANEJAMENTO)
+  dataInicioPrevista   DateTime?
+  dataFimPrevista      DateTime?
+  dataInicioReal       DateTime?
+  dataFimReal          DateTime?
+  criadoPorId          String?
+  criadoPor            Usuario?   @relation("ObraCriadaPor", fields: [criadoPorId], references: [id])
+  criadoEm             DateTime   @default(now())
 
-  trades              ObraTrade[]
-  etapas              Etapa[]
-  itensOrcamento      ItemOrcamento[]
-  lancamentos         LancamentoFinanceiro[]
-  pedidosMaterial     PedidoMaterial[]
-  fotos               Foto[]
-  diarios             DiarioObra[]
+  trades               ObraTrade[]
+  etapas               Etapa[]
+  itensOrcamento       ItemOrcamento[]
+  lancamentos          LancamentoFinanceiro[]
+  pedidosMaterial      PedidoMaterial[]
+  fotos                Foto[]
+  diarios              DiarioObra[]
+  objetivos            ObjetivoDiario[]
 }
 
 model ObraTrade {
@@ -302,18 +326,41 @@ enum Clima {
   IMPRATICAVEL
 }
 
+// Lista leve de objetivos/pendências da obra (não presa a um dia específico,
+// fica visível como "objetivos de hoje" até ser marcada como concluída).
+model ObjetivoDiario {
+  id          String   @id @default(cuid())
+  obraId      String
+  obra        Obra     @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  descricao   String
+  concluido   Boolean  @default(false)
+  criadoEm    DateTime @default(now())
+}
+
 model DiarioObra {
   id                   String   @id @default(cuid())
   obraId               String
   obra                 Obra     @relation(fields: [obraId], references: [id], onDelete: Cascade)
   data                 DateTime @default(now())
   clima                Clima?
-  maoDeObraPresente    Int?
+  terceirizados        String?
   atividadesRealizadas String
-  ocorrencias          String?
+  necessidades         String?
   criadoPorId          String?
   criadoPor            Usuario? @relation("DiarioCriadoPor", fields: [criadoPorId], references: [id])
   criadoEm             DateTime @default(now())
 
   fotos                Foto[]
+  colaboradores        DiarioColaborador[]
+}
+
+// Join table: quais colaboradores estiveram presentes em cada registro de diário.
+model DiarioColaborador {
+  id             String      @id @default(cuid())
+  diarioId       String
+  diario         DiarioObra  @relation(fields: [diarioId], references: [id], onDelete: Cascade)
+  colaboradorId  String
+  colaborador    Colaborador @relation(fields: [colaboradorId], references: [id])
+
+  @@unique([diarioId, colaboradorId])
 }

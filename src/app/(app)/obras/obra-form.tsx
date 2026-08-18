@@ -10,7 +10,12 @@ type ObraInicial = {
   nome: string;
   endereco: string | null;
   clienteNome: string | null;
-  clienteContato: string | null;
+  clienteTelefone: string | null;
+  clienteEmail: string | null;
+  clienteCpfCnpj: string | null;
+  descricao: string | null;
+  condicoesPagamento: string | null;
+  prazoExecucaoDias: number | null;
   status: string;
   dataInicioPrevista: Date | null;
   dataFimPrevista: Date | null;
@@ -71,14 +76,72 @@ export function ObraForm({ obra }: { obra?: ObraInicial }) {
         </div>
 
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="clienteContato" className="text-sm font-medium text-slate-700">
-            Contato do cliente
+          <label htmlFor="clienteCpfCnpj" className="text-sm font-medium text-slate-700">
+            CPF/CNPJ do cliente
           </label>
           <input
-            id="clienteContato"
-            name="clienteContato"
-            placeholder="Telefone ou e-mail"
-            defaultValue={obra?.clienteContato ?? ""}
+            id="clienteCpfCnpj"
+            name="clienteCpfCnpj"
+            defaultValue={obra?.clienteCpfCnpj ?? ""}
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="clienteTelefone" className="text-sm font-medium text-slate-700">
+            Telefone do cliente
+          </label>
+          <input
+            id="clienteTelefone"
+            name="clienteTelefone"
+            placeholder="(21) 99999-0000"
+            defaultValue={obra?.clienteTelefone ?? ""}
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="clienteEmail" className="text-sm font-medium text-slate-700">
+            E-mail do cliente
+          </label>
+          <input
+            id="clienteEmail"
+            name="clienteEmail"
+            type="email"
+            defaultValue={obra?.clienteEmail ?? ""}
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+          />
+          {state?.errors?.clienteEmail && (
+            <p className="text-sm text-red-600">{state.errors.clienteEmail[0]}</p>
+          )}
+        </div>
+
+        <div className="flex flex-col gap-1.5 sm:col-span-2">
+          <label htmlFor="descricao" className="text-sm font-medium text-slate-700">
+            Descrição do serviço
+          </label>
+          <textarea
+            id="descricao"
+            name="descricao"
+            rows={2}
+            placeholder="Ex: Reforma de cozinha"
+            defaultValue={obra?.descricao ?? ""}
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+          />
+        </div>
+
+        <div className="flex flex-col gap-1.5 sm:col-span-2">
+          <label
+            htmlFor="condicoesPagamento"
+            className="text-sm font-medium text-slate-700"
+          >
+            Condições de pagamento
+          </label>
+          <input
+            id="condicoesPagamento"
+            name="condicoesPagamento"
+            placeholder="Ex: 50% na assinatura, 50% na entrega"
+            defaultValue={obra?.condicoesPagamento ?? ""}
             className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
           />
         </div>
@@ -99,6 +162,23 @@ export function ObraForm({ obra }: { obra?: ObraInicial }) {
               </option>
             ))}
           </select>
+        </div>
+
+        <div className="flex flex-col gap-1.5">
+          <label
+            htmlFor="prazoExecucaoDias"
+            className="text-sm font-medium text-slate-700"
+          >
+            Prazo de execução (dias)
+          </label>
+          <input
+            id="prazoExecucaoDias"
+            name="prazoExecucaoDias"
+            type="number"
+            min={0}
+            defaultValue={obra?.prazoExecucaoDias ?? ""}
+            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
+          />
         </div>
 
         <div className="flex flex-col gap-1.5">

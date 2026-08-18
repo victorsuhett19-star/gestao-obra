@@ -272,3 +272,19 @@ export const ItemConferenciaFormSchema = z.object({
 export type ItemConferenciaFormState =
   | { errors?: { titulo?: string[] }; message?: string }
   | undefined;
+
+export const STATUS_MONTAGEM = ["FILA", "EM_ANDAMENTO", "CONCLUIDA"] as const;
+
+export type MontagemFormState =
+  | { errors?: { ambientes?: string[] }; message?: string }
+  | undefined;
+
+export const STATUS_ITEM_VISTORIA = [
+  "PENDENTE",
+  "CONCLUIDO_SEM_OCORRENCIA",
+  "CONCLUIDO_COM_OCORRENCIA",
+] as const;
+
+export type VistoriaFormState =
+  | { errors?: { itens?: string[] }; message?: string }
+  | undefined;

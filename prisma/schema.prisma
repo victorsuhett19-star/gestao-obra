@@ -42,6 +42,7 @@ model Colaborador {
   criadoEm   DateTime @default(now())
 
   presencas  DiarioColaborador[]
+  montagens  RegistroMontagem[]  @relation("MontagemMontador")
 }
 
 enum PapelUsuario {
@@ -69,6 +70,7 @@ model Usuario {
   fotosEnviadas      Foto[]              @relation("FotoEnviadaPor")
   diariosCriados     DiarioObra[]        @relation("DiarioCriadoPor")
   itensConferencia   ItemConferencia[]   @relation("ItemConferenciaResponsavel")
+  vistoriasResponsavel VistoriaFinal[]   @relation("VistoriaResponsavel")
 }
 
 // ---------------------------------------------------------------------------
@@ -122,6 +124,8 @@ model Obra {
   diarios              DiarioObra[]
   objetivos            ObjetivoDiario[]
   itensConferencia     ItemConferencia[]
+  registrosMontagem    RegistroMontagem[]
+  vistoriasFinal       VistoriaFinal[]
 }
 
 model ObraTrade {
@@ -393,4 +397,98 @@ model ItemConferencia {
   prazo          DateTime?
   observacoes    String?
   criadoEm       DateTime          @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Montagem — registro de montagem por obra: ambientes/valores de contrato,
+// itens extras comprados por fora e faltas de fábrica antecipadas. A equipe
+// só deveria iniciar a montagem quando itens extras e faltas de fábrica
+// estiverem marcados como recebidos (checagem feita na UI).
+// ---------------------------------------------------------------------------
+
+enum StatusMontagem {
+  FILA
+  EM_ANDAMENTO
+  CONCLUIDA
+}
+
+model RegistroMontagem {
+  id            String         @id @default(cuid())
+  obraId        String
+  obra          Obra           @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  dataChegada   DateTime?
+  status        StatusMontagem @default(FILA)
+  valorTotal    Float          @default(0)
+  montadorId    String?
+  montador      Colaborador?   @relation("MontagemMontador", fields: [montadorId], references: [id])
+  observacoes   String?
+  criadoEm      DateTime       @default(now())
+
+  ambientes     AmbienteMontagem[]
+  itensExtras   ItemExtraMontagem[]
+  faltasFabrica FaltaFabricaMontagem[]
+}
+
+model AmbienteMontagem {
+  id            String           @id @default(cuid())
+  registroId    String
+  registro      RegistroMontagem @relation(fields: [registroId], references: [id], onDelete: Cascade)
+  nome          String
+  numeroPedido  String?
+  notaFiscal    String?
+  qtdVolumes    Int?
+  valor         Float            @default(0)
+}
+
+model ItemExtraMontagem {
+  id           String           @id @default(cuid())
+  registroId   String
+  registro     RegistroMontagem @relation(fields: [registroId], references: [id], onDelete: Cascade)
+  descricao    String
+  quantidade   Int              @default(1)
+  recebido     Boolean          @default(false)
+}
+
+model FaltaFabricaMontagem {
+  id            String           @id @default(cuid())
+  registroId    String
+  registro      RegistroMontagem @relation(fields: [registroId], references: [id], onDelete: Cascade)
+  numeroPedido  String?
+  numeroVolume  String?
+  recebido      Boolean          @default(false)
+}
+
+// ---------------------------------------------------------------------------
+// Vistoria Final — relatório de supervisão por ambiente, com assinatura do
+// responsável e do cliente confirmando a conclusão (ou registrando ocorrência).
+// ---------------------------------------------------------------------------
+
+enum StatusItemVistoria {
+  PENDENTE
+  CONCLUIDO_SEM_OCORRENCIA
+  CONCLUIDO_COM_OCORRENCIA
+}
+
+model VistoriaFinal {
+  id                     String    @id @default(cuid())
+  obraId                 String
+  obra                   Obra      @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  dataVistoria           DateTime  @default(now())
+  responsavelId          String?
+  responsavel            Usuario?  @relation("VistoriaResponsavel", fields: [responsavelId], references: [id])
+  observacoesCliente     String?
+  assinadoResponsavelEm  DateTime?
+  assinadoClienteEm      DateTime?
+  criadoEm               DateTime  @default(now())
+
+  itens                  ItemVistoria[]
+}
+
+model ItemVistoria {
+  id          String             @id @default(cuid())
+  vistoriaId  String
+  vistoria    VistoriaFinal      @relation(fields: [vistoriaId], references: [id], onDelete: Cascade)
+  ambiente    String
+  status      StatusItemVistoria @default(PENDENTE)
+  observacao  String?
 }

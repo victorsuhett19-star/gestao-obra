@@ -95,6 +95,30 @@ export const STATUS_CONFERENCIA_LABEL: Record<string, string> = {
   CONCLUIDO: "Concluído",
 };
 
+export const STATUS_MONTAGEM_LABEL: Record<string, string> = {
+  FILA: "Fila",
+  EM_ANDAMENTO: "Em andamento",
+  CONCLUIDA: "Concluída",
+};
+
+export const STATUS_MONTAGEM_COLOR: Record<string, string> = {
+  FILA: "bg-slate-100 text-slate-700",
+  EM_ANDAMENTO: "bg-blue-100 text-blue-700",
+  CONCLUIDA: "bg-emerald-100 text-emerald-700",
+};
+
+export const STATUS_ITEM_VISTORIA_LABEL: Record<string, string> = {
+  PENDENTE: "Pendente",
+  CONCLUIDO_SEM_OCORRENCIA: "Concluído sem ocorrência",
+  CONCLUIDO_COM_OCORRENCIA: "Concluído com ocorrência",
+};
+
+export const STATUS_ITEM_VISTORIA_COLOR: Record<string, string> = {
+  PENDENTE: "bg-slate-100 text-slate-700",
+  CONCLUIDO_SEM_OCORRENCIA: "bg-emerald-100 text-emerald-700",
+  CONCLUIDO_COM_OCORRENCIA: "bg-amber-100 text-amber-700",
+};
+
 export function formatBRL(valor: number) {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",

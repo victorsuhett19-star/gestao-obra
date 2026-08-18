@@ -4,10 +4,10 @@
 // Admin nunca precisa disso (sempre vê tudo, independente do campo).
 // Rodar com: npx tsx prisma/ajustar-modulos-legado.ts
 import { PrismaClient } from "../src/generated/prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaPg } from "@prisma/adapter-pg";
 import { modulosPadrao } from "../src/lib/modulos";
 
-const adapter = new PrismaBetterSqlite3({ url: process.env.DATABASE_URL ?? "file:./dev.db" });
+const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import { alternarAtivoColaborador } from "@/app/actions/colaboradores";
 
 export const metadata: Metadata = {
@@ -8,7 +9,9 @@ export const metadata: Metadata = {
 };
 
 export default async function ColaboradoresPage() {
+  const empresaAtivaId = await getEmpresaAtivaId();
   const colaboradores = await prisma.colaborador.findMany({
+    where: { empresaId: empresaAtivaId ?? undefined },
     orderBy: [{ ativo: "desc" }, { nome: "asc" }],
   });
 

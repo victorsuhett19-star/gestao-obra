@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import { DiarioForm } from "../diario-form";
 
 export const metadata: Metadata = {
@@ -10,9 +11,10 @@ export default async function NovoDiarioPage({
   params,
 }: PageProps<"/obras/[obraId]/diario/novo">) {
   const { obraId } = await params;
+  const empresaAtivaId = await getEmpresaAtivaId();
 
   const colaboradores = await prisma.colaborador.findMany({
-    where: { ativo: true },
+    where: { empresaId: empresaAtivaId ?? undefined, ativo: true },
     select: { id: true, nome: true, funcao: true },
     orderBy: { nome: "asc" },
   });

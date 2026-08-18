@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession, getUser } from "@/lib/dal";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import { MaterialFormSchema, type MaterialFormState } from "@/lib/definitions";
 
 export async function saveMaterial(
@@ -45,8 +46,9 @@ export async function saveMaterial(
     if (!user) {
       return { message: "Sessão expirada. Faça login novamente." };
     }
+    const empresaAtivaId = (await getEmpresaAtivaId()) ?? user.empresaId;
     await prisma.material.create({
-      data: { ...payload, empresaId: user.empresaId },
+      data: { ...payload, empresaId: empresaAtivaId },
     });
   }
 

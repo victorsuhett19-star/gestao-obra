@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import { buildEtapaTree, flattenTree } from "@/lib/etapa-tree";
 import { EtapaForm } from "../etapa-form";
 
@@ -14,6 +15,7 @@ export default async function NovaEtapaPage({
   const { obraId } = await params;
   const sp = await searchParams;
   const paiId = typeof sp.paiId === "string" ? sp.paiId : undefined;
+  const empresaAtivaId = await getEmpresaAtivaId();
 
   const [etapas, usuarios] = await Promise.all([
     prisma.etapa.findMany({
@@ -22,7 +24,7 @@ export default async function NovaEtapaPage({
       orderBy: { ordem: "asc" },
     }),
     prisma.usuario.findMany({
-      where: { ativo: true },
+      where: { empresaId: empresaAtivaId ?? undefined, ativo: true },
       select: { id: true, nome: true },
       orderBy: { nome: "asc" },
     }),

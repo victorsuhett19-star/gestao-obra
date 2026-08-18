@@ -4,13 +4,16 @@ import { prisma } from "@/lib/prisma";
 import { STATUS_ATENDIMENTO } from "@/lib/definitions";
 import { STATUS_ATENDIMENTO_LABEL, ORIGEM_ATENDIMENTO_LABEL, formatBRL } from "@/lib/labels";
 import { moverAtendimento, converterEmObra, deleteAtendimento } from "@/app/actions/atendimento";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 
 export const metadata: Metadata = {
   title: "Atendimento — Gestão de Obra",
 };
 
 export default async function AtendimentoPage() {
+  const empresaAtivaId = await getEmpresaAtivaId();
   const atendimentos = await prisma.atendimento.findMany({
+    where: { empresaId: empresaAtivaId ?? undefined },
     include: { vendedor: { select: { nome: true } } },
     orderBy: { criadoEm: "asc" },
   });

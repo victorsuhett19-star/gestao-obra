@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import { PedidoForm } from "../pedido-form";
 
 export const metadata: Metadata = {
@@ -10,13 +11,16 @@ export default async function NovoPedidoPage({
   params,
 }: PageProps<"/obras/[obraId]/materiais/novo">) {
   const { obraId } = await params;
+  const empresaAtivaId = await getEmpresaAtivaId();
 
   const [fornecedores, materiais] = await Promise.all([
     prisma.fornecedor.findMany({
+      where: { empresaId: empresaAtivaId ?? undefined },
       select: { id: true, nome: true },
       orderBy: { nome: "asc" },
     }),
     prisma.material.findMany({
+      where: { empresaId: empresaAtivaId ?? undefined },
       select: { id: true, nome: true, unidade: true, precoReferencia: true },
       orderBy: { nome: "asc" },
     }),

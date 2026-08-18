@@ -3,6 +3,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { TIPO_EVENTO_LABEL } from "@/lib/labels";
 import { deleteEvento } from "@/app/actions/agenda";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 
 export const metadata: Metadata = {
   title: "Agenda — Gestão de Obra",
@@ -21,7 +22,9 @@ function formatHora(date: Date) {
 }
 
 export default async function AgendaPage() {
+  const empresaAtivaId = await getEmpresaAtivaId();
   const eventos = await prisma.evento.findMany({
+    where: { empresaId: empresaAtivaId ?? undefined },
     include: { obra: { select: { nome: true } }, criadoPor: { select: { nome: true } } },
     orderBy: { data: "asc" },
   });

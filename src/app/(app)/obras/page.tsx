@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import {
   STATUS_OBRA_LABEL,
   STATUS_OBRA_COLOR,
@@ -18,9 +19,11 @@ export default async function ObrasPage({
   const sp = await searchParams;
   const status = typeof sp.status === "string" ? sp.status : "";
   const trade = typeof sp.trade === "string" ? sp.trade : "";
+  const empresaAtivaId = await getEmpresaAtivaId();
 
   const obras = await prisma.obra.findMany({
     where: {
+      empresaId: empresaAtivaId ?? undefined,
       ...(status ? { status: status as (typeof STATUS_OBRA)[number] } : {}),
       ...(trade
         ? { trades: { some: { trade: trade as (typeof TRADES)[number] } } }

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getUser } from "@/lib/dal";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
@@ -8,9 +9,12 @@ export const metadata: Metadata = {
 
 export default async function DashboardPage() {
   const user = await getUser();
-  const totalObras = await prisma.obra.count();
+  const empresaAtivaId = await getEmpresaAtivaId();
+  const totalObras = await prisma.obra.count({
+    where: { empresaId: empresaAtivaId ?? undefined },
+  });
   const obrasEmAndamento = await prisma.obra.count({
-    where: { status: "EM_ANDAMENTO" },
+    where: { empresaId: empresaAtivaId ?? undefined, status: "EM_ANDAMENTO" },
   });
 
   return (

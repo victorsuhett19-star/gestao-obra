@@ -1,13 +1,16 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 
 export const metadata: Metadata = {
   title: "Fornecedores — Gestão de Obra",
 };
 
 export default async function FornecedoresPage() {
+  const empresaAtivaId = await getEmpresaAtivaId();
   const fornecedores = await prisma.fornecedor.findMany({
+    where: { empresaId: empresaAtivaId ?? undefined },
     orderBy: { nome: "asc" },
   });
 

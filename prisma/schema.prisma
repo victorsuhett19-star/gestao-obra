@@ -27,6 +27,21 @@ model Empresa {
   colaboradores  Colaborador[]
   atendimentos   Atendimento[]
   eventos        Evento[]
+  acessos        UsuarioEmpresa[]
+}
+
+// Acesso extra de um usuário a outras empresas além da sua "empresa principal"
+// (Usuario.empresaId). Permite o seletor de empresa no menu lateral quando o
+// mesmo usuário atende mais de uma empresa (ex: grupo com várias marcenarias).
+model UsuarioEmpresa {
+  id         String   @id @default(cuid())
+  usuarioId  String
+  usuario    Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  empresaId  String
+  empresa    Empresa  @relation(fields: [empresaId], references: [id], onDelete: Cascade)
+  criadoEm   DateTime @default(now())
+
+  @@unique([usuarioId, empresaId])
 }
 
 // Equipe de campo (montadores, conferentes etc.) — diferente de Usuario, que é
@@ -75,6 +90,7 @@ model Usuario {
   vistoriasResponsavel VistoriaFinal[]   @relation("VistoriaResponsavel")
   atendimentosVendedor Atendimento[]     @relation("AtendimentoVendedor")
   eventosCriados       Evento[]          @relation("EventoCriadoPor")
+  acessosEmpresa       UsuarioEmpresa[]
 }
 
 // ---------------------------------------------------------------------------

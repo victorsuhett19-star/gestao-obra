@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import { EventoForm } from "../evento-form";
 
 export const metadata: Metadata = {
@@ -7,7 +8,9 @@ export const metadata: Metadata = {
 };
 
 export default async function NovoEventoPage() {
+  const empresaAtivaId = await getEmpresaAtivaId();
   const obras = await prisma.obra.findMany({
+    where: { empresaId: empresaAtivaId ?? undefined },
     select: { id: true, nome: true },
     orderBy: { nome: "asc" },
   });

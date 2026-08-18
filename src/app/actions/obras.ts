@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession, getUser } from "@/lib/dal";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import { ObraFormSchema, type ObraFormState } from "@/lib/definitions";
 
 export async function saveObra(
@@ -83,10 +84,11 @@ export async function saveObra(
     if (!user) {
       return { message: "Sessão expirada. Faça login novamente." };
     }
+    const empresaAtivaId = (await getEmpresaAtivaId()) ?? user.empresaId;
     const obra = await prisma.obra.create({
       data: {
         ...payload,
-        empresaId: user.empresaId,
+        empresaId: empresaAtivaId,
         criadoPorId: user.id,
         trades: { create: trades.map((trade) => ({ trade })) },
       },

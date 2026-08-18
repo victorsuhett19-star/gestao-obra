@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession, getUser, requireRole } from "@/lib/dal";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import { EventoFormSchema, type EventoFormState } from "@/lib/definitions";
 
 export async function saveEvento(
@@ -30,10 +31,11 @@ export async function saveEvento(
 
   const user = await getUser();
   if (!user) return { message: "Sessão expirada. Faça login novamente." };
+  const empresaAtivaId = (await getEmpresaAtivaId()) ?? user.empresaId;
 
   await prisma.evento.create({
     data: {
-      empresaId: user.empresaId,
+      empresaId: empresaAtivaId,
       titulo,
       tipo,
       data: dataHora,

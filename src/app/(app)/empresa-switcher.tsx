@@ -1,0 +1,39 @@
+"use client";
+
+import { useRef } from "react";
+import { trocarEmpresa } from "@/app/actions/empresa";
+
+export function EmpresaSwitcher({
+  empresas,
+  empresaAtivaId,
+}: {
+  empresas: { id: string; nome: string }[];
+  empresaAtivaId: string;
+}) {
+  const formRef = useRef<HTMLFormElement>(null);
+
+  if (empresas.length <= 1) {
+    return (
+      <p className="truncate px-2 text-xs text-slate-500">
+        {empresas[0]?.nome ?? ""}
+      </p>
+    );
+  }
+
+  return (
+    <form ref={formRef} action={trocarEmpresa} className="px-2">
+      <select
+        name="empresaId"
+        defaultValue={empresaAtivaId}
+        onChange={() => formRef.current?.requestSubmit()}
+        className="w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs font-medium text-slate-700 outline-none focus:border-slate-500"
+      >
+        {empresas.map((e) => (
+          <option key={e.id} value={e.id}>
+            {e.nome}
+          </option>
+        ))}
+      </select>
+    </form>
+  );
+}

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import { AtendimentoForm } from "../../atendimento-form";
 import { marcarPerdido } from "@/app/actions/atendimento";
 
@@ -13,10 +14,11 @@ export default async function EditarAtendimentoPage({
 }: PageProps<"/atendimento/[atendimentoId]/editar">) {
   const { atendimentoId } = await params;
 
+  const empresaAtivaId = await getEmpresaAtivaId();
   const [atendimento, usuarios] = await Promise.all([
     prisma.atendimento.findUnique({ where: { id: atendimentoId } }),
     prisma.usuario.findMany({
-      where: { ativo: true },
+      where: { empresaId: empresaAtivaId ?? undefined, ativo: true },
       select: { id: true, nome: true },
       orderBy: { nome: "asc" },
     }),

@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession, getUser } from "@/lib/dal";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import {
   ColaboradorFormSchema,
   type ColaboradorFormState,
@@ -48,8 +49,9 @@ export async function saveColaborador(
     if (!user) {
       return { message: "Sessão expirada. Faça login novamente." };
     }
+    const empresaAtivaId = (await getEmpresaAtivaId()) ?? user.empresaId;
     await prisma.colaborador.create({
-      data: { ...payload, empresaId: user.empresaId },
+      data: { ...payload, empresaId: empresaAtivaId },
     });
   }
 

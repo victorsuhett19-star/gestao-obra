@@ -2,13 +2,16 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { formatBRL } from "@/lib/labels";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 
 export const metadata: Metadata = {
   title: "Materiais — Gestão de Obra",
 };
 
 export default async function MateriaisPage() {
+  const empresaAtivaId = await getEmpresaAtivaId();
   const materiais = await prisma.material.findMany({
+    where: { empresaId: empresaAtivaId ?? undefined },
     orderBy: { nome: "asc" },
   });
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -11,11 +11,13 @@ export function Sidebar({
   userNome,
   userPapel,
   logoutAction,
+  empresaSwitcher,
 }: {
   navItems: NavItem[];
   userNome: string;
   userPapel: string;
   logoutAction: () => void;
+  empresaSwitcher?: ReactNode;
 }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -70,6 +72,8 @@ export function Sidebar({
             ✕
           </button>
         </div>
+
+        {empresaSwitcher && <div className="py-3">{empresaSwitcher}</div>}
 
         <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-3">
           {navItems.map((item) => {

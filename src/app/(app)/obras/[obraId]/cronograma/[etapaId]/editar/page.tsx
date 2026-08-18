@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
+import { getEmpresaAtivaId } from "@/lib/empresa";
 import { buildEtapaTree, flattenTree } from "@/lib/etapa-tree";
 import { EtapaForm } from "../../etapa-form";
 
@@ -12,6 +13,7 @@ export default async function EditarEtapaPage({
   params,
 }: PageProps<"/obras/[obraId]/cronograma/[etapaId]/editar">) {
   const { obraId, etapaId } = await params;
+  const empresaAtivaId = await getEmpresaAtivaId();
 
   const [etapa, etapas, usuarios] = await Promise.all([
     prisma.etapa.findUnique({ where: { id: etapaId } }),
@@ -21,7 +23,7 @@ export default async function EditarEtapaPage({
       orderBy: { ordem: "asc" },
     }),
     prisma.usuario.findMany({
-      where: { ativo: true },
+      where: { empresaId: empresaAtivaId ?? undefined, ativo: true },
       select: { id: true, nome: true },
       orderBy: { nome: "asc" },
     }),

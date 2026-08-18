@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { STATUS_CONFERENCIA } from "@/lib/definitions";
-import { STATUS_CONFERENCIA_LABEL } from "@/lib/labels";
+import { STATUS_CONFERENCIA_LABEL, formatDateOnly } from "@/lib/labels";
 import { moverItemConferencia, deleteItemConferencia } from "@/app/actions/conferencia";
 
 export const metadata: Metadata = {
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 function formatDate(date: Date | null) {
   if (!date) return null;
-  return new Intl.DateTimeFormat("pt-BR").format(date);
+  return formatDateOnly(date);
 }
 
 export default async function ConferenciaPage({

@@ -142,6 +142,65 @@ export const TIPO_EVENTO_LABEL: Record<string, string> = {
   OUTRO: "Outro",
 };
 
+export const TIPO_REGISTRO_PONTO_LABEL: Record<string, string> = {
+  TRABALHO: "Trabalho",
+  FALTA: "Falta",
+  ATESTADO: "Atestado",
+  FERIADO: "Feriado",
+  FOLGA: "Folga",
+};
+
+export const TIPO_REGISTRO_PONTO_COLOR: Record<string, string> = {
+  TRABALHO: "bg-emerald-100 text-emerald-700",
+  FALTA: "bg-red-100 text-red-700",
+  ATESTADO: "bg-amber-100 text-amber-700",
+  FERIADO: "bg-blue-100 text-blue-700",
+  FOLGA: "bg-slate-100 text-slate-700",
+};
+
+export const TIPO_FOLGA_LABEL: Record<string, string> = {
+  FERIAS: "Férias",
+  FOLGA: "Folga",
+};
+
+export const STATUS_FOLGA_LABEL: Record<string, string> = {
+  SOLICITADA: "Solicitada",
+  APROVADA: "Aprovada",
+  RECUSADA: "Recusada",
+};
+
+export const STATUS_FOLGA_COLOR: Record<string, string> = {
+  SOLICITADA: "bg-amber-100 text-amber-700",
+  APROVADA: "bg-emerald-100 text-emerald-700",
+  RECUSADA: "bg-red-100 text-red-700",
+};
+
+export const STATUS_FOLHA_LABEL: Record<string, string> = {
+  PENDENTE: "Pendente",
+  PAGA: "Paga",
+};
+
+export const STATUS_FOLHA_COLOR: Record<string, string> = {
+  PENDENTE: "bg-amber-100 text-amber-700",
+  PAGA: "bg-emerald-100 text-emerald-700",
+};
+
+// Formata um timestamp real (ex: criadoEm, horário de assinatura) no fuso do
+// servidor. Não use para campos que vieram de um <input type="date"> puro —
+// use formatDateOnly para esses (veja o comentário lá).
+export function formatDate(date: Date) {
+  return new Intl.DateTimeFormat("pt-BR").format(date);
+}
+
+// `new Date("2026-09-01")` (o formato de um <input type="date">) é
+// interpretado como meia-noite em UTC. Formatar isso no fuso local do
+// servidor (ex: Brasília, UTC-3) exibe o dia ANTERIOR errado. Como a
+// intenção desses campos é representar um dia de calendário sem hora, a
+// leitura de volta também precisa ser em UTC — não no fuso local.
+export function formatDateOnly(date: Date) {
+  return new Intl.DateTimeFormat("pt-BR", { timeZone: "UTC" }).format(date);
+}
+
 export function formatBRL(valor: number) {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",

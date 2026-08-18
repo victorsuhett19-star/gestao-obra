@@ -1,16 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { TIPO_LANCAMENTO_LABEL, TIPO_LANCAMENTO_COLOR, formatBRL } from "@/lib/labels";
+import {
+  TIPO_LANCAMENTO_LABEL,
+  TIPO_LANCAMENTO_COLOR,
+  formatBRL,
+  formatDateOnly as formatDate,
+} from "@/lib/labels";
 import { deleteLancamento } from "@/app/actions/financeiro";
 
 export const metadata: Metadata = {
   title: "Financeiro — Gestão de Obra",
 };
-
-function formatDate(date: Date) {
-  return new Intl.DateTimeFormat("pt-BR").format(date);
-}
 
 export default async function FinanceiroPage({
   params,

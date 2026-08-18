@@ -1,9 +1,12 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { formatDate as formatDateTimestamp, formatDateOnly } from "@/lib/labels";
 
+// dataInicio/FimPrevista/Real vêm de <input type="date"> (dia puro, sem
+// hora) — precisam ser lidas em UTC para não recuar um dia no fuso local.
 function formatDate(date: Date | null) {
   if (!date) return "—";
-  return new Intl.DateTimeFormat("pt-BR").format(date);
+  return formatDateOnly(date);
 }
 
 export default async function ObraOverviewPage({
@@ -34,7 +37,7 @@ export default async function ObraOverviewPage({
     { label: "Fim previsto", valor: formatDate(obra.dataFimPrevista) },
     { label: "Início real", valor: formatDate(obra.dataInicioReal) },
     { label: "Fim real", valor: formatDate(obra.dataFimReal) },
-    { label: "Cadastrada em", valor: formatDate(obra.criadoEm) },
+    { label: "Cadastrada em", valor: formatDateTimestamp(obra.criadoEm) },
   ];
 
   return (

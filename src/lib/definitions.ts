@@ -337,3 +337,52 @@ export const EventoFormSchema = z.object({
 export type EventoFormState =
   | { errors?: { titulo?: string[]; data?: string[] }; message?: string }
   | undefined;
+
+export const TIPO_REGISTRO_PONTO = [
+  "TRABALHO",
+  "FALTA",
+  "ATESTADO",
+  "FERIADO",
+  "FOLGA",
+] as const;
+
+export const PontoFormSchema = z.object({
+  colaboradorId: z.string().min(1),
+  data: z.string().min(1, { error: "Informe a data." }).trim(),
+  tipo: z.enum(TIPO_REGISTRO_PONTO, { error: "Selecione um tipo." }),
+  horaEntrada: z.string().trim().optional().or(z.literal("")),
+  horaSaida: z.string().trim().optional().or(z.literal("")),
+  observacao: z.string().trim().optional().or(z.literal("")),
+});
+
+export type PontoFormState =
+  | { errors?: { data?: string[] }; message?: string }
+  | undefined;
+
+export const TIPO_FOLGA = ["FERIAS", "FOLGA"] as const;
+export const STATUS_FOLGA = ["SOLICITADA", "APROVADA", "RECUSADA"] as const;
+
+export const FolgaFormSchema = z.object({
+  colaboradorId: z.string().min(1),
+  tipo: z.enum(TIPO_FOLGA, { error: "Selecione um tipo." }),
+  dataInicio: z.string().min(1, { error: "Informe a data de início." }).trim(),
+  dataFim: z.string().min(1, { error: "Informe a data de fim." }).trim(),
+  observacao: z.string().trim().optional().or(z.literal("")),
+});
+
+export type FolgaFormState =
+  | { errors?: { dataInicio?: string[]; dataFim?: string[] }; message?: string }
+  | undefined;
+
+export const STATUS_FOLHA = ["PENDENTE", "PAGA"] as const;
+
+export const FolhaFormSchema = z.object({
+  colaboradorId: z.string().min(1),
+  mesReferencia: z.string().min(1, { error: "Informe o mês (AAAA-MM)." }).trim(),
+  salarioBase: z.string().min(1, { error: "Informe o salário base." }).trim(),
+  descontos: z.string().trim().optional().or(z.literal("")),
+});
+
+export type FolhaFormState =
+  | { errors?: { mesReferencia?: string[]; salarioBase?: string[] }; message?: string }
+  | undefined;

@@ -60,6 +60,10 @@ model Colaborador {
 
   presencas  DiarioColaborador[]
   montagens  RegistroMontagem[]  @relation("MontagemMontador")
+  registrosPonto RegistroPonto[]
+  folgas         FolgaFerias[]
+  folhas         FolhaPagamento[]
+  documentos     DocumentoColaborador[]
 }
 
 enum PapelUsuario {
@@ -580,4 +584,83 @@ model Evento {
   criadoPorId String?
   criadoPor   Usuario?   @relation("EventoCriadoPor", fields: [criadoPorId], references: [id])
   criadoEm    DateTime   @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// RH — ponto, férias/folgas e folha de pagamento dos colaboradores (equipe
+// de campo). Pasta do funcionário guarda documentos avulsos (contrato, RG...).
+// ---------------------------------------------------------------------------
+
+enum TipoRegistroPonto {
+  TRABALHO
+  FALTA
+  ATESTADO
+  FERIADO
+  FOLGA
+}
+
+model RegistroPonto {
+  id            String            @id @default(cuid())
+  colaboradorId String
+  colaborador   Colaborador       @relation(fields: [colaboradorId], references: [id], onDelete: Cascade)
+  data          DateTime
+  tipo          TipoRegistroPonto @default(TRABALHO)
+  horaEntrada   String?
+  horaSaida     String?
+  observacao    String?
+  criadoEm      DateTime          @default(now())
+
+  @@unique([colaboradorId, data])
+}
+
+enum TipoFolga {
+  FERIAS
+  FOLGA
+}
+
+enum StatusFolga {
+  SOLICITADA
+  APROVADA
+  RECUSADA
+}
+
+model FolgaFerias {
+  id            String      @id @default(cuid())
+  colaboradorId String
+  colaborador   Colaborador @relation(fields: [colaboradorId], references: [id], onDelete: Cascade)
+  tipo          TipoFolga   @default(FOLGA)
+  dataInicio    DateTime
+  dataFim       DateTime
+  status        StatusFolga @default(SOLICITADA)
+  observacao    String?
+  criadoEm      DateTime    @default(now())
+}
+
+enum StatusFolha {
+  PENDENTE
+  PAGA
+}
+
+model FolhaPagamento {
+  id             String      @id @default(cuid())
+  colaboradorId  String
+  colaborador    Colaborador @relation(fields: [colaboradorId], references: [id], onDelete: Cascade)
+  mesReferencia  String
+  salarioBase    Float
+  descontos      Float       @default(0)
+  valorLiquido   Float
+  status         StatusFolha @default(PENDENTE)
+  pagoEm         DateTime?
+  criadoEm       DateTime    @default(now())
+
+  @@unique([colaboradorId, mesReferencia])
+}
+
+model DocumentoColaborador {
+  id            String      @id @default(cuid())
+  colaboradorId String
+  colaborador   Colaborador @relation(fields: [colaboradorId], references: [id], onDelete: Cascade)
+  nome          String
+  url           String
+  criadoEm      DateTime    @default(now())
 }

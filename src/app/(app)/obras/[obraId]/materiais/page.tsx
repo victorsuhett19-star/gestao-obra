@@ -1,15 +1,28 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { STATUS_PEDIDO_LABEL, STATUS_PEDIDO_COLOR, formatBRL } from "@/lib/labels";
+import {
+  STATUS_PEDIDO_LABEL,
+  STATUS_PEDIDO_COLOR,
+  formatBRL,
+  formatDate as formatTimestamp,
+  formatDateOnly,
+} from "@/lib/labels";
 
 export const metadata: Metadata = {
   title: "Materiais — Gestão de Obra",
 };
 
+// dataPedido é um timestamp real (default now()) — fuso local, sem bug.
 function formatDate(date: Date | null) {
   if (!date) return "—";
-  return new Intl.DateTimeFormat("pt-BR").format(date);
+  return formatTimestamp(date);
+}
+
+// dataEntregaPrevista/Real vêm de <input type="date"> — precisam de UTC.
+function formatDatePrevista(date: Date | null) {
+  if (!date) return "—";
+  return formatDateOnly(date);
 }
 
 export default async function MateriaisObraPage({
@@ -69,7 +82,7 @@ export default async function MateriaisObraPage({
                 <p className="text-xs text-slate-500">
                   {p.itens.length} item(ns) · Pedido em {formatDate(p.dataPedido)}
                   {p.dataEntregaPrevista &&
-                    ` · Entrega prevista ${formatDate(p.dataEntregaPrevista)}`}
+                    ` · Entrega prevista ${formatDatePrevista(p.dataEntregaPrevista)}`}
                 </p>
               </div>
               <div className="flex items-center gap-3">

@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { STATUS_MONTAGEM_LABEL, STATUS_MONTAGEM_COLOR, formatBRL } from "@/lib/labels";
+import {
+  STATUS_MONTAGEM_LABEL,
+  STATUS_MONTAGEM_COLOR,
+  formatBRL,
+  formatDateOnly,
+} from "@/lib/labels";
 
 export const metadata: Metadata = {
   title: "Montagem — Gestão de Obra",
@@ -9,7 +14,7 @@ export const metadata: Metadata = {
 
 function formatDate(date: Date | null) {
   if (!date) return "—";
-  return new Intl.DateTimeFormat("pt-BR").format(date);
+  return formatDateOnly(date);
 }
 
 export default async function MontagemPage({

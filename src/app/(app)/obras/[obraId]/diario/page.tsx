@@ -9,11 +9,14 @@ export const metadata: Metadata = {
   title: "Diário de obra — Gestão de Obra",
 };
 
+// r.data vem de <input type="date"> (dia puro) — formata em UTC para não
+// recuar um dia no fuso local do servidor.
 function formatDate(date: Date) {
   return new Intl.DateTimeFormat("pt-BR", {
     day: "2-digit",
     month: "long",
     year: "numeric",
+    timeZone: "UTC",
   }).format(date);
 }
 

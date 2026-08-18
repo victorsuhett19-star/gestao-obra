@@ -1,11 +1,11 @@
 import Link from "next/link";
-import { STATUS_ETAPA_LABEL, STATUS_ETAPA_COLOR } from "@/lib/labels";
+import { STATUS_ETAPA_LABEL, STATUS_ETAPA_COLOR, formatDateOnly } from "@/lib/labels";
 import { deleteEtapa } from "@/app/actions/etapas";
 import type { EtapaTreeNode } from "@/lib/etapa-tree";
 
 function formatDate(date: Date | null) {
   if (!date) return "—";
-  return new Intl.DateTimeFormat("pt-BR").format(date);
+  return formatDateOnly(date);
 }
 
 export function EtapaRow({

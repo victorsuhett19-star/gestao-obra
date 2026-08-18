@@ -2,7 +2,13 @@ import { notFound, redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
-import { STATUS_PEDIDO_LABEL, STATUS_PEDIDO_COLOR, formatBRL } from "@/lib/labels";
+import {
+  STATUS_PEDIDO_LABEL,
+  STATUS_PEDIDO_COLOR,
+  formatBRL,
+  formatDate as formatTimestamp,
+  formatDateOnly,
+} from "@/lib/labels";
 import { STATUS_PEDIDO } from "@/lib/definitions";
 import { atualizarStatusPedido, deletePedido } from "@/app/actions/pedidos";
 
@@ -10,9 +16,16 @@ export const metadata: Metadata = {
   title: "Pedido de material — Gestão de Obra",
 };
 
+// dataPedido/dataEntregaReal são timestamps reais (fuso local); já
+// dataEntregaPrevista vem de <input type="date"> (precisa ser lida em UTC).
 function formatDate(date: Date | null) {
   if (!date) return "—";
-  return new Intl.DateTimeFormat("pt-BR").format(date);
+  return formatTimestamp(date);
+}
+
+function formatDatePrevista(date: Date | null) {
+  if (!date) return "—";
+  return formatDateOnly(date);
 }
 
 export default async function PedidoDetailPage({
@@ -47,7 +60,7 @@ export default async function PedidoDetailPage({
           </h2>
           <p className="text-sm text-slate-500">
             Pedido em {formatDate(pedido.dataPedido)} · Entrega prevista{" "}
-            {formatDate(pedido.dataEntregaPrevista)}
+            {formatDatePrevista(pedido.dataEntregaPrevista)}
             {pedido.dataEntregaReal &&
               ` · Entregue em ${formatDate(pedido.dataEntregaReal)}`}
           </p>

@@ -22,6 +22,26 @@ export const TRADE_LABEL: Record<string, string> = {
   VIDRACARIA: "Vidraçaria",
 };
 
+// Cores usadas nos gráficos do dashboard financeiro — uma cor fixa por
+// especialidade, mais duas categorias "guarda-chuva" para obras turn-key
+// (mais de uma especialidade marcada) e despesas gerais da empresa (não
+// ligadas a nenhuma obra específica).
+export const TRADE_CHART_COLOR: Record<string, string> = {
+  MARCENARIA: "#b45309",
+  OBRA: "#2563eb",
+  PROJETO: "#7c3aed",
+  MARMORARIA: "#64748b",
+  VIDRACARIA: "#06b6d4",
+  MULTIPLAS: "#16a34a",
+  GERAL: "#94a3b8",
+};
+
+export const TRADE_CHART_LABEL: Record<string, string> = {
+  ...TRADE_LABEL,
+  MULTIPLAS: "Turn-key (várias especialidades)",
+  GERAL: "Despesas gerais da empresa",
+};
+
 export const PAPEL_LABEL: Record<string, string> = {
   ADMIN: "Admin",
   GESTOR: "Gestor",

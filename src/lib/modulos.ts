@@ -5,6 +5,7 @@
 
 export const MODULOS = [
   { key: "atendimento", label: "Atendimento" },
+  { key: "projetos", label: "Projetos" },
   { key: "obras", label: "Obras" },
   { key: "agenda", label: "Agenda" },
   { key: "financeiro", label: "Financeiro" },

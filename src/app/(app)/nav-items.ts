@@ -7,6 +7,7 @@ import type { ModuloKey } from "@/lib/modulos";
 export const navItems: { href: string; label: string; modulo?: ModuloKey }[] = [
   { href: "/dashboard", label: "Dashboard" },
   { href: "/atendimento", label: "Atendimento", modulo: "atendimento" },
+  { href: "/projetos", label: "Projetos", modulo: "projetos" },
   { href: "/obras", label: "Obras", modulo: "obras" },
   { href: "/agenda", label: "Agenda", modulo: "agenda" },
   { href: "/financeiro", label: "Financeiro", modulo: "financeiro" },

@@ -42,6 +42,12 @@ export const TRADE_CHART_LABEL: Record<string, string> = {
   GERAL: "Despesas gerais da empresa",
 };
 
+export const STATUS_ETAPA_PROJETO_LABEL: Record<string, string> = {
+  AGUARDANDO: "Aguardando",
+  EM_ANDAMENTO: "Em andamento",
+  CONCLUIDA: "Concluída",
+};
+
 export const PAPEL_LABEL: Record<string, string> = {
   ADMIN: "Admin",
   GESTOR: "Gestor",

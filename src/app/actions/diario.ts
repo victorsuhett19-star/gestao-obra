@@ -60,8 +60,8 @@ export async function saveDiario(
   // vários arquivos; ignoramos entradas vazias (quando nenhum arquivo é anexado).
   const arquivos = formData.getAll("fotos") as File[];
   for (const arquivo of arquivos) {
-    if (arquivo && arquivo.size > 0) {
-      const url = await salvarArquivo(arquivo);
+    if (arquivo && arquivo.size > 0 && user?.empresaId) {
+      const url = await salvarArquivo(arquivo, user.empresaId);
       await prisma.foto.create({
         data: {
           obraId,

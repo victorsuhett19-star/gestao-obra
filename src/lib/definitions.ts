@@ -430,3 +430,43 @@ export type UsuarioFormState =
       message?: string;
     }
   | undefined;
+
+// ---------------------------------------------------------------------------
+// Projetos (pipeline de entrega) + Cliente (login do portal)
+// ---------------------------------------------------------------------------
+
+export const EtapaProjetoTemplateFormSchema = z.object({
+  trade: z.enum(TRADES, { error: "Selecione a especialidade." }),
+  nome: z.string().min(2, { error: "Informe o nome da etapa." }).trim(),
+  grupo: z.string().trim().optional().or(z.literal("")),
+});
+
+export type EtapaProjetoTemplateFormState =
+  | { errors?: { nome?: string[]; trade?: string[] }; message?: string }
+  | undefined;
+
+export const ClienteFormSchema = z.object({
+  nome: z.string().min(2, { error: "Informe o nome do cliente." }).trim(),
+  email: z.email({ error: "Informe um e-mail válido." }).trim(),
+  telefone: z.string().trim().optional().or(z.literal("")),
+  senha: z
+    .string()
+    .min(6, { error: "A senha precisa ter ao menos 6 caracteres." })
+    .trim(),
+});
+
+export type ClienteFormState =
+  | {
+      errors?: { nome?: string[]; email?: string[]; senha?: string[] };
+      message?: string;
+    }
+  | undefined;
+
+export const ClienteLoginFormSchema = z.object({
+  email: z.email({ error: "Informe um e-mail válido." }).trim(),
+  password: z.string().min(1, { error: "Informe a senha." }).trim(),
+});
+
+export type ClienteLoginFormState =
+  | { errors?: { email?: string[]; password?: string[] }; message?: string }
+  | undefined;

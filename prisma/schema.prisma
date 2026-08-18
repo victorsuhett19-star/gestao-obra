@@ -29,6 +29,9 @@ model Empresa {
   eventos        Evento[]
   acessos        UsuarioEmpresa[]
   contasFinanceiras ContaFinanceira[]
+  clientes             Cliente[]
+  etapaProjetoTemplates EtapaProjetoTemplate[]
+  arquivos              Arquivo[]
 }
 
 // Acesso extra de um usuário a outras empresas além da sua "empresa principal"
@@ -100,6 +103,7 @@ model Usuario {
   atendimentosVendedor Atendimento[]     @relation("AtendimentoVendedor")
   eventosCriados       Evento[]          @relation("EventoCriadoPor")
   acessosEmpresa       UsuarioEmpresa[]
+  anexosEnviados       AnexoObra[]       @relation("AnexoEnviadoPorUsuario")
 }
 
 // ---------------------------------------------------------------------------
@@ -144,6 +148,11 @@ model Obra {
   criadoPor            Usuario?   @relation("ObraCriadaPor", fields: [criadoPorId], references: [id])
   criadoEm             DateTime   @default(now())
 
+  // Login do cliente (portal /portal) com acesso a este projeto — opcional,
+  // não substitui os campos de texto livre acima (usados no CRM/Atendimento).
+  clienteAcessoId      String?
+  clienteAcesso        Cliente?   @relation(fields: [clienteAcessoId], references: [id])
+
   trades               ObraTrade[]
   etapas               Etapa[]
   itensOrcamento       ItemOrcamento[]
@@ -158,6 +167,8 @@ model Obra {
   atendimentoOrigem    Atendimento?
   eventos              Evento[]
   contasFinanceiras    ContaFinanceira[]
+  etapasProjeto        EtapaProjeto[]
+  anexos               AnexoObra[]
 }
 
 model ObraTrade {
@@ -705,4 +716,99 @@ model ContaFinanceira {
   obraId          String?
   obra            Obra?                 @relation(fields: [obraId], references: [id])
   criadoEm        DateTime              @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Arquivos — armazenamento genérico de arquivos (anexos, assinaturas, fotos)
+// direto no banco (Postgres), já que o filesystem do Vercel é efêmero/
+// somente leitura em produção. Servido via rota /api/arquivos/[id].
+// ---------------------------------------------------------------------------
+
+model Arquivo {
+  id            String   @id @default(cuid())
+  empresaId     String
+  empresa       Empresa  @relation(fields: [empresaId], references: [id])
+  nomeOriginal  String
+  mimeType      String
+  tamanho       Int
+  dados         Bytes
+  criadoEm      DateTime @default(now())
+
+  anexos                  AnexoObra[]
+  assinaturasEtapaProjeto EtapaProjeto[]
+}
+
+// ---------------------------------------------------------------------------
+// Cliente — login do cliente final no portal (/portal), separado dos
+// Usuario (equipe interna). Um cliente pode acompanhar mais de uma obra.
+// ---------------------------------------------------------------------------
+
+model Cliente {
+  id         String   @id @default(cuid())
+  empresaId  String
+  empresa    Empresa  @relation(fields: [empresaId], references: [id])
+  nome       String
+  email      String   @unique
+  telefone   String?
+  senhaHash  String
+  ativo      Boolean  @default(true)
+  criadoEm   DateTime @default(now())
+
+  obras          Obra[]
+  anexosEnviados AnexoObra[]
+}
+
+// ---------------------------------------------------------------------------
+// Projetos — pipeline linear de entrega (do briefing até a montagem final),
+// visão macro e resumida que complementa Cronograma/Conferência/Montagem/
+// Vistoria (que continuam existindo para o detalhe de cada etapa). As
+// etapas são personalizáveis por especialidade via EtapaProjetoTemplate;
+// ao "gerar o fluxo" de uma obra, elas são copiadas para EtapaProjeto.
+// ---------------------------------------------------------------------------
+
+model EtapaProjetoTemplate {
+  id         String   @id @default(cuid())
+  empresaId  String
+  empresa    Empresa  @relation(fields: [empresaId], references: [id])
+  trade      Trade
+  nome       String
+  grupo      String?
+  ordem      Int      @default(0)
+  criadoEm   DateTime @default(now())
+}
+
+enum StatusEtapaProjeto {
+  AGUARDANDO
+  EM_ANDAMENTO
+  CONCLUIDA
+}
+
+model EtapaProjeto {
+  id                 String             @id @default(cuid())
+  obraId             String
+  obra               Obra               @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  nome               String
+  grupo              String?
+  ordem              Int
+  status             StatusEtapaProjeto @default(AGUARDANDO)
+  data               DateTime?
+  concluidaEm        DateTime?
+  assinaturaClienteId String?
+  assinaturaCliente   Arquivo?          @relation(fields: [assinaturaClienteId], references: [id])
+  assinadoClienteEm   DateTime?
+  criadoEm            DateTime          @default(now())
+}
+
+model AnexoObra {
+  id                  String    @id @default(cuid())
+  obraId              String
+  obra                Obra      @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  arquivoId           String
+  arquivo             Arquivo   @relation(fields: [arquivoId], references: [id])
+  descricao           String?
+  enviadoPorUsuarioId String?
+  enviadoPorUsuario   Usuario?  @relation("AnexoEnviadoPorUsuario", fields: [enviadoPorUsuarioId], references: [id])
+  enviadoPorClienteId String?
+  enviadoPorCliente   Cliente?  @relation(fields: [enviadoPorClienteId], references: [id])
+  criadoEm            DateTime  @default(now())
 }

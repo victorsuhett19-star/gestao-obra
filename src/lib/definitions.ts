@@ -180,3 +180,43 @@ export type LancamentoFormState =
       message?: string;
     }
   | undefined;
+
+export const FornecedorFormSchema = z.object({
+  nome: z.string().min(2, { error: "Informe o nome do fornecedor." }).trim(),
+  cnpjCpf: z.string().trim().optional().or(z.literal("")),
+  contato: z.string().trim().optional().or(z.literal("")),
+  telefone: z.string().trim().optional().or(z.literal("")),
+  email: z
+    .email({ error: "E-mail inválido." })
+    .trim()
+    .optional()
+    .or(z.literal("")),
+  especialidade: z.string().trim().optional().or(z.literal("")),
+});
+
+export type FornecedorFormState =
+  | { errors?: { nome?: string[]; email?: string[] }; message?: string }
+  | undefined;
+
+export const MaterialFormSchema = z.object({
+  nome: z.string().min(2, { error: "Informe o nome do material." }).trim(),
+  unidade: z.string().min(1, { error: "Informe a unidade." }).trim(),
+  categoria: z.string().trim().optional().or(z.literal("")),
+  precoReferencia: z.string().trim().optional().or(z.literal("")),
+});
+
+export type MaterialFormState =
+  | { errors?: { nome?: string[]; unidade?: string[] }; message?: string }
+  | undefined;
+
+export const STATUS_PEDIDO = [
+  "RASCUNHO",
+  "ENVIADO",
+  "CONFIRMADO",
+  "ENTREGUE",
+  "CANCELADO",
+] as const;
+
+export type PedidoFormState =
+  | { errors?: { fornecedorId?: string[]; itens?: string[] }; message?: string }
+  | undefined;

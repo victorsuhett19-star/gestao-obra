@@ -63,6 +63,22 @@ export const TIPO_LANCAMENTO_COLOR: Record<string, string> = {
   PAGAMENTO: "bg-blue-100 text-blue-700",
 };
 
+export const STATUS_PEDIDO_LABEL: Record<string, string> = {
+  RASCUNHO: "Rascunho",
+  ENVIADO: "Enviado",
+  CONFIRMADO: "Confirmado",
+  ENTREGUE: "Entregue",
+  CANCELADO: "Cancelado",
+};
+
+export const STATUS_PEDIDO_COLOR: Record<string, string> = {
+  RASCUNHO: "bg-slate-100 text-slate-700",
+  ENVIADO: "bg-blue-100 text-blue-700",
+  CONFIRMADO: "bg-amber-100 text-amber-700",
+  ENTREGUE: "bg-emerald-100 text-emerald-700",
+  CANCELADO: "bg-red-100 text-red-700",
+};
+
 export function formatBRL(valor: number) {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",

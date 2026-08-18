@@ -6,5 +6,6 @@ export function obraNavItems(obraId: string): { href: string; label: string }[] 
     { href: `/obras/${obraId}/cronograma`, label: "Cronograma" },
     { href: `/obras/${obraId}/orcamento`, label: "Orçamento" },
     { href: `/obras/${obraId}/financeiro`, label: "Financeiro" },
+    { href: `/obras/${obraId}/materiais`, label: "Materiais" },
   ];
 }

@@ -232,6 +232,13 @@ export const TIPO_CONTA_FINANCEIRA_LABEL: Record<string, string> = {
   RECEBER: "A receber",
 };
 
+export function formatHora(date: Date) {
+  return new Intl.DateTimeFormat("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+}
+
 export function formatBRL(valor: number) {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",

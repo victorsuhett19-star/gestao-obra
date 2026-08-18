@@ -386,3 +386,22 @@ export const FolhaFormSchema = z.object({
 export type FolhaFormState =
   | { errors?: { mesReferencia?: string[]; salarioBase?: string[] }; message?: string }
   | undefined;
+
+export const TIPO_CONTA_FINANCEIRA = ["PAGAR", "RECEBER"] as const;
+
+export const ContaFinanceiraFormSchema = z.object({
+  tipo: z.enum(TIPO_CONTA_FINANCEIRA, { error: "Selecione um tipo." }),
+  descricao: z.string().min(2, { error: "Informe a descrição." }).trim(),
+  categoria: z.string().trim().optional().or(z.literal("")),
+  valor: z.string().min(1, { error: "Informe o valor." }).trim(),
+  dataVencimento: z.string().min(1, { error: "Informe o vencimento." }).trim(),
+  fornecedorId: z.string().trim().optional().or(z.literal("")),
+  obraId: z.string().trim().optional().or(z.literal("")),
+});
+
+export type ContaFinanceiraFormState =
+  | {
+      errors?: { descricao?: string[]; valor?: string[]; dataVencimento?: string[] };
+      message?: string;
+    }
+  | undefined;

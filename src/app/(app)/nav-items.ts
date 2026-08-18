@@ -5,6 +5,7 @@ export const navItems: { href: string; label: string }[] = [
   { href: "/atendimento", label: "Atendimento" },
   { href: "/obras", label: "Obras" },
   { href: "/agenda", label: "Agenda" },
+  { href: "/financeiro", label: "Financeiro" },
   { href: "/colaboradores", label: "Colaboradores" },
   { href: "/rh", label: "RH" },
   { href: "/fornecedores", label: "Fornecedores" },

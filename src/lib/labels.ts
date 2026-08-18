@@ -201,6 +201,11 @@ export function formatDateOnly(date: Date) {
   return new Intl.DateTimeFormat("pt-BR", { timeZone: "UTC" }).format(date);
 }
 
+export const TIPO_CONTA_FINANCEIRA_LABEL: Record<string, string> = {
+  PAGAR: "A pagar",
+  RECEBER: "A receber",
+};
+
 export function formatBRL(valor: number) {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",

@@ -28,6 +28,7 @@ model Empresa {
   atendimentos   Atendimento[]
   eventos        Evento[]
   acessos        UsuarioEmpresa[]
+  contasFinanceiras ContaFinanceira[]
 }
 
 // Acesso extra de um usuário a outras empresas além da sua "empresa principal"
@@ -152,6 +153,7 @@ model Obra {
   vistoriasFinal       VistoriaFinal[]
   atendimentoOrigem    Atendimento?
   eventos              Evento[]
+  contasFinanceiras    ContaFinanceira[]
 }
 
 model ObraTrade {
@@ -279,6 +281,7 @@ model Fornecedor {
   criadoEm     DateTime @default(now())
 
   pedidos      PedidoMaterial[]
+  contasFinanceiras ContaFinanceira[]
 }
 
 model Material {
@@ -663,4 +666,39 @@ model DocumentoColaborador {
   nome          String
   url           String
   criadoEm      DateTime    @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Financeiro da empresa (contas a pagar/receber) — alimenta o DRE junto com
+// os LancamentoFinanceiro de cada obra. Diferente do financeiro por obra
+// (previsto x realizado), este é o financeiro "de casa": aluguel, salários,
+// recebimentos de clientes fora do fluxo de uma obra específica etc.
+// ---------------------------------------------------------------------------
+
+enum TipoContaFinanceira {
+  PAGAR
+  RECEBER
+}
+
+enum StatusContaFinanceira {
+  PENDENTE
+  PAGO
+}
+
+model ContaFinanceira {
+  id              String                @id @default(cuid())
+  empresaId       String
+  empresa         Empresa               @relation(fields: [empresaId], references: [id])
+  tipo            TipoContaFinanceira
+  descricao       String
+  categoria       String?
+  valor           Float
+  dataVencimento  DateTime
+  dataPagamento   DateTime?
+  status          StatusContaFinanceira @default(PENDENTE)
+  fornecedorId    String?
+  fornecedor      Fornecedor?           @relation(fields: [fornecedorId], references: [id])
+  obraId          String?
+  obra            Obra?                 @relation(fields: [obraId], references: [id])
+  criadoEm        DateTime              @default(now())
 }

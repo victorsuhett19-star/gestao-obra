@@ -26,7 +26,11 @@ export function Sidebar({
     <>
       {/* Topo mobile, só aparece em telas pequenas */}
       <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 sm:hidden">
-        <p className="text-sm font-semibold text-slate-900">Gestão de Obra</p>
+        <div className="flex items-center gap-2">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src="/logo-empresa.png" alt="" className="h-7 w-auto" />
+          <p className="text-sm font-semibold text-slate-900">Gestão de Obra</p>
+        </div>
         <button
           type="button"
           onClick={() => setOpen(true)}
@@ -59,9 +63,13 @@ export function Sidebar({
         }`}
       >
         <div className="flex items-center justify-between border-b border-slate-200 px-5 py-5">
-          <div>
-            <p className="text-sm font-semibold text-slate-900">Gestão de Obra</p>
-            <p className="text-xs text-slate-500">Turn-key</p>
+          <div className="flex items-center gap-2">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/logo-empresa.png" alt="" className="h-9 w-auto" />
+            <div>
+              <p className="text-sm font-semibold text-slate-900">Gestão de Obra</p>
+              <p className="text-xs text-slate-500">Turn-key</p>
+            </div>
           </div>
           <button
             type="button"

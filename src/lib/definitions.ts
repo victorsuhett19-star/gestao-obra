@@ -87,3 +87,37 @@ export type ColaboradorFormState =
       message?: string;
     }
   | undefined;
+
+export const STATUS_ETAPA = [
+  "NAO_INICIADA",
+  "EM_ANDAMENTO",
+  "CONCLUIDA",
+  "ATRASADA",
+] as const;
+
+export const EtapaFormSchema = z.object({
+  obraId: z.string().min(1),
+  paiId: z.string().trim().optional().or(z.literal("")),
+  nome: z.string().min(2, { error: "Informe o nome da etapa." }).trim(),
+  status: z.enum(STATUS_ETAPA, { error: "Selecione um status." }),
+  percentualConcluido: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal("")),
+  dataInicioPrevista: z.string().trim().optional().or(z.literal("")),
+  dataFimPrevista: z.string().trim().optional().or(z.literal("")),
+  dataInicioReal: z.string().trim().optional().or(z.literal("")),
+  dataFimReal: z.string().trim().optional().or(z.literal("")),
+  responsavelId: z.string().trim().optional().or(z.literal("")),
+});
+
+export type EtapaFormState =
+  | {
+      errors?: {
+        nome?: string[];
+        status?: string[];
+      };
+      message?: string;
+    }
+  | undefined;

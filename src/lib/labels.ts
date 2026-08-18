@@ -86,6 +86,15 @@ export const CLIMA_LABEL: Record<string, string> = {
   IMPRATICAVEL: "⛔ Imprático",
 };
 
+export const STATUS_CONFERENCIA_LABEL: Record<string, string> = {
+  VENDA_FUTURA: "Venda futura",
+  CONFERENCIA_MEDIDAS: "Conferência de medidas",
+  AJUSTE_PROJETO: "Ajuste de projeto",
+  CONFERENCIA_PROJETOS: "Conferência de projetos",
+  DESENHO_PROJETOS: "Desenho de projetos",
+  CONCLUIDO: "Concluído",
+};
+
 export function formatBRL(valor: number) {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",

@@ -68,6 +68,7 @@ model Usuario {
   pedidosMaterial    PedidoMaterial[]    @relation("PedidoCriadoPor")
   fotosEnviadas      Foto[]              @relation("FotoEnviadaPor")
   diariosCriados     DiarioObra[]        @relation("DiarioCriadoPor")
+  itensConferencia   ItemConferencia[]   @relation("ItemConferenciaResponsavel")
 }
 
 // ---------------------------------------------------------------------------
@@ -120,6 +121,7 @@ model Obra {
   fotos                Foto[]
   diarios              DiarioObra[]
   objetivos            ObjetivoDiario[]
+  itensConferencia     ItemConferencia[]
 }
 
 model ObraTrade {
@@ -363,4 +365,32 @@ model DiarioColaborador {
   colaborador    Colaborador @relation(fields: [colaboradorId], references: [id])
 
   @@unique([diarioId, colaboradorId])
+}
+
+// ---------------------------------------------------------------------------
+// Conferência (funil de medidas/projeto) — inspirado no fluxo de conferência
+// de marcenaria: cada ambiente/item passa por etapas de verificação antes de
+// seguir para produção/montagem.
+// ---------------------------------------------------------------------------
+
+enum StatusConferencia {
+  VENDA_FUTURA
+  CONFERENCIA_MEDIDAS
+  AJUSTE_PROJETO
+  CONFERENCIA_PROJETOS
+  DESENHO_PROJETOS
+  CONCLUIDO
+}
+
+model ItemConferencia {
+  id             String            @id @default(cuid())
+  obraId         String
+  obra           Obra              @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  titulo         String
+  status         StatusConferencia @default(VENDA_FUTURA)
+  responsavelId  String?
+  responsavel    Usuario?          @relation("ItemConferenciaResponsavel", fields: [responsavelId], references: [id])
+  prazo          DateTime?
+  observacoes    String?
+  criadoEm       DateTime          @default(now())
 }

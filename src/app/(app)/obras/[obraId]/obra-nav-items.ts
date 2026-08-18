@@ -8,5 +8,6 @@ export function obraNavItems(obraId: string): { href: string; label: string }[] 
     { href: `/obras/${obraId}/financeiro`, label: "Financeiro" },
     { href: `/obras/${obraId}/materiais`, label: "Materiais" },
     { href: `/obras/${obraId}/diario`, label: "Diário" },
+    { href: `/obras/${obraId}/conferencia`, label: "Conferência" },
   ];
 }

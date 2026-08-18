@@ -251,3 +251,24 @@ export const ObjetivoFormSchema = z.object({
 export type ObjetivoFormState =
   | { errors?: { descricao?: string[] }; message?: string }
   | undefined;
+
+export const STATUS_CONFERENCIA = [
+  "VENDA_FUTURA",
+  "CONFERENCIA_MEDIDAS",
+  "AJUSTE_PROJETO",
+  "CONFERENCIA_PROJETOS",
+  "DESENHO_PROJETOS",
+  "CONCLUIDO",
+] as const;
+
+export const ItemConferenciaFormSchema = z.object({
+  obraId: z.string().min(1),
+  titulo: z.string().min(2, { error: "Informe o ambiente/item." }).trim(),
+  responsavelId: z.string().trim().optional().or(z.literal("")),
+  prazo: z.string().trim().optional().or(z.literal("")),
+  observacoes: z.string().trim().optional().or(z.literal("")),
+});
+
+export type ItemConferenciaFormState =
+  | { errors?: { titulo?: string[] }; message?: string }
+  | undefined;

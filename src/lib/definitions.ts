@@ -405,3 +405,28 @@ export type ContaFinanceiraFormState =
       message?: string;
     }
   | undefined;
+
+export const PAPEL_USUARIO = [
+  "ADMIN",
+  "GESTOR",
+  "ENGENHEIRO",
+  "MESTRE_OBRA",
+] as const;
+
+export const UsuarioFormSchema = z.object({
+  nome: z.string().min(2, { error: "Informe o nome." }).trim(),
+  email: z.email({ error: "Informe um e-mail válido." }).trim(),
+  papel: z.enum(PAPEL_USUARIO, { error: "Selecione a função." }),
+  senha: z
+    .string()
+    .trim()
+    .optional()
+    .or(z.literal("")),
+});
+
+export type UsuarioFormState =
+  | {
+      errors?: { nome?: string[]; email?: string[]; senha?: string[] };
+      message?: string;
+    }
+  | undefined;

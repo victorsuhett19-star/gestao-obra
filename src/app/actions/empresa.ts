@@ -66,3 +66,50 @@ export async function revogarAcesso(usuarioEmpresaId: string) {
   await prisma.usuarioEmpresa.delete({ where: { id: usuarioEmpresaId } });
   revalidatePath("/empresas");
 }
+
+export async function editarEmpresa(empresaId: string, formData: FormData) {
+  await requireRole(["ADMIN"]);
+  const nome = formData.get("nome") as string;
+  if (!nome?.trim()) return;
+
+  await prisma.empresa.update({
+    where: { id: empresaId },
+    data: { nome: nome.trim() },
+  });
+  revalidatePath("/empresas");
+}
+
+/** Verifica se a empresa pode ser excluída sem deixar dados órfãos. */
+export async function empresaPodeSerExcluida(empresaId: string) {
+  const [obras, colaboradores, fornecedores, materiais, atendimentos, usuarioDono] =
+    await Promise.all([
+      prisma.obra.count({ where: { empresaId } }),
+      prisma.colaborador.count({ where: { empresaId } }),
+      prisma.fornecedor.count({ where: { empresaId } }),
+      prisma.material.count({ where: { empresaId } }),
+      prisma.atendimento.count({ where: { empresaId } }),
+      prisma.usuario.count({ where: { empresaId } }),
+    ]);
+
+  return (
+    obras === 0 &&
+    colaboradores === 0 &&
+    fornecedores === 0 &&
+    materiais === 0 &&
+    atendimentos === 0 &&
+    usuarioDono === 0
+  );
+}
+
+export async function excluirEmpresa(empresaId: string) {
+  await requireRole(["ADMIN"]);
+
+  // Nunca exclui a empresa "principal" de algum usuário, nem uma com dados
+  // vinculados — evita órfãos e perda de dados sem aviso claro na UI.
+  const podeExcluir = await empresaPodeSerExcluida(empresaId);
+  if (!podeExcluir) return;
+
+  await prisma.usuarioEmpresa.deleteMany({ where: { empresaId } });
+  await prisma.empresa.delete({ where: { id: empresaId } });
+  revalidatePath("/empresas");
+}

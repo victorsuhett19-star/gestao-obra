@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/prisma";
 import { getUser } from "@/lib/dal";
-import { criarEmpresa, concederAcesso, revogarAcesso } from "@/app/actions/empresa";
+import {
+  criarEmpresa,
+  concederAcesso,
+  revogarAcesso,
+  excluirEmpresa,
+  empresaPodeSerExcluida,
+} from "@/app/actions/empresa";
+import { EmpresaNome } from "./empresa-nome";
 
 export const metadata: Metadata = {
   title: "Empresas — Gestão de Obra",
@@ -25,6 +32,14 @@ export default async function EmpresasPage() {
       orderBy: { nome: "asc" },
     }),
   ]);
+
+  const exclusaoPermitida = isAdmin
+    ? Object.fromEntries(
+        await Promise.all(
+          empresas.map(async (e) => [e.id, await empresaPodeSerExcluida(e.id)])
+        )
+      )
+    : {};
 
   return (
     <div className="flex flex-col gap-6">
@@ -67,9 +82,31 @@ export default async function EmpresasPage() {
             key={empresa.id}
             className="rounded-2xl border border-slate-200 bg-white p-5"
           >
-            <p className="text-sm font-semibold text-slate-900">
-              {empresa.nome}
-            </p>
+            <div className="flex items-center justify-between">
+              <EmpresaNome
+                empresaId={empresa.id}
+                nome={empresa.nome}
+                podeEditar={isAdmin}
+              />
+              {isAdmin &&
+                (exclusaoPermitida[empresa.id] ? (
+                  <form action={excluirEmpresa.bind(null, empresa.id)}>
+                    <button
+                      type="submit"
+                      className="text-xs font-medium text-red-500 hover:underline"
+                    >
+                      Excluir empresa
+                    </button>
+                  </form>
+                ) : (
+                  <span
+                    className="text-xs text-slate-400"
+                    title="Só é possível excluir uma empresa sem obras, colaboradores, fornecedores, materiais, atendimentos ou usuários vinculados"
+                  >
+                    Excluir indisponível (tem dados vinculados)
+                  </span>
+                ))}
+            </div>
 
             <div className="mt-3 flex flex-col gap-1">
               <p className="text-xs font-medium uppercase tracking-wide text-slate-500">

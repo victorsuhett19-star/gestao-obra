@@ -10,5 +10,6 @@ export const navItems: { href: string; label: string }[] = [
   { href: "/rh", label: "RH" },
   { href: "/fornecedores", label: "Fornecedores" },
   { href: "/materiais", label: "Materiais" },
+  { href: "/usuarios", label: "Usuários" },
   { href: "/empresas", label: "Empresas" },
 ];

@@ -107,6 +107,7 @@ model Usuario {
   anexosEnviados       AnexoObra[]       @relation("AnexoEnviadoPorUsuario")
   tarefasResponsavel   Tarefa[]          @relation("TarefaResponsavel")
   notasObraCriadas     NotaObra[]        @relation("NotaObraCriadaPor")
+  comentariosObra      ComentarioObra[]  @relation("ComentarioObraAutorUsuario")
 }
 
 // ---------------------------------------------------------------------------
@@ -174,6 +175,7 @@ model Obra {
   anexos               AnexoObra[]
   tarefas              Tarefa[]
   notas                NotaObra[]
+  comentarios          ComentarioObra[]
 }
 
 model ObraTrade {
@@ -849,6 +851,7 @@ model Cliente {
 
   obras          Obra[]
   anexosEnviados AnexoObra[]
+  comentariosObra ComentarioObra[]
 }
 
 // ---------------------------------------------------------------------------
@@ -916,4 +919,19 @@ model NotaObra {
   criadoPorId  String?
   criadoPor    Usuario? @relation("NotaObraCriadaPor", fields: [criadoPorId], references: [id])
   criadoEm     DateTime @default(now())
+}
+
+// Comentários sobre situações do trabalho — ao contrário de NotaObra,
+// aparece pros dois lados (equipe interna e cliente no /portal), pra manter
+// todos os envolvidos cientes do que acontece na obra.
+model ComentarioObra {
+  id                String   @id @default(cuid())
+  obraId            String
+  obra              Obra     @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  texto             String
+  autorUsuarioId    String?
+  autorUsuario      Usuario? @relation("ComentarioObraAutorUsuario", fields: [autorUsuarioId], references: [id])
+  autorClienteId    String?
+  autorCliente      Cliente? @relation(fields: [autorClienteId], references: [id])
+  criadoEm          DateTime @default(now())
 }

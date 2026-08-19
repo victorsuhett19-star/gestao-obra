@@ -13,6 +13,8 @@ import { removerAcessoCliente } from "@/app/actions/cliente";
 import { AnexoUploadForm } from "./anexo-upload-form";
 import { ClienteAcessoForm } from "@/components/cliente-acesso-form";
 import { NotasObra } from "@/components/notas-obra";
+import { ComentariosObra } from "@/components/comentarios-obra";
+import { adicionarComentario, excluirComentario } from "@/app/actions/projetos";
 
 export const metadata: Metadata = {
   title: "Projeto — Gestão de Obra",
@@ -39,6 +41,10 @@ export default async function ProjetoDetalhePage({
         include: { arquivo: true, enviadoPorUsuario: true, enviadoPorCliente: true },
       },
       notas: { orderBy: { criadoEm: "desc" }, include: { criadoPor: true } },
+      comentarios: {
+        orderBy: { criadoEm: "desc" },
+        include: { autorUsuario: true, autorCliente: true },
+      },
     },
   });
   if (!obra) notFound();
@@ -58,6 +64,16 @@ export default async function ProjetoDetalhePage({
 
   return (
     <div className="flex flex-col gap-6">
+      <div className="flex justify-end">
+        <a
+          href={`/api/obras/${obra.id}/relatorio`}
+          target="_blank"
+          rel="noreferrer"
+          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+        >
+          📄 Gerar relatório digital (PDF)
+        </a>
+      </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="rounded-2xl border border-slate-200 bg-white p-5 lg:col-span-2">
           <div className="flex items-center justify-between">
@@ -270,6 +286,14 @@ export default async function ProjetoDetalhePage({
               )}
             </div>
           </div>
+
+          <ComentariosObra
+            comentarios={obra.comentarios}
+            onAdicionar={adicionarComentario.bind(null, obra.id)}
+            criarAcaoExcluir={(comentarioId) =>
+              excluirComentario.bind(null, comentarioId, obra.id)
+            }
+          />
 
           <NotasObra obraId={obra.id} notas={obra.notas} />
         </div>

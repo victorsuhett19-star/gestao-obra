@@ -5,6 +5,8 @@ import { formatDate as formatDateTimestamp, formatDateOnly } from "@/lib/labels"
 import { ClienteAcessoForm } from "@/components/cliente-acesso-form";
 import { removerAcessoCliente } from "@/app/actions/cliente";
 import { NotasObra } from "@/components/notas-obra";
+import { ComentariosObra } from "@/components/comentarios-obra";
+import { adicionarComentario, excluirComentario } from "@/app/actions/projetos";
 
 // dataInicio/FimPrevista/Real vêm de <input type="date"> (dia puro, sem
 // hora) — precisam ser lidas em UTC para não recuar um dia no fuso local.
@@ -25,6 +27,10 @@ export default async function ObraOverviewPage({
     include: {
       clienteAcesso: true,
       notas: { orderBy: { criadoEm: "desc" }, include: { criadoPor: true } },
+      comentarios: {
+        orderBy: { criadoEm: "desc" },
+        include: { autorUsuario: true, autorCliente: true },
+      },
     },
   });
   if (!obra) {
@@ -54,6 +60,16 @@ export default async function ObraOverviewPage({
 
   return (
     <div className="flex flex-col gap-4">
+      <div className="flex justify-end">
+        <a
+          href={`/api/obras/${obra.id}/relatorio`}
+          target="_blank"
+          rel="noreferrer"
+          className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+        >
+          📄 Gerar relatório digital (PDF)
+        </a>
+      </div>
       {obra.descricao && (
         <div className="rounded-2xl border border-slate-200 bg-white p-6">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
@@ -114,6 +130,14 @@ export default async function ObraOverviewPage({
           </p>
         )}
       </div>
+
+      <ComentariosObra
+        comentarios={obra.comentarios}
+        onAdicionar={adicionarComentario.bind(null, obra.id)}
+        criarAcaoExcluir={(comentarioId) =>
+          excluirComentario.bind(null, comentarioId, obra.id)
+        }
+      />
 
       <NotasObra obraId={obra.id} notas={obra.notas} />
     </div>

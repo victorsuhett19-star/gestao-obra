@@ -3,8 +3,9 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { verifyClientSession, getCliente } from "@/lib/client-dal";
 import { STATUS_ETAPA_PROJETO_LABEL, formatDateOnly } from "@/lib/labels";
-import { uploadAnexoCliente } from "@/app/actions/cliente";
+import { uploadAnexoCliente, adicionarComentarioCliente } from "@/app/actions/cliente";
 import { BackLink } from "@/components/back-link";
+import { ComentariosObra } from "@/components/comentarios-obra";
 import { PortalHeader } from "../../portal-header";
 import { SignatureSection } from "./signature-section";
 
@@ -28,6 +29,10 @@ export default async function PortalObraPage({
       anexos: {
         orderBy: { criadoEm: "desc" },
         include: { arquivo: true, enviadoPorUsuario: true, enviadoPorCliente: true },
+      },
+      comentarios: {
+        orderBy: { criadoEm: "desc" },
+        include: { autorUsuario: true, autorCliente: true },
       },
     },
   });
@@ -183,6 +188,12 @@ export default async function PortalObraPage({
             )}
           </div>
         </div>
+
+        <ComentariosObra
+          comentarios={obra.comentarios}
+          onAdicionar={adicionarComentarioCliente.bind(null, obra.id)}
+          autorAtualEhCliente
+        />
       </div>
     </div>
   );

@@ -143,6 +143,30 @@ export async function uploadAnexoCliente(obraId: string, formData: FormData) {
   revalidatePath(`/portal/obras/${obraId}`);
 }
 
+export async function adicionarComentarioCliente(obraId: string, formData: FormData) {
+  await verifyClientSession();
+  const cliente = await getCliente();
+  if (!cliente) return;
+
+  const obra = await prisma.obra.findUnique({ where: { id: obraId } });
+  if (!obra || obra.clienteAcessoId !== cliente.id) return;
+
+  const texto = formData.get("texto");
+  if (typeof texto !== "string" || !texto.trim()) return;
+
+  await prisma.comentarioObra.create({
+    data: {
+      obraId,
+      texto: texto.trim(),
+      autorClienteId: cliente.id,
+    },
+  });
+
+  revalidatePath(`/portal/obras/${obraId}`);
+  revalidatePath(`/projetos/${obraId}`);
+  revalidatePath(`/obras/${obraId}`);
+}
+
 export async function assinarEtapa(
   obraId: string,
   etapaProjetoId: string,

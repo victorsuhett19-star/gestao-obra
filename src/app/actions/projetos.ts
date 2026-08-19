@@ -217,3 +217,33 @@ export async function excluirNota(notaId: string, obraId: string) {
   revalidatePath(`/projetos/${obraId}`);
   revalidatePath(`/obras/${obraId}`);
 }
+
+/** Comentários sobre situações do trabalho — diferente de NotaObra, também
+ * aparece pro cliente no /portal, pra manter todos os envolvidos cientes. */
+export async function adicionarComentario(obraId: string, formData: FormData) {
+  const user = await verifySession().then(() => getUser());
+  if (!user) return;
+
+  const texto = formData.get("texto");
+  if (typeof texto !== "string" || !texto.trim()) return;
+
+  await prisma.comentarioObra.create({
+    data: {
+      obraId,
+      texto: texto.trim(),
+      autorUsuarioId: user.id,
+    },
+  });
+
+  revalidatePath(`/projetos/${obraId}`);
+  revalidatePath(`/obras/${obraId}`);
+  revalidatePath(`/portal/obras/${obraId}`);
+}
+
+export async function excluirComentario(comentarioId: string, obraId: string) {
+  await verifySession();
+  await prisma.comentarioObra.delete({ where: { id: comentarioId } });
+  revalidatePath(`/projetos/${obraId}`);
+  revalidatePath(`/obras/${obraId}`);
+  revalidatePath(`/portal/obras/${obraId}`);
+}

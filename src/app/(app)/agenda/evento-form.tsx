@@ -1,9 +1,20 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { saveEvento } from "@/app/actions/agenda";
 import { TIPO_EVENTO } from "@/lib/definitions";
 import { TIPO_EVENTO_LABEL } from "@/lib/labels";
+
+const CORES = [
+  "#2563eb",
+  "#16a34a",
+  "#dc2626",
+  "#d97706",
+  "#7c3aed",
+  "#0891b2",
+  "#db2777",
+  "#64748b",
+];
 
 export function EventoForm({
   obras,
@@ -15,6 +26,7 @@ export function EventoForm({
   voltarPara?: string;
 }) {
   const [state, action, pending] = useActionState(saveEvento, undefined);
+  const [cor, setCor] = useState(CORES[0]);
 
   return (
     <form action={action} className="flex flex-col gap-4">
@@ -77,6 +89,23 @@ export function EventoForm({
               </option>
             ))}
           </select>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-slate-700">Cor no calendário</label>
+        <input type="hidden" name="cor" value={cor} />
+        <div className="flex flex-wrap gap-2">
+          {CORES.map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setCor(c)}
+              aria-label={`Cor ${c}`}
+              className={`h-7 w-7 rounded-full border-2 ${cor === c ? "border-slate-900" : "border-transparent"}`}
+              style={{ backgroundColor: c }}
+            />
+          ))}
         </div>
       </div>
 

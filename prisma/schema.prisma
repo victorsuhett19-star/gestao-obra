@@ -104,6 +104,7 @@ model Usuario {
   eventosCriados       Evento[]          @relation("EventoCriadoPor")
   acessosEmpresa       UsuarioEmpresa[]
   anexosEnviados       AnexoObra[]       @relation("AnexoEnviadoPorUsuario")
+  tarefasResponsavel   Tarefa[]          @relation("TarefaResponsavel")
 }
 
 // ---------------------------------------------------------------------------
@@ -169,6 +170,7 @@ model Obra {
   contasFinanceiras    ContaFinanceira[]
   etapasProjeto        EtapaProjeto[]
   anexos               AnexoObra[]
+  tarefas              Tarefa[]
 }
 
 model ObraTrade {
@@ -597,11 +599,66 @@ model Evento {
   titulo      String
   tipo        TipoEvento @default(REUNIAO)
   data        DateTime
+  // Cor escolhida livremente por quem criou o evento (hex, ex: "#2563eb"),
+  // usada pra pintar o evento no calendário de tarefas do projeto.
+  cor         String?
   obraId      String?
   obra        Obra?      @relation(fields: [obraId], references: [id])
   criadoPorId String?
   criadoPor   Usuario?   @relation("EventoCriadoPor", fields: [criadoPorId], references: [id])
   criadoEm    DateTime   @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Tarefas — quadro Kanban/Gantt/Lista/Calendário por projeto. Prazos se
+// recalculam automaticamente com base nas dependências: uma tarefa só pode
+// começar depois que todas as que ela depende terminarem.
+// ---------------------------------------------------------------------------
+
+enum StatusTarefa {
+  A_FAZER
+  EM_ANDAMENTO
+  EM_REVISAO
+  CONCLUIDA
+}
+
+enum PrioridadeTarefa {
+  BAIXA
+  NORMAL
+  ALTA
+  URGENTE
+}
+
+model Tarefa {
+  id            String           @id @default(cuid())
+  obraId        String
+  obra          Obra             @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  titulo        String
+  categoria     String?
+  status        StatusTarefa     @default(A_FAZER)
+  prioridade    PrioridadeTarefa @default(NORMAL)
+  responsavelId String?
+  responsavel   Usuario?         @relation("TarefaResponsavel", fields: [responsavelId], references: [id])
+  dataInicio    DateTime?
+  dataPrazo     DateTime?
+  duracaoDias   Int              @default(1)
+  ordem         Int              @default(0)
+  criadoEm      DateTime         @default(now())
+
+  dependeDe     TarefaDependencia[] @relation("TarefaDependente")
+  dependentes   TarefaDependencia[] @relation("TarefaPrecedente")
+}
+
+// Join explícito (em vez de m:n implícito) porque é uma auto-relação com
+// dois papéis diferentes (quem depende / de quem depende).
+model TarefaDependencia {
+  id          String @id @default(cuid())
+  tarefaId    String
+  tarefa      Tarefa @relation("TarefaDependente", fields: [tarefaId], references: [id], onDelete: Cascade)
+  dependeDeId String
+  dependeDe   Tarefa @relation("TarefaPrecedente", fields: [dependeDeId], references: [id], onDelete: Cascade)
+
+  @@unique([tarefaId, dependeDeId])
 }
 
 // ---------------------------------------------------------------------------

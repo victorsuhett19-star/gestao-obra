@@ -42,6 +42,34 @@ export const TRADE_CHART_LABEL: Record<string, string> = {
   GERAL: "Despesas gerais da empresa",
 };
 
+export const STATUS_TAREFA_LABEL: Record<string, string> = {
+  A_FAZER: "A Fazer",
+  EM_ANDAMENTO: "Em Andamento",
+  EM_REVISAO: "Em Revisão",
+  CONCLUIDA: "Concluída",
+};
+
+export const STATUS_TAREFA_COLOR: Record<string, string> = {
+  A_FAZER: "bg-slate-100 text-slate-600",
+  EM_ANDAMENTO: "bg-blue-100 text-blue-700",
+  EM_REVISAO: "bg-amber-100 text-amber-700",
+  CONCLUIDA: "bg-emerald-100 text-emerald-700",
+};
+
+export const PRIORIDADE_TAREFA_LABEL: Record<string, string> = {
+  BAIXA: "Baixa",
+  NORMAL: "Normal",
+  ALTA: "Alta",
+  URGENTE: "Urgente",
+};
+
+export const PRIORIDADE_TAREFA_COLOR: Record<string, string> = {
+  BAIXA: "bg-slate-100 text-slate-500",
+  NORMAL: "bg-blue-50 text-blue-600",
+  ALTA: "bg-amber-50 text-amber-700",
+  URGENTE: "bg-red-50 text-red-700",
+};
+
 export const STATUS_ETAPA_PROJETO_LABEL: Record<string, string> = {
   AGUARDANDO: "Aguardando",
   EM_ANDAMENTO: "Em andamento",

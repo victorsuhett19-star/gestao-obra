@@ -462,6 +462,32 @@ export type ClienteFormState =
     }
   | undefined;
 
+export const STATUS_TAREFA = [
+  "A_FAZER",
+  "EM_ANDAMENTO",
+  "EM_REVISAO",
+  "CONCLUIDA",
+] as const;
+
+export const PRIORIDADE_TAREFA = ["BAIXA", "NORMAL", "ALTA", "URGENTE"] as const;
+
+export const TarefaFormSchema = z.object({
+  obraId: z.string().min(1),
+  titulo: z.string().min(2, { error: "Informe o título da tarefa." }).trim(),
+  categoria: z.string().trim().optional().or(z.literal("")),
+  status: z.enum(STATUS_TAREFA, { error: "Selecione um status." }),
+  prioridade: z.enum(PRIORIDADE_TAREFA, { error: "Selecione uma prioridade." }),
+  responsavelId: z.string().trim().optional().or(z.literal("")),
+  dataInicio: z.string().trim().optional().or(z.literal("")),
+  dataPrazo: z.string().trim().optional().or(z.literal("")),
+  duracaoDias: z.string().trim().optional().or(z.literal("")),
+  dependencias: z.array(z.string()).optional(),
+});
+
+export type TarefaFormState =
+  | { errors?: { titulo?: string[]; status?: string[] }; message?: string }
+  | undefined;
+
 export const ClienteLoginFormSchema = z.object({
   email: z.email({ error: "Informe um e-mail válido." }).trim(),
   password: z.string().min(1, { error: "Informe a senha." }).trim(),

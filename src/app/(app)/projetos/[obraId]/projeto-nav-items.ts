@@ -5,6 +5,7 @@
 export function projetoNavItems(obraId: string): { href: string; label: string }[] {
   return [
     { href: `/projetos/${obraId}`, label: "Visão geral" },
+    { href: `/projetos/${obraId}/tarefas`, label: "Tarefas" },
     { href: `/projetos/${obraId}/agenda`, label: "Agenda" },
     { href: `/projetos/${obraId}/orcamento`, label: "Orçamento" },
     { href: `/projetos/${obraId}/financeiro`, label: "Financeiro" },

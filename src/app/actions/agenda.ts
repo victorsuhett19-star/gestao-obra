@@ -26,6 +26,7 @@ export async function saveEvento(
   }
 
   const { titulo, tipo, data, hora, obraId } = validatedFields.data;
+  const cor = formData.get("cor");
 
   const dataHora = new Date(`${data}T${hora || "00:00"}:00`);
 
@@ -39,6 +40,7 @@ export async function saveEvento(
       titulo,
       tipo,
       data: dataHora,
+      cor: typeof cor === "string" && cor ? cor : null,
       obraId: obraId || null,
       criadoPorId: user.id,
     },

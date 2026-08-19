@@ -77,6 +77,7 @@ export async function removerAcessoCliente(obraId: string) {
     data: { clienteAcessoId: null },
   });
   revalidatePath(`/projetos/${obraId}`);
+  revalidatePath(`/obras/${obraId}`);
 }
 
 // --- Cliente: login/logout -------------------------------------------------

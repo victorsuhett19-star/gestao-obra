@@ -9,6 +9,7 @@ import {
   salvarDataEtapa,
   excluirAnexo,
 } from "@/app/actions/projetos";
+import { removerAcessoCliente } from "@/app/actions/cliente";
 import { AnexoUploadForm } from "./anexo-upload-form";
 import { ClienteAcessoForm } from "@/components/cliente-acesso-form";
 
@@ -194,6 +195,16 @@ export default async function ProjetoDetalhePage({
                 <p className="mt-2 text-xs text-emerald-600">
                   ✓ Cliente pode ver e assinar em /portal
                 </p>
+                {isAdmin && (
+                  <form action={removerAcessoCliente.bind(null, obra.id)} className="mt-2">
+                    <button
+                      type="submit"
+                      className="text-xs font-medium text-red-500 hover:underline"
+                    >
+                      Remover acesso
+                    </button>
+                  </form>
+                )}
               </div>
             ) : isAdmin ? (
               <>

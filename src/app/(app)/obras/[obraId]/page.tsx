@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { getUser } from "@/lib/dal";
 import { formatDate as formatDateTimestamp, formatDateOnly } from "@/lib/labels";
 import { ClienteAcessoForm } from "@/components/cliente-acesso-form";
+import { removerAcessoCliente } from "@/app/actions/cliente";
 
 // dataInicio/FimPrevista/Real vêm de <input type="date"> (dia puro, sem
 // hora) — precisam ser lidas em UTC para não recuar um dia no fuso local.
@@ -79,6 +80,16 @@ export default async function ObraOverviewPage({
             <p className="mt-2 text-xs text-emerald-600">
               ✓ Cliente pode ver e assinar em /portal
             </p>
+            {isAdmin && (
+              <form action={removerAcessoCliente.bind(null, obra.id)} className="mt-2">
+                <button
+                  type="submit"
+                  className="text-xs font-medium text-red-500 hover:underline"
+                >
+                  Remover acesso
+                </button>
+              </form>
+            )}
           </div>
         ) : isAdmin ? (
           <>

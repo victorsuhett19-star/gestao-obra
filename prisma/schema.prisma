@@ -575,6 +575,8 @@ model Atendimento {
   status            StatusAtendimento @default(ENTRADA_LEADS)
   valorEstimado     Float?
   motivoPerda       String?
+  // Cor escolhida livremente pra identificar esse cliente no quadro Kanban.
+  cor               String?
   obraId            String?           @unique
   obra              Obra?             @relation(fields: [obraId], references: [id])
   criadoEm          DateTime          @default(now())

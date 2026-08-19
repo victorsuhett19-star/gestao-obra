@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useState, type DragEvent } from "react";
+import { useRef, useState, type DragEvent } from "react";
 import Link from "next/link";
 import { moverAtendimentoPara, converterEmObra, deleteAtendimento } from "@/app/actions/atendimento";
 import { STATUS_ATENDIMENTO } from "@/lib/definitions";
@@ -16,15 +16,62 @@ type Atendimento = {
   status: string;
   motivoPerda: string | null;
   obraId: string | null;
+  cor: string | null;
   vendedor: { nome: string } | null;
 };
+
+// Distância da borda (em px) a partir da qual a rolagem automática entra em
+// ação, e velocidade máxima de rolagem (px por frame).
+const MARGEM_AUTOSCROLL = 90;
+const VELOCIDADE_MAX = 18;
 
 export function AtendimentoKanban({ atendimentos }: { atendimentos: Atendimento[] }) {
   const router = useRouter();
   const [arrastando, setArrastando] = useState<string | null>(null);
+  const [colunaAlvo, setColunaAlvo] = useState<string | null>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const rafRef = useRef<number | null>(null);
+
+  function pararAutoScroll() {
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
+  }
+
+  function iniciarAutoScroll(velocidade: number) {
+    pararAutoScroll();
+    const passo = () => {
+      const el = scrollRef.current;
+      if (el) el.scrollLeft += velocidade;
+      rafRef.current = requestAnimationFrame(passo);
+    };
+    rafRef.current = requestAnimationFrame(passo);
+  }
+
+  function onDragOverContainer(e: DragEvent) {
+    e.preventDefault();
+    const container = scrollRef.current;
+    if (!container) return;
+    const rect = container.getBoundingClientRect();
+    const distEsquerda = e.clientX - rect.left;
+    const distDireita = rect.right - e.clientX;
+
+    if (distEsquerda < MARGEM_AUTOSCROLL) {
+      const forca = 1 - Math.max(0, distEsquerda) / MARGEM_AUTOSCROLL;
+      iniciarAutoScroll(-Math.max(2, forca * VELOCIDADE_MAX));
+    } else if (distDireita < MARGEM_AUTOSCROLL) {
+      const forca = 1 - Math.max(0, distDireita) / MARGEM_AUTOSCROLL;
+      iniciarAutoScroll(Math.max(2, forca * VELOCIDADE_MAX));
+    } else {
+      pararAutoScroll();
+    }
+  }
 
   async function onDrop(e: DragEvent, status: string) {
     e.preventDefault();
+    pararAutoScroll();
+    setColunaAlvo(null);
     const id = e.dataTransfer.getData("text/atendimento-id");
     if (!id) return;
     await moverAtendimentoPara(id, status);
@@ -32,16 +79,29 @@ export function AtendimentoKanban({ atendimentos }: { atendimentos: Atendimento[
   }
 
   return (
-    <div className="flex gap-4 overflow-x-auto pb-2">
+    <div
+      ref={scrollRef}
+      onDragOver={onDragOverContainer}
+      onDragEnd={pararAutoScroll}
+      className="flex gap-4 overflow-x-auto pb-2 scroll-smooth"
+    >
       {STATUS_ATENDIMENTO.map((status) => {
         const itens = atendimentos.filter((a) => a.status === status);
         const ehPerdido = status === "PERDIDO";
         return (
           <div
             key={status}
+            onDragEnter={() => setColunaAlvo(status)}
+            onDragLeave={(e) => {
+              if (e.currentTarget === e.target) setColunaAlvo((c) => (c === status ? null : c));
+            }}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => onDrop(e, status)}
-            className="flex w-72 shrink-0 flex-col gap-3 rounded-2xl border border-slate-200 bg-slate-50 p-3"
+            className={`flex w-72 shrink-0 flex-col gap-3 rounded-2xl border p-3 transition-colors duration-150 ${
+              colunaAlvo === status
+                ? "border-slate-400 bg-slate-100"
+                : "border-slate-200 bg-slate-50"
+            }`}
           >
             <div className="flex items-center justify-between px-1">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">
@@ -59,12 +119,20 @@ export function AtendimentoKanban({ atendimentos }: { atendimentos: Atendimento[
                   draggable
                   onDragStart={(e) => {
                     e.dataTransfer.setData("text/atendimento-id", item.id);
-                    setArrastando(item.id);
+                    e.dataTransfer.effectAllowed = "move";
+                    // pequeno atraso pra não "sumir" o card antes do navegador
+                    // terminar de gerar a imagem de arraste — evita o piscar.
+                    requestAnimationFrame(() => setArrastando(item.id));
                   }}
-                  onDragEnd={() => setArrastando(null)}
-                  className={`cursor-grab rounded-xl border border-slate-200 bg-white p-3 shadow-sm active:cursor-grabbing ${
+                  onDragEnd={() => {
+                    setArrastando(null);
+                    setColunaAlvo(null);
+                    pararAutoScroll();
+                  }}
+                  style={item.cor ? { borderLeft: `4px solid ${item.cor}` } : undefined}
+                  className={`cursor-grab rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition-all duration-150 ease-out active:cursor-grabbing ${
                     ehPerdido ? "opacity-70" : ""
-                  } ${arrastando === item.id ? "opacity-40" : ""}`}
+                  } ${arrastando === item.id ? "scale-95 opacity-30" : "scale-100"}`}
                 >
                   <Link
                     href={`/atendimento/${item.id}/editar`}

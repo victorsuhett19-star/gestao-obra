@@ -36,6 +36,7 @@ export async function saveAtendimento(
 
   const { nomeCliente, telefone, email, ambienteDesejado, origem, vendedorId, valorEstimado } =
     validatedFields.data;
+  const cor = formData.get("cor");
 
   const payload = {
     nomeCliente,
@@ -45,6 +46,7 @@ export async function saveAtendimento(
     origem,
     vendedorId: vendedorId || null,
     valorEstimado: valorEstimado ? Number(valorEstimado.replace(",", ".")) : null,
+    cor: typeof cor === "string" && cor ? cor : null,
   };
 
   if (isEdicao) {

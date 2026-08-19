@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { saveAtendimento } from "@/app/actions/atendimento";
 import { ORIGEM_ATENDIMENTO } from "@/lib/definitions";
 import { ORIGEM_ATENDIMENTO_LABEL } from "@/lib/labels";
@@ -14,7 +14,19 @@ type AtendimentoInicial = {
   origem: string;
   vendedorId: string | null;
   valorEstimado: number | null;
+  cor: string | null;
 };
+
+const CORES = [
+  "#2563eb",
+  "#16a34a",
+  "#dc2626",
+  "#d97706",
+  "#7c3aed",
+  "#0891b2",
+  "#db2777",
+  "#64748b",
+];
 
 export function AtendimentoForm({
   usuarios,
@@ -24,6 +36,7 @@ export function AtendimentoForm({
   atendimento?: AtendimentoInicial;
 }) {
   const [state, action, pending] = useActionState(saveAtendimento, undefined);
+  const [cor, setCor] = useState<string | null>(atendimento?.cor ?? null);
 
   return (
     <form action={action} className="flex flex-col gap-4">
@@ -134,6 +147,33 @@ export function AtendimentoForm({
               </option>
             ))}
           </select>
+        </div>
+      </div>
+
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-slate-700">
+          Cor no quadro (opcional)
+        </label>
+        <input type="hidden" name="cor" value={cor ?? ""} />
+        <div className="flex flex-wrap items-center gap-2">
+          <button
+            type="button"
+            onClick={() => setCor(null)}
+            aria-label="Sem cor"
+            className={`flex h-7 w-7 items-center justify-center rounded-full border-2 text-xs text-slate-400 ${cor === null ? "border-slate-900" : "border-slate-200"}`}
+          >
+            ✕
+          </button>
+          {CORES.map((c) => (
+            <button
+              key={c}
+              type="button"
+              onClick={() => setCor(c)}
+              aria-label={`Cor ${c}`}
+              className={`h-7 w-7 rounded-full border-2 ${cor === c ? "border-slate-900" : "border-transparent"}`}
+              style={{ backgroundColor: c }}
+            />
+          ))}
         </div>
       </div>
 

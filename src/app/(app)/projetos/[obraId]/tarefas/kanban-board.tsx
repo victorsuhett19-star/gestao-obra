@@ -27,9 +27,11 @@ export function KanbanBoard({
 }) {
   const router = useRouter();
   const [arrastando, setArrastando] = useState<string | null>(null);
+  const [colunaAlvo, setColunaAlvo] = useState<string | null>(null);
 
   async function onDrop(e: DragEvent, status: string) {
     e.preventDefault();
+    setColunaAlvo(null);
     const tarefaId = e.dataTransfer.getData("text/tarefa-id");
     if (!tarefaId) return;
     await moverTarefaStatus(obraId, tarefaId, status);
@@ -43,9 +45,15 @@ export function KanbanBoard({
         return (
           <div
             key={status}
+            onDragEnter={() => setColunaAlvo(status)}
+            onDragLeave={(e) => {
+              if (e.currentTarget === e.target) setColunaAlvo((c) => (c === status ? null : c));
+            }}
             onDragOver={(e) => e.preventDefault()}
             onDrop={(e) => onDrop(e, status)}
-            className="flex flex-col gap-2 rounded-2xl bg-slate-100/60 p-3"
+            className={`flex flex-col gap-2 rounded-2xl p-3 transition-colors duration-150 ${
+              colunaAlvo === status ? "bg-slate-200" : "bg-slate-100/60"
+            }`}
           >
             <div className="flex items-center gap-2 px-1">
               <p className="text-xs font-semibold uppercase tracking-wide text-slate-600">
@@ -64,10 +72,14 @@ export function KanbanBoard({
                   draggable
                   onDragStart={(e) => {
                     e.dataTransfer.setData("text/tarefa-id", t.id);
-                    setArrastando(t.id);
+                    e.dataTransfer.effectAllowed = "move";
+                    requestAnimationFrame(() => setArrastando(t.id));
                   }}
-                  onDragEnd={() => setArrastando(null)}
-                  className={`flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition hover:border-slate-300 ${arrastando === t.id ? "opacity-40" : ""}`}
+                  onDragEnd={() => {
+                    setArrastando(null);
+                    setColunaAlvo(null);
+                  }}
+                  className={`flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition-all duration-150 ease-out hover:border-slate-300 ${arrastando === t.id ? "scale-95 opacity-30" : "scale-100"}`}
                 >
                   <span
                     className={`w-fit rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase ${PRIORIDADE_TAREFA_COLOR[t.prioridade]}`}

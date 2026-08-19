@@ -14,6 +14,7 @@ type AtendimentoInicial = {
   ambienteDesejado: string | null;
   origem: string;
   vendedorId: string | null;
+  vendedorColaboradorId: string | null;
   valorEstimado: number | null;
   faixaInvestimento: string | null;
   cor: string | null;
@@ -33,13 +34,20 @@ const CORES = [
 
 export function AtendimentoForm({
   usuarios,
+  colaboradores,
   atendimento,
 }: {
   usuarios: { id: string; nome: string }[];
+  colaboradores: { id: string; nome: string; funcao: string | null }[];
   atendimento?: AtendimentoInicial;
 }) {
   const [state, action, pending] = useActionState(saveAtendimento, undefined);
   const [cor, setCor] = useState<string | null>(atendimento?.cor ?? null);
+  const vendedorAtual = atendimento?.vendedorId
+    ? `usuario:${atendimento.vendedorId}`
+    : atendimento?.vendedorColaboradorId
+      ? `colaborador:${atendimento.vendedorColaboradorId}`
+      : "";
   const especialidadesIniciais = new Set(
     atendimento?.especialidades.map((e) => e.trade) ?? []
   );
@@ -189,21 +197,35 @@ export function AtendimentoForm({
           />
         </div>
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="vendedorId" className="text-sm font-medium text-slate-700">
+          <label htmlFor="vendedor" className="text-sm font-medium text-slate-700">
             Vendedor
           </label>
           <select
-            id="vendedorId"
-            name="vendedorId"
-            defaultValue={atendimento?.vendedorId ?? ""}
+            id="vendedor"
+            name="vendedor"
+            defaultValue={vendedorAtual}
             className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
           >
             <option value="">Não definido</option>
-            {usuarios.map((u) => (
-              <option key={u.id} value={u.id}>
-                {u.nome}
-              </option>
-            ))}
+            {usuarios.length > 0 && (
+              <optgroup label="Usuários (com login)">
+                {usuarios.map((u) => (
+                  <option key={u.id} value={`usuario:${u.id}`}>
+                    {u.nome}
+                  </option>
+                ))}
+              </optgroup>
+            )}
+            {colaboradores.length > 0 && (
+              <optgroup label="Colaboradores (equipe de campo)">
+                {colaboradores.map((c) => (
+                  <option key={c.id} value={`colaborador:${c.id}`}>
+                    {c.nome}
+                    {c.funcao ? ` — ${c.funcao}` : ""}
+                  </option>
+                ))}
+              </optgroup>
+            )}
           </select>
         </div>
       </div>

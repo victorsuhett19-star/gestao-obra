@@ -15,6 +15,11 @@ export default async function NovoAtendimentoPage() {
     select: { id: true, nome: true },
     orderBy: { nome: "asc" },
   });
+  const colaboradores = await prisma.colaborador.findMany({
+    where: { empresaId: empresaAtivaId ?? undefined, ativo: true },
+    select: { id: true, nome: true, funcao: true },
+    orderBy: { nome: "asc" },
+  });
 
   return (
     <div className="flex flex-col gap-6">
@@ -23,7 +28,7 @@ export default async function NovoAtendimentoPage() {
         <h1 className="mt-1 text-xl font-semibold text-slate-900">Novo atendimento</h1>
       </div>
       <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-6">
-        <AtendimentoForm usuarios={usuarios} />
+        <AtendimentoForm usuarios={usuarios} colaboradores={colaboradores} />
       </div>
     </div>
   );

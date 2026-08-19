@@ -27,7 +27,7 @@ export async function saveAtendimento(
     clienteCpfCnpj: formData.get("clienteCpfCnpj"),
     ambienteDesejado: formData.get("ambienteDesejado"),
     origem: formData.get("origem"),
-    vendedorId: formData.get("vendedorId"),
+    vendedor: formData.get("vendedor"),
     valorEstimado: formData.get("valorEstimado"),
     faixaInvestimento: formData.get("faixaInvestimento"),
     especialidades: formData.getAll("especialidades"),
@@ -44,12 +44,16 @@ export async function saveAtendimento(
     clienteCpfCnpj,
     ambienteDesejado,
     origem,
-    vendedorId,
+    vendedor,
     valorEstimado,
     faixaInvestimento,
     especialidades,
   } = validatedFields.data;
   const cor = formData.get("cor");
+
+  // "vendedor" combina Usuario e Colaborador numa lista só: "usuario:<id>"
+  // ou "colaborador:<id>" — só um dos dois FKs fica preenchido.
+  const [tipoVendedor, idVendedor] = (vendedor ?? "").split(":");
 
   const payload = {
     nomeCliente,
@@ -58,7 +62,9 @@ export async function saveAtendimento(
     clienteCpfCnpj: clienteCpfCnpj || null,
     ambienteDesejado: ambienteDesejado || null,
     origem,
-    vendedorId: vendedorId || null,
+    vendedorId: tipoVendedor === "usuario" && idVendedor ? idVendedor : null,
+    vendedorColaboradorId:
+      tipoVendedor === "colaborador" && idVendedor ? idVendedor : null,
     valorEstimado: valorEstimado ? Number(valorEstimado.replace(",", ".")) : null,
     faixaInvestimento: faixaInvestimento || null,
     cor: typeof cor === "string" && cor ? cor : null,

@@ -325,7 +325,9 @@ export const AtendimentoFormSchema = z.object({
   clienteCpfCnpj: z.string().trim().optional().or(z.literal("")),
   ambienteDesejado: z.string().trim().optional().or(z.literal("")),
   origem: z.enum(ORIGEM_ATENDIMENTO, { error: "Selecione a origem." }),
-  vendedorId: z.string().trim().optional().or(z.literal("")),
+  // "usuario:<id>" ou "colaborador:<id>" — a lista de vendedor combina os
+  // dois cadastros (quem tem login e a equipe de campo sem login).
+  vendedor: z.string().trim().optional().or(z.literal("")),
   valorEstimado: z.string().trim().optional().or(z.literal("")),
   faixaInvestimento: z.enum(FAIXA_INVESTIMENTO).optional().or(z.literal("")),
   especialidades: z.array(z.enum(TRADES)).optional(),

@@ -16,7 +16,7 @@ export default async function EditarAtendimentoPage({
   const { atendimentoId } = await params;
 
   const empresaAtivaId = await getEmpresaAtivaId();
-  const [atendimento, usuarios] = await Promise.all([
+  const [atendimento, usuarios, colaboradores] = await Promise.all([
     prisma.atendimento.findUnique({
       where: { id: atendimentoId },
       include: { especialidades: true },
@@ -24,6 +24,11 @@ export default async function EditarAtendimentoPage({
     prisma.usuario.findMany({
       where: { empresaId: empresaAtivaId ?? undefined, ativo: true },
       select: { id: true, nome: true },
+      orderBy: { nome: "asc" },
+    }),
+    prisma.colaborador.findMany({
+      where: { empresaId: empresaAtivaId ?? undefined, ativo: true },
+      select: { id: true, nome: true, funcao: true },
       orderBy: { nome: "asc" },
     }),
   ]);
@@ -41,7 +46,7 @@ export default async function EditarAtendimentoPage({
         </h1>
       </div>
       <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-6">
-        <AtendimentoForm usuarios={usuarios} atendimento={atendimento} />
+        <AtendimentoForm usuarios={usuarios} colaboradores={colaboradores} atendimento={atendimento} />
       </div>
 
       {atendimento.status !== "PERDIDO" && atendimento.status !== "GANHO" && (

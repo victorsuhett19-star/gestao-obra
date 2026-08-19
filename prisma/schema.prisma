@@ -68,6 +68,7 @@ model Colaborador {
   folgas         FolgaFerias[]
   folhas         FolhaPagamento[]
   documentos     DocumentoColaborador[]
+  atendimentosVendedor Atendimento[] @relation("AtendimentoVendedorColaborador")
 }
 
 enum PapelUsuario {
@@ -581,6 +582,10 @@ model Atendimento {
   origem            OrigemAtendimento @default(LEAD)
   vendedorId        String?
   vendedor          Usuario?          @relation("AtendimentoVendedor", fields: [vendedorId], references: [id])
+  // Vendedor pode ser um Usuario (tem login) OU um Colaborador (equipe sem
+  // login) — só um dos dois fica preenchido por vez.
+  vendedorColaboradorId String?
+  vendedorColaborador   Colaborador?  @relation("AtendimentoVendedorColaborador", fields: [vendedorColaboradorId], references: [id])
   status            StatusAtendimento @default(ENTRADA_LEADS)
   valorEstimado     Float?
   // Faixa usada só pra dimensionar a distribuição do atendimento entre a

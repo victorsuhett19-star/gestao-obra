@@ -18,6 +18,7 @@ type Atendimento = {
   obraId: string | null;
   cor: string | null;
   vendedor: { nome: string } | null;
+  vendedorColaborador: { nome: string } | null;
   especialidades: { trade: string }[];
 };
 
@@ -167,8 +168,10 @@ export function AtendimentoKanban({ atendimentos }: { atendimentos: Atendimento[
                       {formatBRL(item.valorEstimado)}
                     </p>
                   )}
-                  {item.vendedor && (
-                    <p className="mt-0.5 text-xs text-slate-500">{item.vendedor.nome}</p>
+                  {(item.vendedor || item.vendedorColaborador) && (
+                    <p className="mt-0.5 text-xs text-slate-500">
+                      {item.vendedor?.nome ?? item.vendedorColaborador?.nome}
+                    </p>
                   )}
                   {ehPerdido && item.motivoPerda && (
                     <p className="mt-0.5 text-xs text-slate-500">{item.motivoPerda}</p>

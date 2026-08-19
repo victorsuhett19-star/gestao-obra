@@ -7,7 +7,6 @@ import { uploadAnexoCliente } from "@/app/actions/cliente";
 import { BackLink } from "@/components/back-link";
 import { PortalHeader } from "../../portal-header";
 import { SignatureSection } from "./signature-section";
-import { PortalTabs } from "./portal-tabs";
 
 export const metadata: Metadata = {
   title: "Meu projeto — Portal do cliente",
@@ -74,10 +73,7 @@ export default async function PortalObraPage({
           )}
         </div>
 
-        <PortalTabs
-          andamento={
-            <>
-              <div className="rounded-2xl border border-slate-200 bg-white p-5">
+        <div className="rounded-2xl border border-slate-200 bg-white p-5">
           {total === 0 ? (
             <p className="text-sm text-slate-500">
               O fluxo do seu projeto ainda não foi iniciado pela nossa equipe.
@@ -187,32 +183,6 @@ export default async function PortalObraPage({
             )}
           </div>
         </div>
-            </>
-          }
-          drive={
-            <div className="rounded-2xl border border-slate-200 bg-white p-5">
-              <p className="text-sm font-semibold text-slate-800">Drive</p>
-              <p className="mt-1 text-sm text-slate-500">
-                Fotos, plantas e documentos do seu projeto ficam organizados na
-                nossa pasta compartilhada do Google Drive.
-              </p>
-              {obra.driveUrl ? (
-                <a
-                  href={obra.driveUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-4 inline-flex items-center gap-2 rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
-                >
-                  Abrir Google Drive →
-                </a>
-              ) : (
-                <p className="mt-4 rounded-lg bg-slate-50 px-3 py-2 text-sm text-slate-500">
-                  Ainda não disponibilizamos o link do Drive pra este projeto.
-                </p>
-              )}
-            </div>
-          }
-        />
       </div>
     </div>
   );

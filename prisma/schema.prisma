@@ -146,7 +146,6 @@ model Obra {
   dataFimPrevista      DateTime?
   dataInicioReal       DateTime?
   dataFimReal          DateTime?
-  driveUrl             String?
   criadoPorId          String?
   criadoPor            Usuario?   @relation("ObraCriadaPor", fields: [criadoPorId], references: [id])
   criadoEm             DateTime   @default(now())

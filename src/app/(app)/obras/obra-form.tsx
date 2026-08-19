@@ -19,7 +19,6 @@ type ObraInicial = {
   status: string;
   dataInicioPrevista: Date | null;
   dataFimPrevista: Date | null;
-  driveUrl: string | null;
   trades: string[];
 };
 
@@ -212,24 +211,6 @@ export function ObraForm({ obra }: { obra?: ObraInicial }) {
             defaultValue={toDateInputValue(obra?.dataFimPrevista ?? null)}
             className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
           />
-        </div>
-
-        <div className="flex flex-col gap-1.5 sm:col-span-2">
-          <label htmlFor="driveUrl" className="text-sm font-medium text-slate-700">
-            Link do Google Drive do cliente{" "}
-            <span className="font-normal text-slate-400">(opcional)</span>
-          </label>
-          <input
-            id="driveUrl"
-            name="driveUrl"
-            type="url"
-            placeholder="https://drive.google.com/drive/folders/..."
-            defaultValue={obra?.driveUrl ?? ""}
-            className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
-          />
-          <p className="text-xs text-slate-400">
-            Aparece como a aba &quot;Drive&quot; no portal do cliente.
-          </p>
         </div>
       </div>
 

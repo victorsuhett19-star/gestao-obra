@@ -78,12 +78,17 @@ export function AtendimentoKanban({ atendimentos }: { atendimentos: Atendimento[
     router.refresh();
   }
 
+  async function mudarStatus(id: string, novoStatus: string) {
+    await moverAtendimentoPara(id, novoStatus);
+    router.refresh();
+  }
+
   return (
     <div
       ref={scrollRef}
       onDragOver={onDragOverContainer}
       onDragEnd={pararAutoScroll}
-      className="flex gap-4 overflow-x-auto pb-2 scroll-smooth"
+      className="scrollbar-hide flex gap-4 overflow-x-auto pb-2 scroll-smooth"
     >
       {STATUS_ATENDIMENTO.map((status) => {
         const itens = atendimentos.filter((a) => a.status === status);
@@ -156,28 +161,38 @@ export function AtendimentoKanban({ atendimentos }: { atendimentos: Atendimento[
                     <p className="mt-0.5 text-xs text-slate-500">{item.motivoPerda}</p>
                   )}
 
-                  <div className="mt-2 flex items-center justify-between">
-                    {status === "GANHO" && !item.obraId ? (
-                      <form action={converterEmObra.bind(null, item.id)}>
-                        <button
-                          type="submit"
-                          className="rounded-md border border-emerald-300 bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-100"
-                        >
-                          Converter em obra
-                        </button>
-                      </form>
-                    ) : (
-                      <span className="text-[11px] text-slate-400">arraste pra mudar</span>
-                    )}
+                  <div className="mt-2 flex items-center gap-1.5">
+                    <select
+                      value={status}
+                      onChange={(e) => mudarStatus(item.id, e.target.value)}
+                      onClick={(e) => e.stopPropagation()}
+                      className="min-w-0 flex-1 rounded-md border border-slate-200 bg-slate-50 px-1.5 py-1 text-[11px] text-slate-600 outline-none focus:border-slate-400"
+                    >
+                      {STATUS_ATENDIMENTO.map((s) => (
+                        <option key={s} value={s}>
+                          {STATUS_ATENDIMENTO_LABEL[s]}
+                        </option>
+                      ))}
+                    </select>
                     <form action={deleteAtendimento.bind(null, item.id)}>
                       <button
                         type="submit"
-                        className="text-xs font-medium text-red-500 hover:underline"
+                        className="shrink-0 text-xs font-medium text-red-500 hover:underline"
                       >
                         Excluir
                       </button>
                     </form>
                   </div>
+                  {status === "GANHO" && !item.obraId && (
+                    <form action={converterEmObra.bind(null, item.id)} className="mt-1.5">
+                      <button
+                        type="submit"
+                        className="w-full rounded-md border border-emerald-300 bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700 hover:bg-emerald-100"
+                      >
+                        Converter em obra
+                      </button>
+                    </form>
+                  )}
                 </div>
               ))}
               {itens.length === 0 && (

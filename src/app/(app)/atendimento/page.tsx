@@ -25,8 +25,8 @@ export default async function AtendimentoPage() {
           <h1 className="text-xl font-semibold text-slate-900">Atendimento</h1>
           <p className="text-sm text-slate-500">
             Funil de vendas — {atendimentos.length} atendimento(s), {perdidos.length} perdido(s).
-            Arraste o card pra qualquer etapa, sem precisar passar pelas
-            intermediárias.
+            Arraste o card ou use o seletor de etapa dentro dele pra mudar
+            direto pra qualquer coluna.
           </p>
         </div>
         <Link

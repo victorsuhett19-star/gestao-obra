@@ -561,6 +561,14 @@ enum StatusAtendimento {
   PERDIDO
 }
 
+enum FaixaInvestimento {
+  ATE_10K
+  DE_10K_A_30K
+  DE_30K_A_60K
+  DE_60K_A_100K
+  ACIMA_100K
+}
+
 model Atendimento {
   id                String            @id @default(cuid())
   empresaId         String
@@ -568,18 +576,37 @@ model Atendimento {
   nomeCliente       String
   telefone          String?
   email             String?
+  clienteCpfCnpj    String?
   ambienteDesejado  String?
   origem            OrigemAtendimento @default(LEAD)
   vendedorId        String?
   vendedor          Usuario?          @relation("AtendimentoVendedor", fields: [vendedorId], references: [id])
   status            StatusAtendimento @default(ENTRADA_LEADS)
   valorEstimado     Float?
+  // Faixa usada só pra dimensionar a distribuição do atendimento entre a
+  // equipe — não é o valor real de venda (esse é o valorEstimado acima).
+  faixaInvestimento FaixaInvestimento?
   motivoPerda       String?
   // Cor escolhida livremente pra identificar esse cliente no quadro Kanban.
   cor               String?
   obraId            String?           @unique
   obra              Obra?             @relation(fields: [obraId], references: [id])
   criadoEm          DateTime          @default(now())
+
+  especialidades    AtendimentoTrade[]
+}
+
+// Especialidade(s) que esse atendimento pretende contratar — igual ObraTrade,
+// mas do lado do lead/CRM. Pode começar com uma e ganhar outras depois (ex:
+// cliente fechou marcenaria e mais tarde decide fazer a obra completa também)
+// — ao converter em Obra, elas viram as trades da obra.
+model AtendimentoTrade {
+  id            String      @id @default(cuid())
+  atendimentoId String
+  atendimento   Atendimento @relation(fields: [atendimentoId], references: [id], onDelete: Cascade)
+  trade         Trade
+
+  @@unique([atendimentoId, trade])
 }
 
 // ---------------------------------------------------------------------------

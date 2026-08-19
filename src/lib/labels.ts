@@ -189,6 +189,14 @@ export const ORIGEM_ATENDIMENTO_LABEL: Record<string, string> = {
   INDICACAO: "👥 Indicação",
 };
 
+export const FAIXA_INVESTIMENTO_LABEL: Record<string, string> = {
+  ATE_10K: "Até R$ 10.000",
+  DE_10K_A_30K: "R$ 10.000 – R$ 30.000",
+  DE_30K_A_60K: "R$ 30.000 – R$ 60.000",
+  DE_60K_A_100K: "R$ 60.000 – R$ 100.000",
+  ACIMA_100K: "Acima de R$ 100.000",
+};
+
 export const TIPO_EVENTO_LABEL: Record<string, string> = {
   REUNIAO: "Reunião",
   VISITA: "Visita",

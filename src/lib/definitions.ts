@@ -306,6 +306,14 @@ export const ORIGEM_ATENDIMENTO = [
   "INDICACAO",
 ] as const;
 
+export const FAIXA_INVESTIMENTO = [
+  "ATE_10K",
+  "DE_10K_A_30K",
+  "DE_30K_A_60K",
+  "DE_60K_A_100K",
+  "ACIMA_100K",
+] as const;
+
 export const AtendimentoFormSchema = z.object({
   nomeCliente: z.string().min(2, { error: "Informe o nome do cliente." }).trim(),
   telefone: z.string().trim().optional().or(z.literal("")),
@@ -314,10 +322,13 @@ export const AtendimentoFormSchema = z.object({
     .trim()
     .optional()
     .or(z.literal("")),
+  clienteCpfCnpj: z.string().trim().optional().or(z.literal("")),
   ambienteDesejado: z.string().trim().optional().or(z.literal("")),
   origem: z.enum(ORIGEM_ATENDIMENTO, { error: "Selecione a origem." }),
   vendedorId: z.string().trim().optional().or(z.literal("")),
   valorEstimado: z.string().trim().optional().or(z.literal("")),
+  faixaInvestimento: z.enum(FAIXA_INVESTIMENTO).optional().or(z.literal("")),
+  especialidades: z.array(z.enum(TRADES)).optional(),
 });
 
 export type AtendimentoFormState =

@@ -17,7 +17,10 @@ export default async function EditarAtendimentoPage({
 
   const empresaAtivaId = await getEmpresaAtivaId();
   const [atendimento, usuarios] = await Promise.all([
-    prisma.atendimento.findUnique({ where: { id: atendimentoId } }),
+    prisma.atendimento.findUnique({
+      where: { id: atendimentoId },
+      include: { especialidades: true },
+    }),
     prisma.usuario.findMany({
       where: { empresaId: empresaAtivaId ?? undefined, ativo: true },
       select: { id: true, nome: true },

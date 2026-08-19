@@ -12,7 +12,7 @@ export default async function AtendimentoPage() {
   const empresaAtivaId = await getEmpresaAtivaId();
   const atendimentos = await prisma.atendimento.findMany({
     where: { empresaId: empresaAtivaId ?? undefined },
-    include: { vendedor: { select: { nome: true } } },
+    include: { vendedor: { select: { nome: true } }, especialidades: true },
     orderBy: { criadoEm: "asc" },
   });
 

@@ -163,3 +163,29 @@ export async function marcarTurnkey(obraId: string) {
   revalidatePath("/obras");
   revalidatePath("/financeiro/dashboard");
 }
+
+/** Cliente decidiu fazer mais algum tipo de item com a gente — adiciona
+ * outra(s) especialidade(s) ao projeto que já existe, sem tirar as que já
+ * tinha. Ele passa a aparecer também na aba/workspace daquela especialidade. */
+export async function adicionarEspecialidade(obraId: string, formData: FormData) {
+  await verifySession();
+
+  const trades = formData.getAll("trades") as string[];
+  if (trades.length === 0) return;
+
+  await prisma.$transaction(
+    trades.map((trade) =>
+      prisma.obraTrade.upsert({
+        where: { obraId_trade: { obraId, trade: trade as never } },
+        update: {},
+        create: { obraId, trade: trade as never },
+      })
+    )
+  );
+
+  revalidatePath(`/projetos/${obraId}`);
+  revalidatePath(`/obras/${obraId}`);
+  revalidatePath("/projetos");
+  revalidatePath("/obras");
+  revalidatePath("/financeiro/dashboard");
+}

@@ -5,7 +5,7 @@ import { useRef, useState, type DragEvent } from "react";
 import Link from "next/link";
 import { moverAtendimentoPara, converterEmObra, deleteAtendimento } from "@/app/actions/atendimento";
 import { STATUS_ATENDIMENTO } from "@/lib/definitions";
-import { STATUS_ATENDIMENTO_LABEL, ORIGEM_ATENDIMENTO_LABEL, formatBRL } from "@/lib/labels";
+import { STATUS_ATENDIMENTO_LABEL, ORIGEM_ATENDIMENTO_LABEL, TRADE_LABEL, formatBRL } from "@/lib/labels";
 
 type Atendimento = {
   id: string;
@@ -18,6 +18,7 @@ type Atendimento = {
   obraId: string | null;
   cor: string | null;
   vendedor: { nome: string } | null;
+  especialidades: { trade: string }[];
 };
 
 // Distância da borda (em px) a partir da qual a rolagem automática entra em
@@ -149,6 +150,18 @@ export function AtendimentoKanban({ atendimentos }: { atendimentos: Atendimento[
                     {ORIGEM_ATENDIMENTO_LABEL[item.origem]}
                     {item.ambienteDesejado && ` · ${item.ambienteDesejado}`}
                   </p>
+                  {item.especialidades.length > 0 && (
+                    <div className="mt-1 flex flex-wrap gap-1">
+                      {item.especialidades.map((e) => (
+                        <span
+                          key={e.trade}
+                          className="rounded-full bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-600"
+                        >
+                          {TRADE_LABEL[e.trade]}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                   {item.valorEstimado && (
                     <p className="mt-0.5 text-xs font-medium text-slate-700">
                       {formatBRL(item.valorEstimado)}

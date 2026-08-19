@@ -2,7 +2,8 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { STATUS_OBRA_LABEL, STATUS_OBRA_COLOR, TRADE_LABEL } from "@/lib/labels";
-import { marcarTurnkey } from "@/app/actions/projetos";
+import { TRADES } from "@/lib/definitions";
+import { marcarTurnkey, adicionarEspecialidade } from "@/app/actions/projetos";
 import { ObraTabs } from "@/app/(app)/obras/[obraId]/obra-tabs";
 import { projetoNavItems } from "./projeto-nav-items";
 
@@ -22,6 +23,9 @@ export default async function ProjetoLayout({
   }
 
   const jaTurnkey = obra.trades.some((t) => t.trade === "OBRA");
+  const especialidadesFaltando = TRADES.filter(
+    (t) => !obra.trades.some((x) => x.trade === t)
+  );
 
   return (
     <div className="flex flex-col gap-6">
@@ -61,6 +65,40 @@ export default async function ProjetoLayout({
                   🔗 Cliente fechou obra completa (turn-key)
                 </button>
               </form>
+            )}
+            {especialidadesFaltando.length > 0 && (
+              <details className="relative">
+                <summary className="cursor-pointer list-none rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100">
+                  + Especialidade
+                </summary>
+                <form
+                  action={adicionarEspecialidade.bind(null, obra.id)}
+                  className="absolute right-0 z-10 mt-2 w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-lg"
+                >
+                  <p className="mb-2 text-xs text-slate-500">
+                    Cliente decidiu fazer mais algum item com a gente:
+                  </p>
+                  <div className="flex flex-col gap-1.5">
+                    {especialidadesFaltando.map((t) => (
+                      <label key={t} className="flex items-center gap-2 text-sm text-slate-700">
+                        <input
+                          type="checkbox"
+                          name="trades"
+                          value={t}
+                          className="h-4 w-4 rounded border-slate-300"
+                        />
+                        {TRADE_LABEL[t]}
+                      </label>
+                    ))}
+                  </div>
+                  <button
+                    type="submit"
+                    className="mt-3 w-full rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700"
+                  >
+                    Adicionar
+                  </button>
+                </form>
+              </details>
             )}
             <Link
               href={`/obras/${obra.id}`}

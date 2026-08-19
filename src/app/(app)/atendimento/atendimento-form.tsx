@@ -58,11 +58,6 @@ export function AtendimentoForm({
         <input type="hidden" name="atendimentoId" value={atendimento.id} />
       )}
 
-      <p className="rounded-lg bg-blue-50 px-3 py-2 text-sm text-blue-700">
-        Preencha os dados do cliente. Depois de criado, distribua pra um
-        vendedor no campo &quot;Vendedor&quot; abaixo.
-      </p>
-
       <div className="flex flex-col gap-1.5">
         <label className="text-xs font-semibold uppercase tracking-wide text-slate-500">
           Especialidade(s)

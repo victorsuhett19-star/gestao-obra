@@ -12,6 +12,7 @@ import {
 import { removerAcessoCliente } from "@/app/actions/cliente";
 import { AnexoUploadForm } from "./anexo-upload-form";
 import { ClienteAcessoForm } from "@/components/cliente-acesso-form";
+import { NotasObra } from "@/components/notas-obra";
 
 export const metadata: Metadata = {
   title: "Projeto — Gestão de Obra",
@@ -37,6 +38,7 @@ export default async function ProjetoDetalhePage({
         orderBy: { criadoEm: "desc" },
         include: { arquivo: true, enviadoPorUsuario: true, enviadoPorCliente: true },
       },
+      notas: { orderBy: { criadoEm: "desc" }, include: { criadoPor: true } },
     },
   });
   if (!obra) notFound();
@@ -268,6 +270,8 @@ export default async function ProjetoDetalhePage({
               )}
             </div>
           </div>
+
+          <NotasObra obraId={obra.id} notas={obra.notas} />
         </div>
       </div>
     </div>

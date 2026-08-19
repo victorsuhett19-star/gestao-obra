@@ -4,6 +4,7 @@ import { getUser } from "@/lib/dal";
 import { formatDate as formatDateTimestamp, formatDateOnly } from "@/lib/labels";
 import { ClienteAcessoForm } from "@/components/cliente-acesso-form";
 import { removerAcessoCliente } from "@/app/actions/cliente";
+import { NotasObra } from "@/components/notas-obra";
 
 // dataInicio/FimPrevista/Real vêm de <input type="date"> (dia puro, sem
 // hora) — precisam ser lidas em UTC para não recuar um dia no fuso local.
@@ -21,7 +22,10 @@ export default async function ObraOverviewPage({
 
   const obra = await prisma.obra.findUnique({
     where: { id: obraId },
-    include: { clienteAcesso: true },
+    include: {
+      clienteAcesso: true,
+      notas: { orderBy: { criadoEm: "desc" }, include: { criadoPor: true } },
+    },
   });
   if (!obra) {
     notFound();
@@ -110,6 +114,8 @@ export default async function ObraOverviewPage({
           </p>
         )}
       </div>
+
+      <NotasObra obraId={obra.id} notas={obra.notas} />
     </div>
   );
 }

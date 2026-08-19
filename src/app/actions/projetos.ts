@@ -189,3 +189,31 @@ export async function adicionarEspecialidade(obraId: string, formData: FormData)
   revalidatePath("/obras");
   revalidatePath("/financeiro/dashboard");
 }
+
+/** Anotações internas da equipe sobre a obra/projeto — não aparece no portal
+ * do cliente, só nas abas internas (Obras e Projetos). */
+export async function adicionarNota(obraId: string, formData: FormData) {
+  const user = await verifySession().then(() => getUser());
+  if (!user) return;
+
+  const texto = formData.get("texto");
+  if (typeof texto !== "string" || !texto.trim()) return;
+
+  await prisma.notaObra.create({
+    data: {
+      obraId,
+      texto: texto.trim(),
+      criadoPorId: user.id,
+    },
+  });
+
+  revalidatePath(`/projetos/${obraId}`);
+  revalidatePath(`/obras/${obraId}`);
+}
+
+export async function excluirNota(notaId: string, obraId: string) {
+  await verifySession();
+  await prisma.notaObra.delete({ where: { id: notaId } });
+  revalidatePath(`/projetos/${obraId}`);
+  revalidatePath(`/obras/${obraId}`);
+}

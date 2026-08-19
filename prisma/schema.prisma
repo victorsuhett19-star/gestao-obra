@@ -106,6 +106,7 @@ model Usuario {
   acessosEmpresa       UsuarioEmpresa[]
   anexosEnviados       AnexoObra[]       @relation("AnexoEnviadoPorUsuario")
   tarefasResponsavel   Tarefa[]          @relation("TarefaResponsavel")
+  notasObraCriadas     NotaObra[]        @relation("NotaObraCriadaPor")
 }
 
 // ---------------------------------------------------------------------------
@@ -172,6 +173,7 @@ model Obra {
   etapasProjeto        EtapaProjeto[]
   anexos               AnexoObra[]
   tarefas              Tarefa[]
+  notas                NotaObra[]
 }
 
 model ObraTrade {
@@ -902,4 +904,16 @@ model AnexoObra {
   enviadoPorClienteId String?
   enviadoPorCliente   Cliente?  @relation(fields: [enviadoPorClienteId], references: [id])
   criadoEm            DateTime  @default(now())
+}
+
+// Anotações internas da equipe sobre um projeto/obra — não aparece no portal
+// do cliente, só nas abas internas (Obras e Projetos).
+model NotaObra {
+  id           String   @id @default(cuid())
+  obraId       String
+  obra         Obra     @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  texto        String
+  criadoPorId  String?
+  criadoPor    Usuario? @relation("NotaObraCriadaPor", fields: [criadoPorId], references: [id])
+  criadoEm     DateTime @default(now())
 }

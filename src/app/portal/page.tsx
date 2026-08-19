@@ -40,7 +40,7 @@ export default async function PortalDashboardPage() {
                 <Link
                   key={obra.id}
                   href={`/portal/obras/${obra.id}`}
-                  className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-slate-300"
+                  className="flex items-center justify-between rounded-2xl border border-slate-200 bg-surface p-5 transition hover:border-slate-300"
                 >
                   <div>
                     <p className="font-medium text-slate-900">{obra.nome}</p>

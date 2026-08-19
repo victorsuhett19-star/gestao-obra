@@ -24,7 +24,7 @@ export function EmpresaSwitcher({
         name="empresaId"
         defaultValue={empresaAtivaId}
         onChange={() => formRef.current?.requestSubmit()}
-        className="w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-xs font-medium text-slate-700 outline-none focus:border-slate-500"
+        className="w-full rounded-lg border border-slate-300 bg-surface px-2 py-1.5 text-xs font-medium text-slate-700 outline-none focus:border-slate-500"
       >
         {empresas.map((e) => (
           <option key={e.id} value={e.id}>

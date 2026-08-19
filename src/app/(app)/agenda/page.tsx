@@ -52,14 +52,14 @@ export default async function AgendaPage() {
         </div>
         <Link
           href="/agenda/novo"
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+          className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
         >
           + Agendar
         </Link>
       </div>
 
       {proximos.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-10 text-center">
           <p className="text-sm text-slate-500">Nenhum evento agendado.</p>
           <Link
             href="/agenda/novo"
@@ -79,7 +79,7 @@ export default async function AgendaPage() {
                 {eventosDoDia.map((evento) => (
                   <div
                     key={evento.id}
-                    className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4"
+                    className="flex items-center justify-between rounded-2xl border border-slate-200 bg-surface p-4"
                   >
                     <div>
                       <p className="text-sm font-medium text-slate-900">
@@ -108,7 +108,7 @@ export default async function AgendaPage() {
       )}
 
       {passados.length > 0 && (
-        <details className="rounded-2xl border border-slate-200 bg-white p-4">
+        <details className="rounded-2xl border border-slate-200 bg-surface p-4">
           <summary className="cursor-pointer text-sm font-medium text-slate-600">
             Eventos passados ({passados.length})
           </summary>

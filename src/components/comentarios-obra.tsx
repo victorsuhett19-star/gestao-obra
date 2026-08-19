@@ -22,7 +22,7 @@ export function ComentariosObra({
   autorAtualEhCliente?: boolean;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5">
+    <div className="rounded-2xl border border-slate-200 bg-surface p-5">
       <p className="text-sm font-semibold text-slate-800">Comentários</p>
       <p className="mt-0.5 text-xs text-slate-400">
         Descreva situações que ocorreram no trabalho, para que todos os
@@ -37,7 +37,7 @@ export function ComentariosObra({
         />
         <button
           type="submit"
-          className="self-start rounded-lg bg-slate-900 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-slate-700"
+          className="self-start rounded-lg bg-ink-900 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-ink-700"
         >
           Comentar
         </button>

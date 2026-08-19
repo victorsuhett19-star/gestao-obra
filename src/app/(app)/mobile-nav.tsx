@@ -25,7 +25,7 @@ export function Sidebar({
   return (
     <>
       {/* Topo mobile, só aparece em telas pequenas */}
-      <div className="flex items-center justify-between border-b border-slate-200 bg-white px-4 py-3 sm:hidden">
+      <div className="flex items-center justify-between border-b border-slate-200 bg-surface px-4 py-3 sm:hidden">
         <div className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-empresa.png" alt="" className="h-7 w-auto" />
@@ -58,7 +58,7 @@ export function Sidebar({
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col border-r border-slate-200 bg-white transition-transform duration-200 sm:static sm:z-auto sm:w-60 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col border-r border-slate-200 bg-surface transition-transform duration-200 sm:static sm:z-auto sm:w-60 ${
           open ? "" : "max-sm:-translate-x-full"
         }`}
       >

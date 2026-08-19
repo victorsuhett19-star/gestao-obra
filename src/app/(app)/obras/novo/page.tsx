@@ -18,7 +18,7 @@ export default function NovaObraPage() {
         </p>
       </div>
 
-      <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-6">
+      <div className="max-w-2xl rounded-2xl border border-slate-200 bg-surface p-6">
         <ObraForm />
       </div>
     </div>

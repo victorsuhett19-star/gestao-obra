@@ -22,7 +22,7 @@ export default async function NovoEventoPage() {
         <BackLink href="/agenda" label="Agenda" />
         <h1 className="mt-1 text-xl font-semibold text-slate-900">Novo evento</h1>
       </div>
-      <div className="max-w-xl rounded-2xl border border-slate-200 bg-white p-6">
+      <div className="max-w-xl rounded-2xl border border-slate-200 bg-surface p-6">
         <EventoForm obras={obras} />
       </div>
     </div>

@@ -79,7 +79,7 @@ export function KanbanBoard({
                     setArrastando(null);
                     setColunaAlvo(null);
                   }}
-                  className={`flex flex-col gap-2 rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition-all duration-150 ease-out hover:border-slate-300 ${arrastando === t.id ? "scale-95 opacity-30" : "scale-100"}`}
+                  className={`flex flex-col gap-2 rounded-xl border border-slate-200 bg-surface p-3 shadow-sm transition-all duration-150 ease-out hover:border-slate-300 ${arrastando === t.id ? "scale-95 opacity-30" : "scale-100"}`}
                 >
                   <span
                     className={`w-fit rounded px-1.5 py-0.5 text-[10px] font-semibold uppercase ${PRIORIDADE_TAREFA_COLOR[t.prioridade]}`}
@@ -94,7 +94,7 @@ export function KanbanBoard({
                   )}
                   <div className="flex items-center justify-between text-[11px] text-slate-400">
                     {t.responsavel ? (
-                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-slate-800 text-[10px] font-semibold text-white">
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-ink-800 text-[10px] font-semibold text-white">
                         {t.responsavel.nome
                           .split(" ")
                           .slice(0, 2)

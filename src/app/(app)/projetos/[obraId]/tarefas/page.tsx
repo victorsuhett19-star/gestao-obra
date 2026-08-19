@@ -61,7 +61,7 @@ export default async function TarefasPage({
         </div>
         <Link
           href={`/projetos/${obraId}/tarefas/nova`}
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+          className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
         >
           + Nova tarefa
         </Link>
@@ -74,7 +74,7 @@ export default async function TarefasPage({
             href={`/projetos/${obraId}/tarefas?view=${v.id}`}
             className={`border-b-2 px-3 py-2 text-sm font-medium transition ${
               view === v.id
-                ? "border-slate-900 text-slate-900"
+                ? "border-ink-900 text-slate-900"
                 : "border-transparent text-slate-500 hover:text-slate-800"
             }`}
           >

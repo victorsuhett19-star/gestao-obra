@@ -137,7 +137,7 @@ export function AtendimentoKanban({ atendimentos }: { atendimentos: Atendimento[
                     pararAutoScroll();
                   }}
                   style={item.cor ? { borderLeft: `4px solid ${item.cor}` } : undefined}
-                  className={`cursor-grab rounded-xl border border-slate-200 bg-white p-3 shadow-sm transition-all duration-150 ease-out active:cursor-grabbing ${
+                  className={`cursor-grab rounded-xl border border-slate-200 bg-surface p-3 shadow-sm transition-all duration-150 ease-out active:cursor-grabbing ${
                     ehPerdido ? "opacity-70" : ""
                   } ${arrastando === item.id ? "scale-95 opacity-30" : "scale-100"}`}
                 >

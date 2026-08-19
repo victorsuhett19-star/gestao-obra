@@ -33,14 +33,14 @@ export default async function OrcamentoProjetoPage({
         </div>
         <Link
           href={`/obras/${obraId}/orcamento/novo?voltarPara=${voltarPara}`}
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+          className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
         >
           + Novo item
         </Link>
       </div>
 
       {itens.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-10 text-center">
           <p className="text-sm text-slate-500">
             Nenhum item orçado ainda para este projeto.
           </p>
@@ -52,7 +52,7 @@ export default async function OrcamentoProjetoPage({
           </Link>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-surface">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 text-left text-xs font-medium uppercase tracking-wide text-slate-500">

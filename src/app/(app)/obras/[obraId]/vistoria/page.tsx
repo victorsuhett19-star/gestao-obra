@@ -34,14 +34,14 @@ export default async function VistoriaPage({
         </div>
         <Link
           href={`/obras/${obraId}/vistoria/novo`}
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+          className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
         >
           + Novo relatório
         </Link>
       </div>
 
       {vistorias.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-10 text-center">
           <p className="text-sm text-slate-500">
             Nenhum relatório de vistoria ainda.
           </p>
@@ -58,7 +58,7 @@ export default async function VistoriaPage({
             <Link
               key={v.id}
               href={`/obras/${obraId}/vistoria/${v.id}`}
-              className="flex items-center justify-between rounded-2xl border border-slate-200 bg-white p-4 hover:bg-slate-50"
+              className="flex items-center justify-between rounded-2xl border border-slate-200 bg-surface p-4 hover:bg-slate-50"
             >
               <div>
                 <p className="text-sm font-medium text-slate-900">

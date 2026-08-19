@@ -21,7 +21,7 @@ export function GanttChart({ tarefas }: { tarefas: Tarefa[] }) {
 
   if (comData.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+      <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-10 text-center">
         <p className="text-sm text-slate-500">
           Nenhuma tarefa com data de início e prazo definidos ainda — o Gantt
           precisa dessas duas datas pra desenhar a barra.
@@ -45,7 +45,7 @@ export function GanttChart({ tarefas }: { tarefas: Tarefa[] }) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white p-5">
+    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-surface p-5">
       <div className="mb-3 flex justify-between text-xs text-slate-400">
         <span>{formatDateOnly(menorData)}</span>
         <span>{formatDateOnly(maiorData)}</span>

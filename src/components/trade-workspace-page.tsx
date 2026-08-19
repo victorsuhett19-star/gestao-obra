@@ -40,7 +40,7 @@ export async function TradeWorkspacePage({
       </div>
 
       {obras.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-10 text-center">
           <p className="text-sm text-slate-500">
             Nenhum projeto de {TRADE_LABEL[trade].toLowerCase()} ainda.
           </p>
@@ -62,7 +62,7 @@ export async function TradeWorkspacePage({
               <Link
                 key={obra.id}
                 href={`/projetos/${obra.id}`}
-                className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 transition hover:border-slate-300"
+                className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-surface p-5 transition hover:border-slate-300"
               >
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center gap-2">

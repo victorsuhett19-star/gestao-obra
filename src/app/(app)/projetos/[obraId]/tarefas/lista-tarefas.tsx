@@ -22,14 +22,14 @@ type Tarefa = {
 export function ListaTarefas({ obraId, tarefas }: { obraId: string; tarefas: Tarefa[] }) {
   if (tarefas.length === 0) {
     return (
-      <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+      <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-10 text-center">
         <p className="text-sm text-slate-500">Nenhuma tarefa cadastrada ainda.</p>
       </div>
     );
   }
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
+    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-surface">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-slate-200 text-left text-xs font-medium uppercase tracking-wide text-slate-500">

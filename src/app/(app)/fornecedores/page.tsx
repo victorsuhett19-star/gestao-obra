@@ -27,14 +27,14 @@ export default async function FornecedoresPage() {
         </div>
         <Link
           href="/fornecedores/novo"
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+          className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
         >
           + Novo fornecedor
         </Link>
       </div>
 
       {fornecedores.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-10 text-center">
           <p className="text-sm text-slate-500">
             Nenhum fornecedor cadastrado ainda.
           </p>
@@ -46,7 +46,7 @@ export default async function FornecedoresPage() {
           </Link>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-surface">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 text-left text-xs font-medium uppercase tracking-wide text-slate-500">

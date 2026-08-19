@@ -53,7 +53,7 @@ export default async function ConfigurarEtapasPage({
             href={`/projetos/configurar?trade=${t}`}
             className={`rounded-lg px-3 py-1.5 text-sm font-medium ${
               t === trade
-                ? "bg-slate-900 text-white"
+                ? "bg-ink-900 text-white"
                 : "text-slate-600 hover:bg-slate-100"
             }`}
           >
@@ -62,7 +62,7 @@ export default async function ConfigurarEtapasPage({
         ))}
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-5">
+      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
         <EtapaTemplateForm trade={trade} />
 
         <div className="mt-5 flex flex-col gap-1.5">

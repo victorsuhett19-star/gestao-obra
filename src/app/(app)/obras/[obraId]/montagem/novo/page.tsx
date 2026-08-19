@@ -26,7 +26,7 @@ export default async function NovaMontagemPage({
         <BackLink href={`/obras/${obraId}/montagem`} label="Montagem" />
         <h2 className="mt-1 text-lg font-semibold text-slate-900">Nova montagem</h2>
       </div>
-      <div className="max-w-3xl rounded-2xl border border-slate-200 bg-white p-6">
+      <div className="max-w-3xl rounded-2xl border border-slate-200 bg-surface p-6">
         <MontagemForm obraId={obraId} montadores={montadores} />
       </div>
     </div>

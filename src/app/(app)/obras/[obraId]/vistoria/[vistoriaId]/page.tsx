@@ -45,7 +45,7 @@ export default async function VistoriaDetailPage({
         </Link>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6">
+      <div className="rounded-2xl border border-slate-200 bg-surface p-6">
         <h2 className="border-b border-slate-200 pb-3 text-center text-base font-semibold uppercase tracking-wide text-slate-800">
           Relatório de supervisão
         </h2>
@@ -78,7 +78,7 @@ export default async function VistoriaDetailPage({
         <div className="mt-6 flex flex-col gap-2">
           {vistoria.itens.map((item) => (
             <div key={item.id} className="overflow-hidden rounded-lg border border-slate-200">
-              <div className="bg-slate-800 px-3 py-2 text-sm font-medium text-white">
+              <div className="bg-ink-800 px-3 py-2 text-sm font-medium text-white">
                 {item.ambiente}
               </div>
               <div

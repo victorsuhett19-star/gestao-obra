@@ -44,7 +44,7 @@ export default async function ObrasPage({
         </div>
         <Link
           href="/obras/novo"
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+          className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
         >
           + Nova obra
         </Link>
@@ -52,7 +52,7 @@ export default async function ObrasPage({
 
       <form
         method="get"
-        className="flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200 bg-white p-4"
+        className="flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200 bg-surface p-4"
       >
         <div className="flex flex-col gap-1.5">
           <label htmlFor="status" className="text-xs font-medium text-slate-500">
@@ -109,7 +109,7 @@ export default async function ObrasPage({
       </form>
 
       {obras.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-10 text-center">
           <p className="text-sm text-slate-500">
             Nenhuma obra encontrada. Que tal cadastrar a primeira?
           </p>
@@ -121,7 +121,7 @@ export default async function ObrasPage({
           </Link>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-surface">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 text-left text-xs font-medium uppercase tracking-wide text-slate-500">

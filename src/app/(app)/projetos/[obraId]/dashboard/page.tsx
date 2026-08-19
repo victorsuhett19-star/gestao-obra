@@ -55,19 +55,19 @@ export default async function DashboardProjetoPage({
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Orçado</p>
           <p className="mt-1 text-xl font-semibold text-slate-900">{formatBRL(orcado)}</p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Receita</p>
           <p className="mt-1 text-xl font-semibold text-emerald-600">{formatBRL(receita)}</p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Gasto total</p>
           <p className="mt-1 text-xl font-semibold text-red-600">{formatBRL(despesa)}</p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Lucro / margem</p>
           <p className={`mt-1 text-xl font-semibold ${lucro >= 0 ? "text-emerald-600" : "text-red-600"}`}>
             {formatBRL(lucro)}{" "}

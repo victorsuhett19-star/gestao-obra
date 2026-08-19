@@ -1,22 +1,103 @@
 @import "tailwindcss";
 
+/* Paleta da marca (baseada nos tons Pantone: Black 6C, Black Coffee,
+   Hot Chocolate, Humus, Gold Leaf e Bright White). A escala "slate" usada
+   em todo o app é redefinida aqui via variáveis CSS — isso troca a cor de
+   toda a interface sem precisar mexer em cada arquivo. No modo escuro a
+   escala é invertida (claro vira escuro e vice-versa), então o mesmo
+   `text-slate-900` que é "texto escuro sobre fundo claro" no modo claro
+   vira "texto claro sobre fundo escuro" no modo escuro automaticamente.
+
+   `bg-ink-*` é uma escala separada, fixa (não inverte) — usada nos botões
+   primários (bg-slate-900 + text-white antes), que precisam continuar
+   escuros com texto branco nos dois modos. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --slate-50: #f8f5f0;
+  --slate-100: #efe7da;
+  --slate-200: #e1d2bc;
+  --slate-300: #cbb595;
+  --slate-400: #ae8e68;
+  --slate-500: #8a6a4c;
+  --slate-600: #6c4b3a;
+  --slate-700: #593a2e;
+  --slate-800: #3d2a22;
+  --slate-900: #251811;
+  --slate-950: #150f0b;
+  --surface: #ffffff;
+
+  --background: var(--slate-50);
+  --foreground: var(--slate-900);
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --slate-50: #150f0b;
+    --slate-100: #251811;
+    --slate-200: #3d2a22;
+    --slate-300: #593a2e;
+    --slate-400: #6c4b3a;
+    --slate-500: #a6876a;
+    --slate-600: #ae8e68;
+    --slate-700: #cbb595;
+    --slate-800: #e1d2bc;
+    --slate-900: #f3eae0;
+    --slate-950: #f8f5f0;
+    --surface: #1b140f;
+
+    --background: var(--slate-50);
+    --foreground: var(--slate-900);
+    color-scheme: dark;
+  }
+}
+
+:root.dark {
+  --slate-50: #150f0b;
+  --slate-100: #251811;
+  --slate-200: #3d2a22;
+  --slate-300: #593a2e;
+  --slate-400: #6c4b3a;
+  --slate-500: #a6876a;
+  --slate-600: #ae8e68;
+  --slate-700: #cbb595;
+  --slate-800: #e1d2bc;
+  --slate-900: #f3eae0;
+  --slate-950: #f8f5f0;
+  --surface: #1b140f;
+
+  --background: var(--slate-50);
+  --foreground: var(--slate-900);
+  color-scheme: dark;
 }
 
 @theme inline {
+  --color-slate-50: var(--slate-50);
+  --color-slate-100: var(--slate-100);
+  --color-slate-200: var(--slate-200);
+  --color-slate-300: var(--slate-300);
+  --color-slate-400: var(--slate-400);
+  --color-slate-500: var(--slate-500);
+  --color-slate-600: var(--slate-600);
+  --color-slate-700: var(--slate-700);
+  --color-slate-800: var(--slate-800);
+  --color-slate-900: var(--slate-900);
+  --color-slate-950: var(--slate-950);
+  --color-surface: var(--surface);
+
+  /* Escala fixa (não inverte no escuro) usada nos botões/pills primários. */
+  --color-ink-700: #4e3226;
+  --color-ink-800: #3a271e;
+  --color-ink-900: #221712;
+
+  /* Dourado do selo — disponível como acento (bordas, destaques, hover). */
+  --color-gold-400: #d9bd8a;
+  --color-gold-500: #c6a06c;
+  --color-gold-600: #a67f4c;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {

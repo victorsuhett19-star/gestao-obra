@@ -33,7 +33,7 @@ export default async function UsuariosPage() {
         {isAdmin && (
           <Link
             href="/usuarios/novo"
-            className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+            className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
           >
             + Novo login
           </Link>
@@ -46,7 +46,7 @@ export default async function UsuariosPage() {
         </p>
       )}
 
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-surface">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-200 text-left text-xs font-medium uppercase tracking-wide text-slate-500">

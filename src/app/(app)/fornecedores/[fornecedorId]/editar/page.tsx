@@ -29,7 +29,7 @@ export default async function EditarFornecedorPage({
           Editar fornecedor
         </h1>
       </div>
-      <div className="max-w-lg rounded-2xl border border-slate-200 bg-white p-6">
+      <div className="max-w-lg rounded-2xl border border-slate-200 bg-surface p-6">
         <FornecedorForm fornecedor={fornecedor} />
       </div>
     </div>

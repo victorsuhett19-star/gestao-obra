@@ -85,13 +85,13 @@ export function DiarioForm({
             {colaboradores.map((c) => (
               <label
                 key={c.id}
-                className="flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 has-checked:border-slate-900 has-checked:bg-slate-900 has-checked:text-white"
+                className="flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm text-slate-700 has-checked:border-ink-900 has-checked:bg-ink-900 has-checked:text-white"
               >
                 <input
                   type="checkbox"
                   name="colaboradorIds"
                   value={c.id}
-                  className="accent-slate-900"
+                  className="accent-ink-900"
                 />
                 {c.nome}
                 {c.funcao && ` (${c.funcao})`}
@@ -159,7 +159,7 @@ export function DiarioForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-60"
+          className="rounded-lg bg-ink-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-ink-700 disabled:opacity-60"
         >
           {pending ? "Salvando..." : "Registrar dia"}
         </button>

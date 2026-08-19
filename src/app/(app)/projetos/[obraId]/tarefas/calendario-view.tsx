@@ -54,7 +54,7 @@ export function CalendarioView({
   }
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5">
+    <div className="rounded-2xl border border-slate-200 bg-surface p-5">
       <div className="mb-4 flex items-center justify-between">
         <Link
           href={`/projetos/${obraId}/tarefas?view=calendario&ano=${mesAnterior.ano}&mes=${mesAnterior.mes}`}
@@ -115,7 +115,7 @@ export function CalendarioView({
                 {tarefasDia.map((t) => (
                   <p
                     key={t.id}
-                    className="truncate rounded bg-slate-800 px-1 text-[10px] text-white"
+                    className="truncate rounded bg-ink-800 px-1 text-[10px] text-white"
                     title={`Prazo: ${t.titulo}`}
                   >
                     ⏰ {t.titulo}
@@ -135,7 +135,7 @@ export function CalendarioView({
           <span className="h-2.5 w-2.5 rounded-full bg-blue-600" /> Evento da agenda
         </span>
         <span className="flex items-center gap-1">
-          <span className="h-2.5 w-2.5 rounded-full bg-slate-800" /> Prazo de tarefa
+          <span className="h-2.5 w-2.5 rounded-full bg-ink-800" /> Prazo de tarefa
         </span>
       </div>
     </div>

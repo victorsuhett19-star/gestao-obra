@@ -29,7 +29,7 @@ export function SignatureSection({
           <img
             src={assinaturaUrl}
             alt="Assinatura"
-            className="mt-2 h-16 rounded border border-emerald-100 bg-white"
+            className="mt-2 h-16 rounded border border-emerald-100 bg-surface"
           />
         )}
       </div>

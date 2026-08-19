@@ -53,7 +53,7 @@ export default async function DiarioPage({
         </div>
         <Link
           href={`/obras/${obraId}/diario/novo`}
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+          className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
         >
           + Novo registro
         </Link>
@@ -62,7 +62,7 @@ export default async function DiarioPage({
       <ObjetivosPanel obraId={obraId} objetivos={objetivos} />
 
       {registros.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-10 text-center">
           <p className="text-sm text-slate-500">
             Nenhum registro de diário ainda.
           </p>
@@ -76,7 +76,7 @@ export default async function DiarioPage({
       ) : (
         <div className="flex flex-col gap-4">
           {registros.map((r) => (
-            <div key={r.id} className="rounded-2xl border border-slate-200 bg-white p-5">
+            <div key={r.id} className="rounded-2xl border border-slate-200 bg-surface p-5">
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-sm font-semibold text-slate-900">

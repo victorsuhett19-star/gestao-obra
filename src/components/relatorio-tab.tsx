@@ -22,7 +22,7 @@ export function RelatorioTab({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="rounded-2xl border border-slate-200 bg-white p-5">
+      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
         <p className="text-sm font-semibold text-slate-800">Gerar relatório</p>
         <p className="mt-0.5 text-xs text-slate-400">
           Escolha um template já criado — o relatório sai em PDF com os dados
@@ -47,7 +47,7 @@ export function RelatorioTab({
             </select>
             <button
               type="submit"
-              className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+              className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
             >
               Gerar relatório
             </button>
@@ -55,7 +55,7 @@ export function RelatorioTab({
         )}
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-5">
+      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
         <p className="text-sm font-semibold text-slate-800">
           Relatórios gerados
         </p>
@@ -98,7 +98,7 @@ export function RelatorioTab({
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-5">
+      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
         <p className="text-sm font-semibold text-slate-800">Templates</p>
         <p className="mt-0.5 text-xs text-slate-400">
           Base reutilizável em qualquer projeto/obra. Use{" "}
@@ -124,7 +124,7 @@ export function RelatorioTab({
           />
           <button
             type="submit"
-            className="self-start rounded-lg bg-slate-900 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-slate-700"
+            className="self-start rounded-lg bg-ink-900 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-ink-700"
           >
             Salvar template
           </button>

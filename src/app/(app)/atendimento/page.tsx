@@ -35,7 +35,7 @@ export default async function AtendimentoPage() {
         </div>
         <Link
           href="/atendimento/novo"
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+          className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
         >
           + Novo atendimento
         </Link>

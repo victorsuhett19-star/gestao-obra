@@ -52,14 +52,14 @@ export default async function FinanceiroPage({
         </div>
         <Link
           href={`/obras/${obraId}/financeiro/novo`}
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+          className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
         >
           + Novo lançamento
         </Link>
       </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-slate-200 bg-white p-4">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Orçado
           </p>
@@ -67,7 +67,7 @@ export default async function FinanceiroPage({
             {formatBRL(orcado)}
           </p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-4">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Custo realizado
           </p>
@@ -75,7 +75,7 @@ export default async function FinanceiroPage({
             {formatBRL(custo)}
           </p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-4">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Receita
           </p>
@@ -83,7 +83,7 @@ export default async function FinanceiroPage({
             {formatBRL(receita)}
           </p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-white p-4">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Saldo (orçado − custo)
           </p>
@@ -102,7 +102,7 @@ export default async function FinanceiroPage({
       )}
 
       {lancamentos.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-10 text-center">
           <p className="text-sm text-slate-500">
             Nenhum lançamento financeiro ainda.
           </p>
@@ -114,7 +114,7 @@ export default async function FinanceiroPage({
           </Link>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-white">
+        <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-surface">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 text-left text-xs font-medium uppercase tracking-wide text-slate-500">

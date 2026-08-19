@@ -78,7 +78,7 @@ export default async function ProjetosPage({
         </select>
         <button
           type="submit"
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+          className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white hover:bg-ink-700"
         >
           Filtrar
         </button>
@@ -87,7 +87,7 @@ export default async function ProjetosPage({
         </span>
       </form>
 
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white">
+      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-surface">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
@@ -157,7 +157,7 @@ export default async function ProjetosPage({
                     <td className="px-4 py-3 text-right">
                       <Link
                         href={`/projetos/${obra.id}`}
-                        className="rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-700"
+                        className="rounded-lg bg-ink-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-ink-700"
                       >
                         Abrir →
                       </Link>

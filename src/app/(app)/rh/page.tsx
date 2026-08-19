@@ -24,7 +24,7 @@ export default async function RhPage() {
       </div>
 
       {colaboradores.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-10 text-center">
           <p className="text-sm text-slate-500">
             Nenhum colaborador cadastrado ainda.
           </p>
@@ -41,7 +41,7 @@ export default async function RhPage() {
             <Link
               key={c.id}
               href={`/rh/${c.id}`}
-              className={`flex items-center gap-3 rounded-2xl border border-slate-200 bg-white p-4 hover:bg-slate-50 ${
+              className={`flex items-center gap-3 rounded-2xl border border-slate-200 bg-surface p-4 hover:bg-slate-50 ${
                 c.ativo ? "" : "opacity-50"
               }`}
             >

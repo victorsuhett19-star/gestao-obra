@@ -34,14 +34,14 @@ export function DonutChart({
   }
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5">
+    <div className="rounded-2xl border border-slate-200 bg-surface p-5">
       <p className="text-sm font-semibold text-slate-800">{titulo}</p>
       <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:items-center">
         <div
           className="relative h-40 w-40 shrink-0 rounded-full"
           style={{ background: `conic-gradient(${gradient})` }}
         >
-          <div className="absolute inset-4 flex flex-col items-center justify-center rounded-full bg-white text-center">
+          <div className="absolute inset-4 flex flex-col items-center justify-center rounded-full bg-surface text-center">
             <span className="text-xs text-slate-500">Total</span>
             <span className="text-sm font-semibold text-slate-900">
               {formatBRL(total)}

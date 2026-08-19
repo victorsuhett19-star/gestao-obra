@@ -78,7 +78,7 @@ export default async function PortalObraPage({
           )}
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
           {total === 0 ? (
             <p className="text-sm text-slate-500">
               O fluxo do seu projeto ainda não foi iniciado pela nossa equipe.
@@ -143,7 +143,7 @@ export default async function PortalObraPage({
           )}
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
           <p className="text-sm font-semibold text-slate-800">Anexos</p>
           <form
             action={uploadAnexoCliente.bind(null, obra.id)}
@@ -157,7 +157,7 @@ export default async function PortalObraPage({
             />
             <button
               type="submit"
-              className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+              className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
             >
               Anexar
             </button>

@@ -17,7 +17,7 @@ export default async function NovoEventoProjetoPage({
         <BackLink href={`/projetos/${obraId}/agenda`} label="Agenda" />
         <h2 className="mt-1 text-lg font-semibold text-slate-900">Novo evento</h2>
       </div>
-      <div className="max-w-xl rounded-2xl border border-slate-200 bg-white p-6">
+      <div className="max-w-xl rounded-2xl border border-slate-200 bg-surface p-6">
         <EventoForm
           obras={[]}
           obraIdFixo={obraId}

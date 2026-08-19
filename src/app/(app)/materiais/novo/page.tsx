@@ -13,7 +13,7 @@ export default function NovoMaterialPage() {
         <BackLink href="/materiais" label="Materiais" />
         <h1 className="mt-1 text-xl font-semibold text-slate-900">Novo material</h1>
       </div>
-      <div className="max-w-lg rounded-2xl border border-slate-200 bg-white p-6">
+      <div className="max-w-lg rounded-2xl border border-slate-200 bg-surface p-6">
         <MaterialForm />
       </div>
     </div>

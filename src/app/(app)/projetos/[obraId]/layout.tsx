@@ -70,7 +70,7 @@ export default async function ProjetoLayout({
               </summary>
               <form
                 action={adicionarEspecialidade.bind(null, obra.id)}
-                className="absolute right-0 z-10 mt-2 w-56 rounded-xl border border-slate-200 bg-white p-3 shadow-lg"
+                className="absolute right-0 z-10 mt-2 w-56 rounded-xl border border-slate-200 bg-surface p-3 shadow-lg"
               >
                 <p className="mb-2 text-xs text-slate-500">
                   Cliente decidiu fazer mais algum item com a gente:
@@ -99,7 +99,7 @@ export default async function ProjetoLayout({
                 </div>
                 <button
                   type="submit"
-                  className="mt-3 w-full rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700"
+                  className="mt-3 w-full rounded-lg bg-ink-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-ink-700"
                 >
                   Adicionar
                 </button>

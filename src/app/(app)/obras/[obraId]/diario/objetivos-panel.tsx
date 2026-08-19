@@ -17,7 +17,7 @@ export function ObjetivosPanel({
   const concluidos = objetivos.filter((o) => o.concluido);
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5">
+    <div className="rounded-2xl border border-slate-200 bg-surface p-5">
       <p className="text-sm font-semibold text-slate-900">
         Objetivos — {pendentes.length} pendente(s)
       </p>
@@ -64,7 +64,7 @@ export function ObjetivosPanel({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-60"
+          className="rounded-lg bg-ink-900 px-3 py-1.5 text-sm font-medium text-white transition hover:bg-ink-700 disabled:opacity-60"
         >
           + Adicionar
         </button>

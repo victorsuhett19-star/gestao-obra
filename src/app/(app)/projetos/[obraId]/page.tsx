@@ -75,7 +75,7 @@ export default async function ProjetoDetalhePage({
         </a>
       </div>
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 lg:col-span-2">
+        <div className="rounded-2xl border border-slate-200 bg-surface p-5 lg:col-span-2">
           <div className="flex items-center justify-between">
             <p className="text-sm font-semibold text-slate-800">
               Fluxo de entrega
@@ -95,7 +95,7 @@ export default async function ProjetoDetalhePage({
               <form action={gerarFluxoObra.bind(null, obra.id)} className="mt-3">
                 <button
                   type="submit"
-                  className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-700"
+                  className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white hover:bg-ink-700"
                 >
                   Gerar fluxo a partir do template da especialidade
                 </button>
@@ -163,7 +163,7 @@ export default async function ProjetoDetalhePage({
                               <form action={avancarEtapa.bind(null, obra.id, etapa.id)}>
                                 <button
                                   type="submit"
-                                  className="rounded-lg bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-700"
+                                  className="rounded-lg bg-ink-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-ink-700"
                                 >
                                   Avançar →
                                 </button>
@@ -202,7 +202,7 @@ export default async function ProjetoDetalhePage({
         </div>
 
         <div className="flex flex-col gap-4">
-          <div className="rounded-2xl border border-slate-200 bg-white p-5">
+          <div className="rounded-2xl border border-slate-200 bg-surface p-5">
             <p className="text-sm font-semibold text-slate-800">
               Acesso do cliente ao portal
             </p>
@@ -244,7 +244,7 @@ export default async function ProjetoDetalhePage({
             )}
           </div>
 
-          <div className="rounded-2xl border border-slate-200 bg-white p-5">
+          <div className="rounded-2xl border border-slate-200 bg-surface p-5">
             <p className="text-sm font-semibold text-slate-800">
               Histórico de anexos
             </p>

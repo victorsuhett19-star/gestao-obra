@@ -32,7 +32,7 @@ export function EtapaRow({
         <div className="flex w-32 items-center gap-2">
           <div className="h-2 flex-1 overflow-hidden rounded-full bg-slate-100">
             <div
-              className="h-full rounded-full bg-slate-900"
+              className="h-full rounded-full bg-ink-900"
               style={{ width: `${node.percentualConcluido}%` }}
             />
           </div>

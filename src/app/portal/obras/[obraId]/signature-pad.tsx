@@ -122,7 +122,7 @@ export function SignaturePad({
           type="button"
           onClick={confirmar}
           disabled={vazio || enviando}
-          className="rounded-lg bg-slate-900 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-60"
+          className="rounded-lg bg-ink-900 px-4 py-1.5 text-sm font-medium text-white transition hover:bg-ink-700 disabled:opacity-60"
         >
           {enviando ? "Enviando..." : "Confirmar assinatura"}
         </button>

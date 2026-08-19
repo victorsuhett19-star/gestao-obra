@@ -102,7 +102,7 @@ export function EventoForm({
               type="button"
               onClick={() => setCor(c)}
               aria-label={`Cor ${c}`}
-              className={`h-7 w-7 rounded-full border-2 ${cor === c ? "border-slate-900" : "border-transparent"}`}
+              className={`h-7 w-7 rounded-full border-2 ${cor === c ? "border-ink-900" : "border-transparent"}`}
               style={{ backgroundColor: c }}
             />
           ))}
@@ -140,7 +140,7 @@ export function EventoForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-60"
+          className="rounded-lg bg-ink-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-ink-700 disabled:opacity-60"
         >
           {pending ? "Salvando..." : "Agendar"}
         </button>

@@ -19,7 +19,7 @@ export default function NovoColaboradorPage() {
         </p>
       </div>
 
-      <div className="max-w-lg rounded-2xl border border-slate-200 bg-white p-6">
+      <div className="max-w-lg rounded-2xl border border-slate-200 bg-surface p-6">
         <ColaboradorForm />
       </div>
     </div>

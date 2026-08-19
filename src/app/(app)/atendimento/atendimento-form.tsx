@@ -70,7 +70,7 @@ export function AtendimentoForm({
           {TRADES.map((t) => (
             <label
               key={t}
-              className="cursor-pointer rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 has-[:checked]:border-slate-900 has-[:checked]:bg-slate-900 has-[:checked]:text-white"
+              className="cursor-pointer rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 has-[:checked]:border-ink-900 has-[:checked]:bg-ink-900 has-[:checked]:text-white"
             >
               <input
                 type="checkbox"
@@ -93,7 +93,7 @@ export function AtendimentoForm({
           {ORIGEM_ATENDIMENTO.map((o) => (
             <label
               key={o}
-              className="cursor-pointer rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 has-[:checked]:border-slate-900 has-[:checked]:bg-slate-900 has-[:checked]:text-white"
+              className="cursor-pointer rounded-lg border border-slate-300 px-3 py-2 text-sm font-medium text-slate-600 has-[:checked]:border-ink-900 has-[:checked]:bg-ink-900 has-[:checked]:text-white"
             >
               <input
                 type="radio"
@@ -256,7 +256,7 @@ export function AtendimentoForm({
             type="button"
             onClick={() => setCor(null)}
             aria-label="Sem cor"
-            className={`flex h-7 w-7 items-center justify-center rounded-full border-2 text-xs text-slate-400 ${cor === null ? "border-slate-900" : "border-slate-200"}`}
+            className={`flex h-7 w-7 items-center justify-center rounded-full border-2 text-xs text-slate-400 ${cor === null ? "border-ink-900" : "border-slate-200"}`}
           >
             ✕
           </button>
@@ -266,7 +266,7 @@ export function AtendimentoForm({
               type="button"
               onClick={() => setCor(c)}
               aria-label={`Cor ${c}`}
-              className={`h-7 w-7 rounded-full border-2 ${cor === c ? "border-slate-900" : "border-transparent"}`}
+              className={`h-7 w-7 rounded-full border-2 ${cor === c ? "border-ink-900" : "border-transparent"}`}
               style={{ backgroundColor: c }}
             />
           ))}
@@ -283,7 +283,7 @@ export function AtendimentoForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-60"
+          className="rounded-lg bg-ink-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-ink-700 disabled:opacity-60"
         >
           {pending
             ? "Salvando..."

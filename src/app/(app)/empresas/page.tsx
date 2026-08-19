@@ -54,7 +54,7 @@ export default async function EmpresasPage() {
       {isAdmin && (
         <form
           action={criarEmpresa}
-          className="flex max-w-md items-end gap-2 rounded-2xl border border-slate-200 bg-white p-4"
+          className="flex max-w-md items-end gap-2 rounded-2xl border border-slate-200 bg-surface p-4"
         >
           <div className="flex flex-1 flex-col gap-1.5">
             <label htmlFor="nome" className="text-sm font-medium text-slate-700">
@@ -69,7 +69,7 @@ export default async function EmpresasPage() {
           </div>
           <button
             type="submit"
-            className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+            className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
           >
             Criar
           </button>
@@ -80,7 +80,7 @@ export default async function EmpresasPage() {
         {empresas.map((empresa) => (
           <div
             key={empresa.id}
-            className="rounded-2xl border border-slate-200 bg-white p-5"
+            className="rounded-2xl border border-slate-200 bg-surface p-5"
           >
             <div className="flex items-center justify-between">
               <EmpresaNome

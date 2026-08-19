@@ -39,7 +39,7 @@ export default async function ConferenciaPage({
         </div>
         <Link
           href={`/obras/${obraId}/conferencia/novo`}
-          className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-slate-700"
+          className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-ink-700"
         >
           + Novo item
         </Link>
@@ -69,7 +69,7 @@ export default async function ConferenciaPage({
                   return (
                     <div
                       key={item.id}
-                      className="rounded-xl border border-slate-200 bg-white p-3 shadow-sm"
+                      className="rounded-xl border border-slate-200 bg-surface p-3 shadow-sm"
                     >
                       <p className="text-sm font-medium text-slate-900">
                         {item.titulo}

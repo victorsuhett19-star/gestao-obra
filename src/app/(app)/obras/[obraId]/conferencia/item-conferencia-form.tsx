@@ -86,7 +86,7 @@ export function ItemConferenciaForm({
         <button
           type="submit"
           disabled={pending}
-          className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-slate-700 disabled:opacity-60"
+          className="rounded-lg bg-ink-900 px-5 py-2 text-sm font-medium text-white transition hover:bg-ink-700 disabled:opacity-60"
         >
           {pending ? "Salvando..." : "Adicionar ao funil"}
         </button>

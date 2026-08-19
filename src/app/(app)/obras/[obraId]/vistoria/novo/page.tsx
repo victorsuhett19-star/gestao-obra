@@ -19,7 +19,7 @@ export default async function NovaVistoriaPage({
           Novo relatório de vistoria
         </h2>
       </div>
-      <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-6">
+      <div className="max-w-2xl rounded-2xl border border-slate-200 bg-surface p-6">
         <VistoriaForm obraId={obraId} />
       </div>
     </div>

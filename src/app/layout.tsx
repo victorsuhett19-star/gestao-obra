@@ -28,12 +28,28 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
+// Aplica a preferência de tema salva (claro/escuro) antes da página
+// pintar, pra não piscar o tema errado por uma fração de segundo.
+const themeInitScript = `
+(function () {
+  try {
+    var tema = localStorage.getItem("tema");
+    if (tema === "light" || tema === "dark") {
+      document.documentElement.classList.add(tema);
+    }
+  } catch (e) {}
+})();
+`;
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
   );

@@ -18,7 +18,7 @@ export default function NovoUsuarioPage() {
           Cria um login para um funcionário acessar o sistema.
         </p>
       </div>
-      <div className="max-w-lg rounded-2xl border border-slate-200 bg-white p-6">
+      <div className="max-w-lg rounded-2xl border border-slate-200 bg-surface p-6">
         <UsuarioForm />
       </div>
     </div>

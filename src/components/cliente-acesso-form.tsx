@@ -59,7 +59,7 @@ export function ClienteAcessoForm({
       <button
         type="submit"
         disabled={pending}
-        className="mt-1 rounded-lg bg-slate-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-slate-700 disabled:opacity-60"
+        className="mt-1 rounded-lg bg-ink-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-ink-700 disabled:opacity-60"
       >
         {pending ? "Criando..." : "Criar acesso do cliente"}
       </button>

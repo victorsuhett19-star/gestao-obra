@@ -42,7 +42,7 @@ export default async function EditarEtapaPage({
         <BackLink href={`/obras/${obraId}/cronograma`} label="Cronograma" />
         <h2 className="mt-1 text-lg font-semibold text-slate-900">Editar etapa</h2>
       </div>
-      <div className="max-w-2xl rounded-2xl border border-slate-200 bg-white p-6">
+      <div className="max-w-2xl rounded-2xl border border-slate-200 bg-surface p-6">
         <EtapaForm
           obraId={obraId}
           etapasParaSelecao={etapasParaSelecao}

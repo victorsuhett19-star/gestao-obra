@@ -65,25 +65,14 @@ export async function saveAtendimento(
   redirect("/atendimento");
 }
 
-const ORDEM_STATUS = STATUS_ATENDIMENTO;
-
-export async function moverAtendimento(
-  atendimentoId: string,
-  direcao: "avancar" | "voltar"
-) {
+/** Move o atendimento direto pra qualquer etapa (arrastar-e-soltar no
+ * Kanban), sem precisar passar pelas etapas intermediárias. */
+export async function moverAtendimentoPara(atendimentoId: string, novoStatus: string) {
   await verifySession();
-  const item = await prisma.atendimento.findUnique({ where: { id: atendimentoId } });
-  if (!item) return;
-
-  const indiceAtual = ORDEM_STATUS.indexOf(item.status);
-  const novoIndice =
-    direcao === "avancar"
-      ? Math.min(indiceAtual + 1, ORDEM_STATUS.length - 1)
-      : Math.max(indiceAtual - 1, 0);
-
+  if (!STATUS_ATENDIMENTO.includes(novoStatus as (typeof STATUS_ATENDIMENTO)[number])) return;
   await prisma.atendimento.update({
     where: { id: atendimentoId },
-    data: { status: ORDEM_STATUS[novoIndice] },
+    data: { status: novoStatus as never },
   });
   revalidatePath("/atendimento");
 }

@@ -62,7 +62,7 @@ export default async function CronogramaPage({
           </Link>
         </div>
       ) : (
-        <div className="rounded-2xl border border-slate-200 bg-surface px-4">
+        <div className="card px-4">
           {arvore.map((node) => (
             <EtapaRow key={node.id} node={node} obraId={obraId} />
           ))}

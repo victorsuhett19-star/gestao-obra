@@ -57,7 +57,7 @@ export default async function AgendaProjetoPage({
             return (
               <div
                 key={e.id}
-                className={`flex items-center justify-between gap-3 rounded-2xl border border-slate-200 bg-surface p-4 ${passado ? "opacity-60" : ""}`}
+                className={`flex items-center justify-between gap-3 card p-4 ${passado ? "opacity-60" : ""}`}
               >
                 <div>
                   <p className="text-sm font-medium text-slate-900">{e.titulo}</p>

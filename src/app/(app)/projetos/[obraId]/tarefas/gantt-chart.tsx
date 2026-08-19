@@ -45,7 +45,7 @@ export function GanttChart({ tarefas }: { tarefas: Tarefa[] }) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-surface p-5">
+    <div className="overflow-x-auto card p-5">
       <div className="mb-3 flex justify-between text-xs text-slate-400">
         <span>{formatDateOnly(menorData)}</span>
         <span>{formatDateOnly(maiorData)}</span>

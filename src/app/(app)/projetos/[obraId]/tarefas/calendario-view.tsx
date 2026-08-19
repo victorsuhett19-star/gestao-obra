@@ -54,7 +54,7 @@ export function CalendarioView({
   }
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+    <div className="card p-5">
       <div className="mb-4 flex items-center justify-between">
         <Link
           href={`/projetos/${obraId}/tarefas?view=calendario&ano=${mesAnterior.ano}&mes=${mesAnterior.mes}`}

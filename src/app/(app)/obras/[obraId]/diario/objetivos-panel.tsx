@@ -17,7 +17,7 @@ export function ObjetivosPanel({
   const concluidos = objetivos.filter((o) => o.concluido);
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+    <div className="card p-5">
       <p className="text-sm font-semibold text-slate-900">
         Objetivos — {pendentes.length} pendente(s)
       </p>

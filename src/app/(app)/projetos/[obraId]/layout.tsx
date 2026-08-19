@@ -70,7 +70,7 @@ export default async function ProjetoLayout({
               </summary>
               <form
                 action={adicionarEspecialidade.bind(null, obra.id)}
-                className="absolute right-0 z-10 mt-2 w-56 rounded-xl border border-slate-200 bg-surface p-3 shadow-lg"
+                className="absolute right-0 z-10 mt-2 w-56 card p-3 shadow-lg"
               >
                 <p className="mb-2 text-xs text-slate-500">
                   Cliente decidiu fazer mais algum item com a gente:

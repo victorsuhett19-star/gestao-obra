@@ -87,7 +87,7 @@ export default async function ProjetosPage({
         </span>
       </form>
 
-      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-surface">
+      <div className="overflow-hidden card">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50 text-left text-xs font-medium uppercase tracking-wide text-slate-500">

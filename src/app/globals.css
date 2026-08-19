@@ -106,6 +106,30 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Card padrão dos módulos — flat design com glassmorphism bem sutil.
+   Cantos bem arredondados, borda quase invisível, pouquíssima sombra e um
+   fundo levemente translúcido (levemente diferente do background, não um
+   contraste forte). A sensação de profundidade vem da diferença mínima de
+   tonalidade entre background → card → elementos internos, não de sombra
+   forte + borda + gradiente. */
+@utility card {
+  border-radius: 1.375rem;
+  border: 1px solid color-mix(in oklab, var(--slate-200) 55%, transparent);
+  background-color: color-mix(in oklab, var(--surface) 90%, transparent);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 1px 2px color-mix(in oklab, black 4%, transparent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) .card {
+    box-shadow: none;
+  }
+}
+:root.dark .card {
+  box-shadow: none;
+}
+
 /* Esconde a barra de rolagem visualmente, mantendo o scroll funcionando
    (usado nos quadros Kanban com rolagem horizontal). */
 .scrollbar-hide {

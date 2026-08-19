@@ -76,7 +76,7 @@ export default async function DiarioPage({
       ) : (
         <div className="flex flex-col gap-4">
           {registros.map((r) => (
-            <div key={r.id} className="rounded-2xl border border-slate-200 bg-surface p-5">
+            <div key={r.id} className="card p-5">
               <div className="flex items-start justify-between">
                 <div>
                   <p className="text-sm font-semibold text-slate-900">

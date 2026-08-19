@@ -54,7 +54,7 @@ export default async function EmpresasPage() {
       {isAdmin && (
         <form
           action={criarEmpresa}
-          className="flex max-w-md items-end gap-2 rounded-2xl border border-slate-200 bg-surface p-4"
+          className="flex max-w-md items-end gap-2 card p-4"
         >
           <div className="flex flex-1 flex-col gap-1.5">
             <label htmlFor="nome" className="text-sm font-medium text-slate-700">
@@ -80,7 +80,7 @@ export default async function EmpresasPage() {
         {empresas.map((empresa) => (
           <div
             key={empresa.id}
-            className="rounded-2xl border border-slate-200 bg-surface p-5"
+            className="card p-5"
           >
             <div className="flex items-center justify-between">
               <EmpresaNome

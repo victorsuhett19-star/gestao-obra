@@ -45,7 +45,7 @@ export default async function VistoriaDetailPage({
         </Link>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-surface p-6">
+      <div className="card p-6">
         <h2 className="border-b border-slate-200 pb-3 text-center text-base font-semibold uppercase tracking-wide text-slate-800">
           Relatório de supervisão
         </h2>

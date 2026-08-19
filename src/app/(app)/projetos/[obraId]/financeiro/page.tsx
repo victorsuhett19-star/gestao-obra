@@ -47,15 +47,15 @@ export default async function FinanceiroProjetoPage({
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
+        <div className="card p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Receita</p>
           <p className="mt-1 text-lg font-semibold text-emerald-600">{formatBRL(receita)}</p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
+        <div className="card p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Gasto total</p>
           <p className="mt-1 text-lg font-semibold text-red-600">{formatBRL(custo)}</p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
+        <div className="card p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Lucro</p>
           <p className={`mt-1 text-lg font-semibold ${lucro >= 0 ? "text-slate-900" : "text-red-600"}`}>
             {formatBRL(lucro)}
@@ -74,7 +74,7 @@ export default async function FinanceiroProjetoPage({
           </Link>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-surface">
+        <div className="overflow-x-auto card">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 text-left text-xs font-medium uppercase tracking-wide text-slate-500">

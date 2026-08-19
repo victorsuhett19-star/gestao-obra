@@ -41,7 +41,7 @@ export default async function RhPage() {
             <Link
               key={c.id}
               href={`/rh/${c.id}`}
-              className={`flex items-center gap-3 rounded-2xl border border-slate-200 bg-surface p-4 hover:bg-slate-50 ${
+              className={`flex items-center gap-3 card p-4 hover:bg-slate-50 ${
                 c.ativo ? "" : "opacity-50"
               }`}
             >

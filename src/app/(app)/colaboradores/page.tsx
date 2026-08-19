@@ -51,7 +51,7 @@ export default async function ColaboradoresPage() {
           {colaboradores.map((c) => (
             <div
               key={c.id}
-              className={`flex items-center gap-3 rounded-2xl border border-slate-200 bg-surface p-4 ${
+              className={`flex items-center gap-3 card p-4 ${
                 c.ativo ? "" : "opacity-50"
               }`}
             >

@@ -28,7 +28,7 @@ export default async function NovoDiarioPage({
           Novo registro de diário
         </h2>
       </div>
-      <div className="max-w-2xl rounded-2xl border border-slate-200 bg-surface p-6">
+      <div className="max-w-2xl card p-6">
         <DiarioForm obraId={obraId} colaboradores={colaboradores} />
       </div>
     </div>

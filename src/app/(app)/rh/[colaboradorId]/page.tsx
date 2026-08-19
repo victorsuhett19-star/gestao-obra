@@ -63,7 +63,7 @@ export default async function RhColaboradorPage({
         <p className="text-sm text-slate-500">{colaborador.funcao ?? "—"}</p>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+      <div className="card p-5">
         <p className="text-sm font-semibold text-slate-800">
           Cartão de ponto
         </p>
@@ -97,7 +97,7 @@ export default async function RhColaboradorPage({
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+      <div className="card p-5">
         <p className="text-sm font-semibold text-slate-800">Férias e folgas</p>
         <div className="mt-3">
           <FolgaForm colaboradorId={colaborador.id} />
@@ -162,7 +162,7 @@ export default async function RhColaboradorPage({
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+      <div className="card p-5">
         <p className="text-sm font-semibold text-slate-800">
           Folha de pagamento
         </p>

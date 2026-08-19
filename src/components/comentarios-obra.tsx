@@ -22,7 +22,7 @@ export function ComentariosObra({
   autorAtualEhCliente?: boolean;
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+    <div className="card p-5">
       <p className="text-sm font-semibold text-slate-800">Comentários</p>
       <p className="mt-0.5 text-xs text-slate-400">
         Descreva situações que ocorreram no trabalho, para que todos os

@@ -33,7 +33,7 @@ export default async function NovaTarefaPage({
         <BackLink href={`/projetos/${obraId}/tarefas`} label="Tarefas" />
         <h2 className="mt-1 text-lg font-semibold text-slate-900">Nova tarefa</h2>
       </div>
-      <div className="max-w-2xl rounded-2xl border border-slate-200 bg-surface p-6">
+      <div className="max-w-2xl card p-6">
         <TarefaForm obraId={obraId} usuarios={usuarios} outrasTarefas={tarefas} />
       </div>
     </div>

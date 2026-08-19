@@ -14,7 +14,7 @@ export function NotasObra({
   }[];
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+    <div className="card p-5">
       <p className="text-sm font-semibold text-slate-800">Anotações</p>
       <p className="mt-0.5 text-xs text-slate-400">
         Só a equipe interna vê isso — não aparece no portal do cliente.

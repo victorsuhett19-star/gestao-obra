@@ -73,7 +73,7 @@ export default async function MateriaisObraPage({
             <Link
               key={p.id}
               href={`/obras/${obraId}/materiais/${p.id}`}
-              className="flex items-center justify-between rounded-2xl border border-slate-200 bg-surface p-4 hover:bg-slate-50"
+              className="flex items-center justify-between card p-4 hover:bg-slate-50"
             >
               <div>
                 <p className="text-sm font-medium text-slate-900">

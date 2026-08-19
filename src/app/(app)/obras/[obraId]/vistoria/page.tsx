@@ -58,7 +58,7 @@ export default async function VistoriaPage({
             <Link
               key={v.id}
               href={`/obras/${obraId}/vistoria/${v.id}`}
-              className="flex items-center justify-between rounded-2xl border border-slate-200 bg-surface p-4 hover:bg-slate-50"
+              className="flex items-center justify-between card p-4 hover:bg-slate-50"
             >
               <div>
                 <p className="text-sm font-medium text-slate-900">

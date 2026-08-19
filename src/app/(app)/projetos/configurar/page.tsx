@@ -62,7 +62,7 @@ export default async function ConfigurarEtapasPage({
         ))}
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+      <div className="card p-5">
         <EtapaTemplateForm trade={trade} />
 
         <div className="mt-5 flex flex-col gap-1.5">

@@ -114,7 +114,7 @@ export default async function FinanceiroEmpresaPage({
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+        <div className="card p-5">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Receitas do mês
           </p>
@@ -125,7 +125,7 @@ export default async function FinanceiroEmpresaPage({
             Contas: {formatBRL(receitaContas)} · Obras: {formatBRL(receitaObras)}
           </p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+        <div className="card p-5">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Custos do mês
           </p>
@@ -136,7 +136,7 @@ export default async function FinanceiroEmpresaPage({
             Contas: {formatBRL(custoContas)} · Obras: {formatBRL(custoObras)}
           </p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+        <div className="card p-5">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Resultado (DRE)
           </p>
@@ -154,7 +154,7 @@ export default async function FinanceiroEmpresaPage({
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+        <div className="card p-5">
           <p className="text-sm font-semibold text-slate-800">
             Contas a pagar pendentes
           </p>
@@ -206,7 +206,7 @@ export default async function FinanceiroEmpresaPage({
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+        <div className="card p-5">
           <p className="text-sm font-semibold text-slate-800">
             Contas a receber pendentes
           </p>

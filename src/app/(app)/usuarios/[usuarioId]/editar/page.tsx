@@ -27,7 +27,7 @@ export default async function EditarUsuarioPage({
           Editar usuário
         </h1>
       </div>
-      <div className="max-w-lg rounded-2xl border border-slate-200 bg-surface p-6">
+      <div className="max-w-lg card p-6">
         <UsuarioForm usuario={usuario} />
       </div>
     </div>

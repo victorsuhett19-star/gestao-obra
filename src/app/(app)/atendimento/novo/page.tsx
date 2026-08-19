@@ -27,7 +27,7 @@ export default async function NovoAtendimentoPage() {
         <BackLink href="/atendimento" label="Atendimento" />
         <h1 className="mt-1 text-xl font-semibold text-slate-900">Novo atendimento</h1>
       </div>
-      <div className="max-w-2xl rounded-2xl border border-slate-200 bg-surface p-6">
+      <div className="max-w-2xl card p-6">
         <AtendimentoForm usuarios={usuarios} colaboradores={colaboradores} />
       </div>
     </div>

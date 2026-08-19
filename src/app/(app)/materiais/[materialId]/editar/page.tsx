@@ -29,7 +29,7 @@ export default async function EditarMaterialPage({
           Editar material
         </h1>
       </div>
-      <div className="max-w-lg rounded-2xl border border-slate-200 bg-surface p-6">
+      <div className="max-w-lg card p-6">
         <MaterialForm material={material} />
       </div>
     </div>

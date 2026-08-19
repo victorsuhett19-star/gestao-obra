@@ -22,7 +22,7 @@ export default async function EditarObraPage({
   }
 
   return (
-    <div className="max-w-2xl rounded-2xl border border-slate-200 bg-surface p-6">
+    <div className="max-w-2xl card p-6">
       <ObraForm
         obra={{
           id: obra.id,

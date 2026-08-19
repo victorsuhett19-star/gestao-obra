@@ -190,7 +190,7 @@ export default async function DashboardFinanceiroPage({
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+        <div className="card p-5">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Receita {mes ? "do mês" : "total"}
           </p>
@@ -198,7 +198,7 @@ export default async function DashboardFinanceiroPage({
             {formatBRL(receitaTotal)}
           </p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+        <div className="card p-5">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Despesas {mes ? "do mês" : "total"}
           </p>
@@ -206,7 +206,7 @@ export default async function DashboardFinanceiroPage({
             {formatBRL(despesaTotal)}
           </p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+        <div className="card p-5">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Lucro {mes ? "do mês" : "total"}
           </p>
@@ -216,7 +216,7 @@ export default async function DashboardFinanceiroPage({
             {formatBRL(lucroTotal)}
           </p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+        <div className="card p-5">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Margem de lucro
           </p>
@@ -233,7 +233,7 @@ export default async function DashboardFinanceiroPage({
         <DonutChart titulo="Despesas por especialidade" segments={despesaSegments} />
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+      <div className="card p-5">
         <p className="text-sm font-semibold text-slate-800">
           Todos os gastos, por categoria
         </p>
@@ -276,7 +276,7 @@ export default async function DashboardFinanceiroPage({
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+      <div className="card p-5">
         <p className="text-sm font-semibold text-slate-800">
           Gasto e lucro por especialidade
         </p>

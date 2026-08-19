@@ -79,7 +79,7 @@ export default async function AgendaPage() {
                 {eventosDoDia.map((evento) => (
                   <div
                     key={evento.id}
-                    className="flex items-center justify-between rounded-2xl border border-slate-200 bg-surface p-4"
+                    className="flex items-center justify-between card p-4"
                   >
                     <div>
                       <p className="text-sm font-medium text-slate-900">
@@ -108,7 +108,7 @@ export default async function AgendaPage() {
       )}
 
       {passados.length > 0 && (
-        <details className="rounded-2xl border border-slate-200 bg-surface p-4">
+        <details className="card p-4">
           <summary className="cursor-pointer text-sm font-medium text-slate-600">
             Eventos passados ({passados.length})
           </summary>

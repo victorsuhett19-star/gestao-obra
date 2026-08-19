@@ -69,7 +69,7 @@ export default async function ConferenciaPage({
                   return (
                     <div
                       key={item.id}
-                      className="rounded-xl border border-slate-200 bg-surface p-3 shadow-sm"
+                      className="card p-3"
                     >
                       <p className="text-sm font-medium text-slate-900">
                         {item.titulo}

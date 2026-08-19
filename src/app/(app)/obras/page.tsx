@@ -52,7 +52,7 @@ export default async function ObrasPage({
 
       <form
         method="get"
-        className="flex flex-wrap items-end gap-3 rounded-2xl border border-slate-200 bg-surface p-4"
+        className="flex flex-wrap items-end gap-3 card p-4"
       >
         <div className="flex flex-col gap-1.5">
           <label htmlFor="status" className="text-xs font-medium text-slate-500">
@@ -121,7 +121,7 @@ export default async function ObrasPage({
           </Link>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-surface">
+        <div className="overflow-hidden card">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 text-left text-xs font-medium uppercase tracking-wide text-slate-500">

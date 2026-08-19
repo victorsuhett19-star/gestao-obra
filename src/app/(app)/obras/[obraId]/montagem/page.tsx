@@ -72,7 +72,7 @@ export default async function MontagemPage({
               <Link
                 key={r.id}
                 href={`/obras/${obraId}/montagem/${r.id}`}
-                className="flex items-center justify-between rounded-2xl border border-slate-200 bg-surface p-4 hover:bg-slate-50"
+                className="flex items-center justify-between card p-4 hover:bg-slate-50"
               >
                 <div>
                   <p className="text-sm font-medium text-slate-900">

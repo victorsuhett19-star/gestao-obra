@@ -59,7 +59,7 @@ export default async function FinanceiroPage({
       </div>
 
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
+        <div className="card p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Orçado
           </p>
@@ -67,7 +67,7 @@ export default async function FinanceiroPage({
             {formatBRL(orcado)}
           </p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
+        <div className="card p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Custo realizado
           </p>
@@ -75,7 +75,7 @@ export default async function FinanceiroPage({
             {formatBRL(custo)}
           </p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
+        <div className="card p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Receita
           </p>
@@ -83,7 +83,7 @@ export default async function FinanceiroPage({
             {formatBRL(receita)}
           </p>
         </div>
-        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
+        <div className="card p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Saldo (orçado − custo)
           </p>
@@ -114,7 +114,7 @@ export default async function FinanceiroPage({
           </Link>
         </div>
       ) : (
-        <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-surface">
+        <div className="overflow-x-auto card">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-slate-200 text-left text-xs font-medium uppercase tracking-wide text-slate-500">

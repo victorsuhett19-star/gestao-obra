@@ -22,7 +22,7 @@ export function RelatorioTab({
 }) {
   return (
     <div className="flex flex-col gap-4">
-      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+      <div className="card p-5">
         <p className="text-sm font-semibold text-slate-800">Gerar relatório</p>
         <p className="mt-0.5 text-xs text-slate-400">
           Escolha um template já criado — o relatório sai em PDF com os dados
@@ -55,7 +55,7 @@ export function RelatorioTab({
         )}
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+      <div className="card p-5">
         <p className="text-sm font-semibold text-slate-800">
           Relatórios gerados
         </p>
@@ -98,7 +98,7 @@ export function RelatorioTab({
         </div>
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+      <div className="card p-5">
         <p className="text-sm font-semibold text-slate-800">Templates</p>
         <p className="mt-0.5 text-xs text-slate-400">
           Base reutilizável em qualquer projeto/obra. Use{" "}

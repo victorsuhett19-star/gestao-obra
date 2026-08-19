@@ -71,14 +71,14 @@ export default async function ObraOverviewPage({
         </a>
       </div>
       {obra.descricao && (
-        <div className="rounded-2xl border border-slate-200 bg-surface p-6">
+        <div className="card p-6">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
             Descrição do serviço
           </p>
           <p className="mt-0.5 text-sm text-slate-900">{obra.descricao}</p>
         </div>
       )}
-      <div className="grid grid-cols-1 gap-4 rounded-2xl border border-slate-200 bg-surface p-6 sm:grid-cols-2">
+      <div className="grid grid-cols-1 gap-4 card p-6 sm:grid-cols-2">
         {campos.map((campo) => (
           <div key={campo.label}>
             <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
@@ -89,7 +89,7 @@ export default async function ObraOverviewPage({
         ))}
       </div>
 
-      <div className="rounded-2xl border border-slate-200 bg-surface p-6">
+      <div className="card p-6">
         <p className="text-sm font-semibold text-slate-800">
           Acesso do cliente ao portal
         </p>

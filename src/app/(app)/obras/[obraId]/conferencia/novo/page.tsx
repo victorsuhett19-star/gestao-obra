@@ -28,7 +28,7 @@ export default async function NovoItemConferenciaPage({
           Novo item de conferência
         </h2>
       </div>
-      <div className="max-w-xl rounded-2xl border border-slate-200 bg-surface p-6">
+      <div className="max-w-xl card p-6">
         <ItemConferenciaForm obraId={obraId} usuarios={usuarios} />
       </div>
     </div>

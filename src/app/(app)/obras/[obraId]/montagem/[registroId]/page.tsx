@@ -84,7 +84,7 @@ export default async function MontagemDetailPage({
         ))}
       </div>
 
-      <div className="overflow-x-auto rounded-2xl border border-slate-200 bg-surface">
+      <div className="overflow-x-auto card">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-slate-200 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
@@ -114,7 +114,7 @@ export default async function MontagemDetailPage({
       </div>
 
       {registro.itensExtras.length > 0 && (
-        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
+        <div className="card p-4">
           <p className="text-sm font-semibold text-slate-800">Itens extras</p>
           <div className="mt-2 flex flex-col gap-1">
             {registro.itensExtras.map((item) => (
@@ -145,7 +145,7 @@ export default async function MontagemDetailPage({
       )}
 
       {registro.faltasFabrica.length > 0 && (
-        <div className="rounded-2xl border border-slate-200 bg-surface p-4">
+        <div className="card p-4">
           <p className="text-sm font-semibold text-slate-800">
             Faltas de fábrica
           </p>

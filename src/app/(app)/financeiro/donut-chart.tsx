@@ -34,7 +34,7 @@ export function DonutChart({
   }
 
   return (
-    <div className="rounded-2xl border border-slate-200 bg-surface p-5">
+    <div className="card p-5">
       <p className="text-sm font-semibold text-slate-800">{titulo}</p>
       <div className="mt-4 flex flex-col items-center gap-4 sm:flex-row sm:items-center">
         <div

@@ -10,7 +10,7 @@ import {
   excluirAnexo,
 } from "@/app/actions/projetos";
 import { AnexoUploadForm } from "./anexo-upload-form";
-import { ClienteAcessoForm } from "./cliente-acesso-form";
+import { ClienteAcessoForm } from "@/components/cliente-acesso-form";
 
 export const metadata: Metadata = {
   title: "Projeto — Gestão de Obra",

@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { getUser } from "@/lib/dal";
 import { formatDate as formatDateTimestamp, formatDateOnly } from "@/lib/labels";
+import { ClienteAcessoForm } from "@/components/cliente-acesso-form";
 
 // dataInicio/FimPrevista/Real vêm de <input type="date"> (dia puro, sem
 // hora) — precisam ser lidas em UTC para não recuar um dia no fuso local.
@@ -13,8 +15,13 @@ export default async function ObraOverviewPage({
   params,
 }: PageProps<"/obras/[obraId]">) {
   const { obraId } = await params;
+  const user = await getUser();
+  const isAdmin = user?.papel === "ADMIN" || user?.papel === "GESTOR";
 
-  const obra = await prisma.obra.findUnique({ where: { id: obraId } });
+  const obra = await prisma.obra.findUnique({
+    where: { id: obraId },
+    include: { clienteAcesso: true },
+  });
   if (!obra) {
     notFound();
   }
@@ -59,6 +66,38 @@ export default async function ObraOverviewPage({
             <p className="mt-0.5 text-sm text-slate-900">{campo.valor}</p>
           </div>
         ))}
+      </div>
+
+      <div className="rounded-2xl border border-slate-200 bg-white p-6">
+        <p className="text-sm font-semibold text-slate-800">
+          Acesso do cliente ao portal
+        </p>
+        {obra.clienteAcesso ? (
+          <div className="mt-2 text-sm text-slate-600">
+            <p className="font-medium text-slate-800">{obra.clienteAcesso.nome}</p>
+            <p className="text-xs text-slate-500">{obra.clienteAcesso.email}</p>
+            <p className="mt-2 text-xs text-emerald-600">
+              ✓ Cliente pode ver e assinar em /portal
+            </p>
+          </div>
+        ) : isAdmin ? (
+          <>
+            <p className="mt-1 text-xs text-slate-500">
+              Crie um login para o cliente acompanhar este projeto e assinar
+              pelo portal.
+            </p>
+            <ClienteAcessoForm
+              obraId={obra.id}
+              nomeInicial={obra.clienteNome ?? ""}
+              emailInicial={obra.clienteEmail ?? ""}
+              telefoneInicial={obra.clienteTelefone ?? ""}
+            />
+          </>
+        ) : (
+          <p className="mt-2 text-sm text-slate-500">
+            Nenhum acesso criado ainda.
+          </p>
+        )}
       </div>
     </div>
   );

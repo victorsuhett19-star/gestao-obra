@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function MarmorariaPage() {
-  return <TradeWorkspacePage trade="MARMORARIA" emoji="🪨" />;
+  return <TradeWorkspacePage trade="MARMORARIA" />;
 }

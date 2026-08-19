@@ -6,5 +6,5 @@ export const metadata: Metadata = {
 };
 
 export default function VidracariaPage() {
-  return <TradeWorkspacePage trade="VIDRACARIA" emoji="🪟" />;
+  return <TradeWorkspacePage trade="VIDRACARIA" />;
 }

@@ -9,10 +9,8 @@ import { STATUS_OBRA_LABEL, STATUS_OBRA_COLOR, TRADE_LABEL } from "@/lib/labels"
 // financeiro e dashboard dele).
 export async function TradeWorkspacePage({
   trade,
-  emoji,
 }: {
   trade: "MARCENARIA" | "MARMORARIA" | "VIDRACARIA";
-  emoji: string;
 }) {
   const empresaAtivaId = await getEmpresaAtivaId();
 
@@ -34,7 +32,7 @@ export async function TradeWorkspacePage({
     <div className="flex flex-col gap-6">
       <div>
         <h1 className="text-xl font-semibold text-slate-900">
-          {emoji} {TRADE_LABEL[trade]}
+          {TRADE_LABEL[trade]}
         </h1>
         <p className="text-sm text-slate-500">
           {obras.length} projeto(s) · {emAndamento} em andamento

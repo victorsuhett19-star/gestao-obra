@@ -29,6 +29,7 @@ export async function saveObra(
     status: formData.get("status"),
     dataInicioPrevista: formData.get("dataInicioPrevista"),
     dataFimPrevista: formData.get("dataFimPrevista"),
+    driveUrl: formData.get("driveUrl"),
     trades: formData.getAll("trades"),
   });
 
@@ -46,6 +47,7 @@ export async function saveObra(
     descricao,
     condicoesPagamento,
     prazoExecucaoDias,
+    driveUrl,
     ...rest
   } = validatedFields.data;
 
@@ -59,6 +61,7 @@ export async function saveObra(
     descricao: descricao || null,
     condicoesPagamento: condicoesPagamento || null,
     prazoExecucaoDias: prazoExecucaoDias ? Number(prazoExecucaoDias) : null,
+    driveUrl: driveUrl || null,
     dataInicioPrevista: rest.dataInicioPrevista
       ? new Date(rest.dataInicioPrevista)
       : null,

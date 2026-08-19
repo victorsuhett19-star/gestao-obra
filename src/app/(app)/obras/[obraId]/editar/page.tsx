@@ -38,6 +38,7 @@ export default async function EditarObraPage({
           status: obra.status,
           dataInicioPrevista: obra.dataInicioPrevista,
           dataFimPrevista: obra.dataFimPrevista,
+          driveUrl: obra.driveUrl,
           trades: obra.trades.map((t) => t.trade),
         }}
       />

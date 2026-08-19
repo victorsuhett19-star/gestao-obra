@@ -51,6 +51,7 @@ export const ObraFormSchema = z.object({
   status: z.enum(STATUS_OBRA, { error: "Selecione um status." }),
   dataInicioPrevista: z.string().trim().optional().or(z.literal("")),
   dataFimPrevista: z.string().trim().optional().or(z.literal("")),
+  driveUrl: z.string().trim().optional().or(z.literal("")),
   trades: z
     .array(z.enum(TRADES))
     .min(1, { error: "Selecione ao menos uma especialidade." }),

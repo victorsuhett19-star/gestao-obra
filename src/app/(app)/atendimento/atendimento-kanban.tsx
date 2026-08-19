@@ -182,7 +182,7 @@ export function AtendimentoKanban({ atendimentos }: { atendimentos: Atendimento[
                       value={status}
                       onChange={(e) => mudarStatus(item.id, e.target.value)}
                       onClick={(e) => e.stopPropagation()}
-                      className="min-w-0 flex-1 rounded-md border border-slate-200 bg-slate-50 px-1.5 py-1 text-[11px] text-slate-600 outline-none focus:border-slate-400"
+                      className="min-w-0 flex-1 rounded-md border border-slate-200 bg-slate-50 px-1.5 py-1 text-[11px] font-medium text-slate-900 outline-none transition-colors duration-150 focus:border-slate-400"
                     >
                       {STATUS_ATENDIMENTO.map((s) => (
                         <option key={s} value={s}>

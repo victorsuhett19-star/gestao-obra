@@ -116,7 +116,12 @@ export default async function ProjetosPage({
                 return (
                   <tr key={obra.id} className="border-b border-slate-100 last:border-0">
                     <td className="px-4 py-3">
-                      <p className="font-medium text-slate-900">{obra.nome}</p>
+                      <Link
+                        href={`/projetos/${obra.id}`}
+                        className="font-medium text-slate-900 hover:underline"
+                      >
+                        {obra.nome}
+                      </Link>
                       <p className="text-xs text-slate-500">
                         {obra.clienteNome || "Sem cliente"}
                       </p>

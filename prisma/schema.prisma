@@ -32,6 +32,7 @@ model Empresa {
   clientes             Cliente[]
   etapaProjetoTemplates EtapaProjetoTemplate[]
   arquivos              Arquivo[]
+  relatorioTemplates    RelatorioTemplate[]
 }
 
 // Acesso extra de um usuário a outras empresas além da sua "empresa principal"
@@ -108,6 +109,7 @@ model Usuario {
   tarefasResponsavel   Tarefa[]          @relation("TarefaResponsavel")
   notasObraCriadas     NotaObra[]        @relation("NotaObraCriadaPor")
   comentariosObra      ComentarioObra[]  @relation("ComentarioObraAutorUsuario")
+  relatoriosGerados    RelatorioObra[]   @relation("RelatorioObraCriadoPor")
 }
 
 // ---------------------------------------------------------------------------
@@ -176,6 +178,7 @@ model Obra {
   tarefas              Tarefa[]
   notas                NotaObra[]
   comentarios          ComentarioObra[]
+  relatorios           RelatorioObra[]
 }
 
 model ObraTrade {
@@ -934,4 +937,33 @@ model ComentarioObra {
   autorClienteId    String?
   autorCliente      Cliente? @relation(fields: [autorClienteId], references: [id])
   criadoEm          DateTime @default(now())
+}
+
+// Base reutilizável (por empresa) pra gerar relatórios em PDF — o texto
+// aceita os placeholders {{obra}}, {{cliente}}, {{endereco}} e {{data}},
+// substituídos toda vez que um relatório é gerado a partir dela.
+model RelatorioTemplate {
+  id         String          @id @default(cuid())
+  empresaId  String
+  empresa    Empresa         @relation(fields: [empresaId], references: [id])
+  nome       String
+  corpo      String
+  criadoEm   DateTime        @default(now())
+  relatorios RelatorioObra[]
+}
+
+// Um relatório gerado de fato pra uma obra — guarda o texto já com os
+// placeholders substituídos (congelado no momento da geração), pra não
+// mudar o histórico se o template for editado ou excluído depois.
+model RelatorioObra {
+  id           String             @id @default(cuid())
+  obraId       String
+  obra         Obra               @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  templateId   String?
+  template     RelatorioTemplate? @relation(fields: [templateId], references: [id], onDelete: SetNull)
+  templateNome String
+  corpo        String
+  criadoPorId  String?
+  criadoPor    Usuario?           @relation("RelatorioObraCriadoPor", fields: [criadoPorId], references: [id])
+  criadoEm     DateTime           @default(now())
 }

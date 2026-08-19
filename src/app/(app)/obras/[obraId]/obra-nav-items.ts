@@ -11,5 +11,6 @@ export function obraNavItems(obraId: string): { href: string; label: string }[] 
     { href: `/obras/${obraId}/conferencia`, label: "Conferência" },
     { href: `/obras/${obraId}/montagem`, label: "Montagem" },
     { href: `/obras/${obraId}/vistoria`, label: "Vistoria final" },
+    { href: `/obras/${obraId}/relatorio`, label: "Relatório" },
   ];
 }

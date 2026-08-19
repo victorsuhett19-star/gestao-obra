@@ -10,5 +10,6 @@ export function projetoNavItems(obraId: string): { href: string; label: string }
     { href: `/projetos/${obraId}/orcamento`, label: "Orçamento" },
     { href: `/projetos/${obraId}/financeiro`, label: "Financeiro" },
     { href: `/projetos/${obraId}/dashboard`, label: "Dashboard" },
+    { href: `/projetos/${obraId}/relatorio`, label: "Relatório" },
   ];
 }

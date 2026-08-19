@@ -1,19 +1,27 @@
 import { NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 import { getSessionPayload } from "@/lib/session";
 import { gerarRelatorioPdfBuffer } from "@/lib/relatorio-pdf";
 
 export async function GET(
   _req: Request,
-  { params }: { params: Promise<{ obraId: string }> }
+  { params }: { params: Promise<{ relatorioId: string }> }
 ) {
-  const { obraId } = await params;
+  const { relatorioId } = await params;
 
   const staffSession = await getSessionPayload();
   if (!staffSession?.userId) {
     return new NextResponse("Não autorizado", { status: 401 });
   }
 
-  const resultado = await gerarRelatorioPdfBuffer(obraId);
+  const relatorio = await prisma.relatorioObra.findUnique({
+    where: { id: relatorioId },
+  });
+  if (!relatorio) {
+    return new NextResponse("Relatório não encontrado", { status: 404 });
+  }
+
+  const resultado = await gerarRelatorioPdfBuffer(relatorio.obraId, relatorio.corpo);
   if (!resultado) {
     return new NextResponse("Obra não encontrada", { status: 404 });
   }

@@ -33,6 +33,8 @@ model Empresa {
   etapaProjetoTemplates EtapaProjetoTemplate[]
   arquivos              Arquivo[]
   relatorioTemplates    RelatorioTemplate[]
+  tiposMaterialOrcamento TipoMaterialOrcamento[]
+  orcamentosIA           OrcamentoIA[]
 }
 
 // Acesso extra de um usuário a outras empresas além da sua "empresa principal"
@@ -110,6 +112,7 @@ model Usuario {
   notasObraCriadas     NotaObra[]        @relation("NotaObraCriadaPor")
   comentariosObra      ComentarioObra[]  @relation("ComentarioObraAutorUsuario")
   relatoriosGerados    RelatorioObra[]   @relation("RelatorioObraCriadoPor")
+  orcamentosIACriados  OrcamentoIA[]     @relation("OrcamentoIACriadoPor")
 }
 
 // ---------------------------------------------------------------------------
@@ -179,6 +182,7 @@ model Obra {
   notas                NotaObra[]
   comentarios          ComentarioObra[]
   relatorios           RelatorioObra[]
+  orcamentosIA         OrcamentoIA[]
 }
 
 model ObraTrade {
@@ -966,4 +970,62 @@ model RelatorioObra {
   criadoPorId  String?
   criadoPor    Usuario?           @relation("RelatorioObraCriadoPor", fields: [criadoPorId], references: [id])
   criadoEm     DateTime           @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Orçamento IA — tabela de preços por m² (base reutilizável, editável pela
+// empresa) usada pra calcular o custo de peças de marcenaria/vidraçaria/
+// marmoraria a partir só das medidas. No futuro, um PDF de executivo poderá
+// ser lido por IA pra preencher as peças automaticamente; por enquanto elas
+// são lançadas manualmente.
+// ---------------------------------------------------------------------------
+
+model TipoMaterialOrcamento {
+  id                  String   @id @default(cuid())
+  empresaId           String
+  empresa             Empresa  @relation(fields: [empresaId], references: [id])
+  nome                String
+  valorM2             Float
+  // Percentuais em fração (0.20 = 20%), somados ao custo base do m².
+  ferragemPercent     Float    @default(0)
+  complexidadePercent Float    @default(0)
+  ordem               Int      @default(0)
+  criadoEm            DateTime @default(now())
+
+  pecas PecaOrcamentoIA[]
+}
+
+enum TipoClienteOrcamento {
+  METRAGEM_COMUM
+  CLIENTE_RECORRENTE
+  CLIENTE_RESIDENCIAL
+  CLIENTE_COMERCIAL
+}
+
+model OrcamentoIA {
+  id            String                @id @default(cuid())
+  empresaId     String
+  empresa       Empresa               @relation(fields: [empresaId], references: [id])
+  nome          String
+  obraId        String?
+  obra          Obra?                 @relation(fields: [obraId], references: [id])
+  tipoCliente   TipoClienteOrcamento  @default(METRAGEM_COMUM)
+  margemPercent Float                 @default(0)
+  criadoPorId   String?
+  criadoPor     Usuario?              @relation("OrcamentoIACriadoPor", fields: [criadoPorId], references: [id])
+  criadoEm      DateTime              @default(now())
+
+  pecas PecaOrcamentoIA[]
+}
+
+model PecaOrcamentoIA {
+  id             String                @id @default(cuid())
+  orcamentoId    String
+  orcamento      OrcamentoIA           @relation(fields: [orcamentoId], references: [id], onDelete: Cascade)
+  nome           String
+  comprimento    Float
+  largura        Float
+  tipoMaterialId String
+  tipoMaterial   TipoMaterialOrcamento @relation(fields: [tipoMaterialId], references: [id])
+  criadoEm       DateTime              @default(now())
 }

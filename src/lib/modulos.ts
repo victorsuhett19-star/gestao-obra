@@ -18,6 +18,7 @@ export const MODULOS = [
   { key: "materiais", label: "Materiais" },
   { key: "usuarios", label: "Usuários" },
   { key: "empresas", label: "Empresas" },
+  { key: "orcamentoia", label: "Orçamento IA" },
 ] as const;
 
 export type ModuloKey = (typeof MODULOS)[number]["key"];

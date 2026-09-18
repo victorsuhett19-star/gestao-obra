@@ -26,6 +26,23 @@ export const TRADES = [
   "VIDRACARIA",
 ] as const;
 
+// Orçamento IA — o "RT" é o percentual aplicado sobre o custo total do
+// orçamento de acordo com o tipo de cliente (planilha de referência do
+// usuário).
+export const TIPO_CLIENTE_ORCAMENTO = [
+  "METRAGEM_COMUM",
+  "CLIENTE_RECORRENTE",
+  "CLIENTE_RESIDENCIAL",
+  "CLIENTE_COMERCIAL",
+] as const;
+
+export const RT_POR_TIPO_CLIENTE: Record<string, number> = {
+  METRAGEM_COMUM: 0,
+  CLIENTE_RECORRENTE: 0.05,
+  CLIENTE_RESIDENCIAL: 0.1,
+  CLIENTE_COMERCIAL: 0.2,
+};
+
 export const STATUS_OBRA = [
   "PLANEJAMENTO",
   "EM_ANDAMENTO",

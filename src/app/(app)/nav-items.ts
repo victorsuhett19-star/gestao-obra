@@ -12,6 +12,7 @@ export const navItems: { href: string; label: string; modulo?: ModuloKey }[] = [
   { href: "/marcenaria", label: "Marcenaria", modulo: "marcenaria" },
   { href: "/marmoraria", label: "Marmoraria", modulo: "marmoraria" },
   { href: "/vidracaria", label: "Vidraçaria", modulo: "vidracaria" },
+  { href: "/orcamento-ia", label: "Orçamento IA", modulo: "orcamentoia" },
   { href: "/agenda", label: "Agenda", modulo: "agenda" },
   { href: "/financeiro", label: "Financeiro", modulo: "financeiro" },
   { href: "/colaboradores", label: "Colaboradores", modulo: "colaboradores" },

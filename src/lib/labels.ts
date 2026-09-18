@@ -22,6 +22,13 @@ export const TRADE_LABEL: Record<string, string> = {
   VIDRACARIA: "Vidraçaria",
 };
 
+export const TIPO_CLIENTE_ORCAMENTO_LABEL: Record<string, string> = {
+  METRAGEM_COMUM: "Metragem comum",
+  CLIENTE_RECORRENTE: "Cliente recorrente",
+  CLIENTE_RESIDENCIAL: "Cliente residencial",
+  CLIENTE_COMERCIAL: "Cliente comercial",
+};
+
 // Cores usadas nos gráficos do dashboard financeiro — uma cor fixa por
 // especialidade, mais duas categorias "guarda-chuva" para obras turn-key
 // (mais de uma especialidade marcada) e despesas gerais da empresa (não

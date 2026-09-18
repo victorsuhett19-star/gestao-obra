@@ -18,6 +18,11 @@ import {
 } from "@/app/actions/orcamento-ia";
 import { AnalisePdfForm } from "./analise-pdf-form";
 
+// A análise do PDF pela IA (upload + leitura pela Anthropic) pode levar
+// mais que os 10s padrão do Vercel — sem isso a função é encerrada no meio
+// e o navegador mostra um erro genérico de "página não carregou".
+export const maxDuration = 60;
+
 export const metadata: Metadata = {
   title: "Orçamento — VS Gestão de Obra",
 };

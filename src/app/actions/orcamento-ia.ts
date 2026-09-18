@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession, getUser } from "@/lib/dal";
 import { getEmpresaAtivaId } from "@/lib/empresa";
+import { salvarArquivo } from "@/lib/uploads";
 
 // --- Tabela de preços (tipos de material) ---------------------------------
 
@@ -144,6 +145,36 @@ export async function criarOrcamento(formData: FormData) {
 
   revalidatePath("/orcamento-ia");
   redirect(`/orcamento-ia/${orcamento.id}`);
+}
+
+/** Anexa o PDF do executivo ao orçamento — fica só como referência pra
+ * equipe consultar; o custo continua vindo da soma das peças lançadas na
+ * tabela abaixo, calculada pelo próprio banco de dados. */
+export async function anexarPdfExecutivo(orcamentoId: string, formData: FormData) {
+  const user = await verifySession().then(() => getUser());
+  if (!user) return;
+
+  const arquivo = formData.get("arquivo") as File | null;
+  if (!arquivo || arquivo.size === 0) return;
+
+  const url = await salvarArquivo(arquivo, user.empresaId);
+  const arquivoId = url.replace("/api/arquivos/", "");
+
+  await prisma.orcamentoIA.update({
+    where: { id: orcamentoId },
+    data: { arquivoExecutivoId: arquivoId },
+  });
+
+  revalidatePath(`/orcamento-ia/${orcamentoId}`);
+}
+
+export async function removerPdfExecutivo(orcamentoId: string) {
+  await verifySession();
+  await prisma.orcamentoIA.update({
+    where: { id: orcamentoId },
+    data: { arquivoExecutivoId: null },
+  });
+  revalidatePath(`/orcamento-ia/${orcamentoId}`);
 }
 
 export async function excluirOrcamento(orcamentoId: string) {

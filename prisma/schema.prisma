@@ -838,6 +838,7 @@ model Arquivo {
 
   anexos                  AnexoObra[]
   assinaturasEtapaProjeto EtapaProjeto[]
+  orcamentosIAExecutivo   OrcamentoIA[]
 }
 
 // ---------------------------------------------------------------------------
@@ -1011,6 +1012,10 @@ model OrcamentoIA {
   obra          Obra?                 @relation(fields: [obraId], references: [id])
   tipoCliente   TipoClienteOrcamento  @default(METRAGEM_COMUM)
   margemPercent Float                 @default(0)
+  // PDF do executivo anexado como referência — a soma/custo continua vindo
+  // das peças lançadas na tabela, o PDF fica só pra consulta da equipe.
+  arquivoExecutivoId String?
+  arquivoExecutivo   Arquivo? @relation(fields: [arquivoExecutivoId], references: [id])
   criadoPorId   String?
   criadoPor     Usuario?              @relation("OrcamentoIACriadoPor", fields: [criadoPorId], references: [id])
   criadoEm      DateTime              @default(now())

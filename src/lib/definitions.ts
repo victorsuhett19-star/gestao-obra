@@ -43,6 +43,10 @@ export const RT_POR_TIPO_CLIENTE: Record<string, number> = {
   CLIENTE_COMERCIAL: 0.2,
 };
 
+export type AnalisePdfExecutivoState =
+  | { message?: string; sucesso?: boolean }
+  | undefined;
+
 export const STATUS_OBRA = [
   "PLANEJAMENTO",
   "EM_ANDAMENTO",

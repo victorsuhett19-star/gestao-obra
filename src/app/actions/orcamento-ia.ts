@@ -2,10 +2,12 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
+import Anthropic from "@anthropic-ai/sdk";
 import { prisma } from "@/lib/prisma";
 import { verifySession, getUser } from "@/lib/dal";
 import { getEmpresaAtivaId } from "@/lib/empresa";
 import { salvarArquivo } from "@/lib/uploads";
+import type { AnalisePdfExecutivoState } from "@/lib/definitions";
 
 // --- Tabela de preços (tipos de material) ---------------------------------
 
@@ -166,6 +168,148 @@ export async function anexarPdfExecutivo(orcamentoId: string, formData: FormData
   });
 
   revalidatePath(`/orcamento-ia/${orcamentoId}`);
+}
+
+/** Envia o PDF do executivo pra IA ler, extrair as peças (nome, medidas e
+ * material) e já lançar tudo no orçamento — o custo sai automaticamente,
+ * calculado pelo banco de dados a partir dessas peças (mesma fórmula de
+ * quem lança manualmente). Precisa da variável de ambiente
+ * ANTHROPIC_API_KEY configurada no servidor. */
+export async function analisarPdfExecutivo(
+  orcamentoId: string,
+  _state: AnalisePdfExecutivoState,
+  formData: FormData
+): Promise<AnalisePdfExecutivoState> {
+  const user = await verifySession().then(() => getUser());
+  if (!user) return { message: "Sessão expirada. Faça login novamente." };
+
+  const arquivo = formData.get("arquivo") as File | null;
+  if (!arquivo || arquivo.size === 0) {
+    return { message: "Selecione um arquivo PDF." };
+  }
+  if (arquivo.type !== "application/pdf") {
+    return { message: "Envie um arquivo em PDF." };
+  }
+
+  if (!process.env.ANTHROPIC_API_KEY) {
+    return {
+      message:
+        "A análise por IA ainda não está configurada — peça pro administrador cadastrar a chave da Anthropic.",
+    };
+  }
+
+  const empresaAtivaId = (await getEmpresaAtivaId()) ?? user.empresaId;
+
+  const tiposMaterial = await prisma.tipoMaterialOrcamento.findMany({
+    where: { empresaId: empresaAtivaId },
+  });
+  if (tiposMaterial.length === 0) {
+    return {
+      message: "Cadastre os materiais na tabela de preços antes de analisar o PDF.",
+    };
+  }
+
+  const buffer = Buffer.from(await arquivo.arrayBuffer());
+  const base64 = buffer.toString("base64");
+  const listaMateriais = tiposMaterial.map((t) => t.nome).join(", ");
+
+  const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+  let textoResposta: string;
+  try {
+    const resposta = await anthropic.messages.create({
+      model: "claude-sonnet-5",
+      max_tokens: 8192,
+      messages: [
+        {
+          role: "user",
+          content: [
+            {
+              type: "document",
+              source: { type: "base64", media_type: "application/pdf", data: base64 },
+            },
+            {
+              type: "text",
+              text:
+                "Você é um especialista em marcenaria lendo um projeto executivo " +
+                "(planta baixa, memorial descritivo ou lista de peças). Extraia " +
+                "TODAS as peças/painéis do projeto com suas medidas em METROS " +
+                "(converta de mm/cm se necessário).\n\n" +
+                `Para cada peça, escolha o material da lista abaixo que mais se ` +
+                `aproxima — copie o nome EXATAMENTE como está na lista, sem ` +
+                `inventar um nome novo: ${listaMateriais}\n\n` +
+                "Responda SOMENTE com um JSON válido (sem markdown, sem texto " +
+                "antes ou depois), no formato:\n" +
+                '[{"nome": "Painel lateral esquerdo", "comprimento": 2.10, ' +
+                '"largura": 0.60, "material": "MDF Branco"}]',
+            },
+          ],
+        },
+      ],
+    });
+
+    const textBlock = resposta.content.find((b) => b.type === "text");
+    if (!textBlock || textBlock.type !== "text") {
+      return { message: "A IA não retornou nenhum texto. Tente novamente." };
+    }
+    textoResposta = textBlock.text;
+  } catch (e) {
+    return {
+      message:
+        "Erro ao chamar a IA: " + (e instanceof Error ? e.message : "erro desconhecido"),
+    };
+  }
+
+  let pecasExtraidas: { nome?: string; comprimento?: number; largura?: number; material?: string }[];
+  try {
+    const match = textoResposta.match(/\[[\s\S]*\]/);
+    pecasExtraidas = JSON.parse(match ? match[0] : textoResposta);
+  } catch {
+    return {
+      message: "Não consegui interpretar a resposta da IA. Tente novamente ou lance as peças manualmente.",
+    };
+  }
+
+  if (!Array.isArray(pecasExtraidas) || pecasExtraidas.length === 0) {
+    return { message: "A IA não encontrou nenhuma peça nesse PDF." };
+  }
+
+  const materialPorNome = new Map(tiposMaterial.map((t) => [t.nome.toLowerCase(), t]));
+
+  const pecasParaCriar = pecasExtraidas
+    .map((p) => {
+      const material =
+        materialPorNome.get((p.material ?? "").toLowerCase().trim()) ?? tiposMaterial[0];
+      return {
+        orcamentoId,
+        nome: p.nome?.trim() || "Peça",
+        comprimento: Number(p.comprimento) || 0,
+        largura: Number(p.largura) || 0,
+        tipoMaterialId: material.id,
+      };
+    })
+    .filter((p) => p.comprimento > 0 && p.largura > 0);
+
+  if (pecasParaCriar.length === 0) {
+    return { message: "A IA não retornou medidas válidas pra nenhuma peça." };
+  }
+
+  const url = await salvarArquivo(arquivo, empresaAtivaId);
+  const arquivoId = url.replace("/api/arquivos/", "");
+
+  await prisma.$transaction([
+    prisma.orcamentoIA.update({
+      where: { id: orcamentoId },
+      data: { arquivoExecutivoId: arquivoId },
+    }),
+    prisma.pecaOrcamentoIA.createMany({ data: pecasParaCriar }),
+  ]);
+
+  revalidatePath(`/orcamento-ia/${orcamentoId}`);
+  return {
+    sucesso: true,
+    message: `${pecasParaCriar.length} peça(s) extraída(s) e adicionada(s) ao orçamento.`,
+  };
 }
 
 export async function removerPdfExecutivo(orcamentoId: string) {

@@ -16,6 +16,7 @@ import {
   anexarPdfExecutivo,
   removerPdfExecutivo,
 } from "@/app/actions/orcamento-ia";
+import { AnalisePdfForm } from "./analise-pdf-form";
 
 export const metadata: Metadata = {
   title: "Orçamento — VS Gestão de Obra",
@@ -84,50 +85,63 @@ export default async function OrcamentoIADetalhePage({
 
       <div className="card p-5">
         <p className="text-sm font-semibold text-slate-800">📄 PDF do executivo</p>
-        <p className="mt-1 text-xs text-slate-500">
-          Anexe o PDF do projeto executivo como referência pra equipe — o
-          custo continua vindo da soma das peças lançadas abaixo, calculada
-          pelo próprio sistema. (Extração automática das medidas direto do
-          PDF fica pra quando a chave de IA for configurada.)
-        </p>
         {orcamento.arquivoExecutivo ? (
-          <div className="mt-3 flex items-center justify-between gap-2 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
-            <a
-              href={`/api/arquivos/${orcamento.arquivoExecutivo.id}`}
-              target="_blank"
-              rel="noreferrer"
-              className="text-sm font-medium text-slate-700 hover:underline"
-            >
-              📎 {orcamento.arquivoExecutivo.nomeOriginal}
-            </a>
-            <form action={removerPdfExecutivo.bind(null, orcamento.id)}>
-              <button
-                type="submit"
-                className="text-xs font-medium text-red-500 hover:underline"
+          <>
+            <p className="mt-1 text-xs text-slate-500">
+              PDF já anexado a este orçamento.
+            </p>
+            <div className="mt-3 flex items-center justify-between gap-2 rounded-lg border border-slate-100 bg-slate-50 px-3 py-2">
+              <a
+                href={`/api/arquivos/${orcamento.arquivoExecutivo.id}`}
+                target="_blank"
+                rel="noreferrer"
+                className="text-sm font-medium text-slate-700 hover:underline"
               >
-                Remover
-              </button>
-            </form>
-          </div>
+                📎 {orcamento.arquivoExecutivo.nomeOriginal}
+              </a>
+              <form action={removerPdfExecutivo.bind(null, orcamento.id)}>
+                <button
+                  type="submit"
+                  className="text-xs font-medium text-red-500 hover:underline"
+                >
+                  Remover
+                </button>
+              </form>
+            </div>
+          </>
         ) : (
-          <form
-            action={anexarPdfExecutivo.bind(null, orcamento.id)}
-            className="mt-3 flex flex-wrap items-center gap-2"
-          >
-            <input
-              type="file"
-              name="arquivo"
-              accept="application/pdf"
-              required
-              className="flex-1 text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-slate-700"
-            />
-            <button
-              type="submit"
-              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
-            >
-              Anexar PDF
-            </button>
-          </form>
+          <>
+            <p className="mt-1 text-xs text-slate-500">
+              Envie o PDF do projeto executivo e a IA extrai as peças e
+              medidas automaticamente, já lançando tudo no orçamento — o
+              custo sai calculado pelo próprio sistema a partir daí.
+            </p>
+            <AnalisePdfForm orcamentoId={orcamento.id} />
+
+            <details className="mt-3">
+              <summary className="cursor-pointer text-xs text-slate-400 hover:text-slate-600">
+                Prefiro só anexar o PDF, sem análise por IA
+              </summary>
+              <form
+                action={anexarPdfExecutivo.bind(null, orcamento.id)}
+                className="mt-2 flex flex-wrap items-center gap-2"
+              >
+                <input
+                  type="file"
+                  name="arquivo"
+                  accept="application/pdf"
+                  required
+                  className="flex-1 text-sm text-slate-600 file:mr-3 file:rounded-lg file:border-0 file:bg-slate-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-slate-700"
+                />
+                <button
+                  type="submit"
+                  className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
+                >
+                  Anexar PDF
+                </button>
+              </form>
+            </details>
+          </>
         )}
       </div>
 

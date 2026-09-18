@@ -5,7 +5,7 @@ import { BackLink } from "@/components/back-link";
 import { UsuarioForm } from "../../usuario-form";
 
 export const metadata: Metadata = {
-  title: "Editar usuário — Gestão de Obra",
+  title: "Editar usuário — VS Gestão de Obra",
 };
 
 export default async function EditarUsuarioPage({

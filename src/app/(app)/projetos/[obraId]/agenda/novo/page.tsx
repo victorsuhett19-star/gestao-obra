@@ -3,7 +3,7 @@ import { BackLink } from "@/components/back-link";
 import { EventoForm } from "@/app/(app)/agenda/evento-form";
 
 export const metadata: Metadata = {
-  title: "Novo evento — Gestão de Obra",
+  title: "Novo evento — VS Gestão de Obra",
 };
 
 export default async function NovoEventoProjetoPage({

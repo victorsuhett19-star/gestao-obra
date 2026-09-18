@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { LoginForm } from "./login-form";
 
 export const metadata: Metadata = {
-  title: "Entrar — Gestão de Obra",
+  title: "Entrar — VS Gestão de Obra",
 };
 
 export default async function LoginPage() {
@@ -20,7 +20,7 @@ export default async function LoginPage() {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-empresa.png" alt="" className="mb-3 h-12 w-auto" />
           <h1 className="text-lg font-semibold text-slate-900">
-            Gestão de Obra
+            VS Gestão de Obra
           </h1>
           <p className="mt-1 text-sm text-slate-500">
             Entre com sua conta da empresa

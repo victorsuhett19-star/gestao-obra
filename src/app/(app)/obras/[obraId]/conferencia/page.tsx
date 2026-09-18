@@ -6,7 +6,7 @@ import { STATUS_CONFERENCIA_LABEL, formatDateOnly } from "@/lib/labels";
 import { moverItemConferencia, deleteItemConferencia } from "@/app/actions/conferencia";
 
 export const metadata: Metadata = {
-  title: "Conferência — Gestão de Obra",
+  title: "Conferência — VS Gestão de Obra",
 };
 
 function formatDate(date: Date | null) {

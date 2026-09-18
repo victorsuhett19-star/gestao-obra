@@ -7,7 +7,7 @@ import { BackLink } from "@/components/back-link";
 import { EtapaForm } from "../../etapa-form";
 
 export const metadata: Metadata = {
-  title: "Editar etapa — Gestão de Obra",
+  title: "Editar etapa — VS Gestão de Obra",
 };
 
 export default async function EditarEtapaPage({

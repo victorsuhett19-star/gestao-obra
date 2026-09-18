@@ -3,7 +3,7 @@ import { BackLink } from "@/components/back-link";
 import { MaterialForm } from "../material-form";
 
 export const metadata: Metadata = {
-  title: "Novo material — Gestão de Obra",
+  title: "Novo material — VS Gestão de Obra",
 };
 
 export default function NovoMaterialPage() {

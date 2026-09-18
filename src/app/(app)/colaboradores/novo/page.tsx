@@ -3,7 +3,7 @@ import { BackLink } from "@/components/back-link";
 import { ColaboradorForm } from "../colaborador-form";
 
 export const metadata: Metadata = {
-  title: "Novo colaborador — Gestão de Obra",
+  title: "Novo colaborador — VS Gestão de Obra",
 };
 
 export default function NovoColaboradorPage() {

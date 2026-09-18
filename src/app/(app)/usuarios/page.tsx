@@ -7,7 +7,7 @@ import { PAPEL_LABEL } from "@/lib/labels";
 import { alternarAtivoUsuario } from "@/app/actions/usuarios";
 
 export const metadata: Metadata = {
-  title: "Usuários — Gestão de Obra",
+  title: "Usuários — VS Gestão de Obra",
 };
 
 export default async function UsuariosPage() {

@@ -2,8 +2,8 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Gestão de Obra",
-    short_name: "Gestão de Obra",
+    name: "VS Gestão de Obra",
+    short_name: "VS Gestão de Obra",
     description:
       "Sistema de gestão de obra para marcenaria, obra, projeto, marmoraria e vidraçaria",
     start_url: "/dashboard",

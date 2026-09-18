@@ -17,7 +17,7 @@ import { ComentariosObra } from "@/components/comentarios-obra";
 import { adicionarComentario, excluirComentario } from "@/app/actions/projetos";
 
 export const metadata: Metadata = {
-  title: "Projeto — Gestão de Obra",
+  title: "Projeto — VS Gestão de Obra",
 };
 
 export default async function ProjetoDetalhePage({

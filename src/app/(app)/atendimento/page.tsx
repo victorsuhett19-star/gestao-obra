@@ -5,7 +5,7 @@ import { getEmpresaAtivaId } from "@/lib/empresa";
 import { AtendimentoKanban } from "./atendimento-kanban";
 
 export const metadata: Metadata = {
-  title: "Atendimento — Gestão de Obra",
+  title: "Atendimento — VS Gestão de Obra",
 };
 
 export default async function AtendimentoPage() {

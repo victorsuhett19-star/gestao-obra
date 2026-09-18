@@ -4,7 +4,7 @@ import { formatBRL } from "@/lib/labels";
 import { DonutChart, type DonutSegment } from "@/app/(app)/financeiro/donut-chart";
 
 export const metadata: Metadata = {
-  title: "Dashboard do projeto — Gestão de Obra",
+  title: "Dashboard do projeto — VS Gestão de Obra",
 };
 
 // Paleta cíclica pras categorias de gasto (livres, definidas pelo usuário no

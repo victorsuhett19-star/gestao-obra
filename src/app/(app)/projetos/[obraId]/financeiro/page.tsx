@@ -10,7 +10,7 @@ import {
 import { deleteLancamento } from "@/app/actions/financeiro";
 
 export const metadata: Metadata = {
-  title: "Financeiro do projeto — Gestão de Obra",
+  title: "Financeiro do projeto — VS Gestão de Obra",
 };
 
 export default async function FinanceiroProjetoPage({

@@ -5,7 +5,7 @@ import { BackLink } from "@/components/back-link";
 import { ItemConferenciaForm } from "../item-conferencia-form";
 
 export const metadata: Metadata = {
-  title: "Novo item de conferência — Gestão de Obra",
+  title: "Novo item de conferência — VS Gestão de Obra",
 };
 
 export default async function NovoItemConferenciaPage({

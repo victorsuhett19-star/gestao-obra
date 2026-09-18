@@ -3,7 +3,7 @@ import { BackLink } from "@/components/back-link";
 import { ObraForm } from "../obra-form";
 
 export const metadata: Metadata = {
-  title: "Nova obra — Gestão de Obra",
+  title: "Nova obra — VS Gestão de Obra",
 };
 
 export default function NovaObraPage() {

@@ -10,7 +10,7 @@ import {
 import { DonutChart, type DonutSegment } from "../donut-chart";
 
 export const metadata: Metadata = {
-  title: "Dashboard financeiro — Gestão de Obra",
+  title: "Dashboard financeiro — VS Gestão de Obra",
 };
 
 // Ordem fixa das especialidades + os dois "baldes" extras (obras turn-key

@@ -10,7 +10,7 @@ import {
 import { STATUS_OBRA, TRADES } from "@/lib/definitions";
 
 export const metadata: Metadata = {
-  title: "Obras — Gestão de Obra",
+  title: "Obras — VS Gestão de Obra",
 };
 
 export default async function ObrasPage({

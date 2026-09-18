@@ -5,7 +5,7 @@ import { BackLink } from "@/components/back-link";
 import { FornecedorForm } from "../../fornecedor-form";
 
 export const metadata: Metadata = {
-  title: "Editar fornecedor — Gestão de Obra",
+  title: "Editar fornecedor — VS Gestão de Obra",
 };
 
 export default async function EditarFornecedorPage({

@@ -10,7 +10,7 @@ import {
 } from "@/lib/labels";
 
 export const metadata: Metadata = {
-  title: "Materiais — Gestão de Obra",
+  title: "Materiais — VS Gestão de Obra",
 };
 
 // dataPedido é um timestamp real (default now()) — fuso local, sem bug.

@@ -13,7 +13,7 @@ import { STATUS_PEDIDO } from "@/lib/definitions";
 import { atualizarStatusPedido, deletePedido } from "@/app/actions/pedidos";
 
 export const metadata: Metadata = {
-  title: "Pedido de material — Gestão de Obra",
+  title: "Pedido de material — VS Gestão de Obra",
 };
 
 // dataPedido/dataEntregaReal são timestamps reais (fuso local); já

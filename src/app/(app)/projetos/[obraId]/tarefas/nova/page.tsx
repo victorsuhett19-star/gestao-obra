@@ -5,7 +5,7 @@ import { BackLink } from "@/components/back-link";
 import { TarefaForm } from "../tarefa-form";
 
 export const metadata: Metadata = {
-  title: "Nova tarefa — Gestão de Obra",
+  title: "Nova tarefa — VS Gestão de Obra",
 };
 
 export default async function NovaTarefaPage({

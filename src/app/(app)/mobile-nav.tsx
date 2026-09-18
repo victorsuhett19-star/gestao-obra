@@ -29,7 +29,7 @@ export function Sidebar({
         <div className="flex items-center gap-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src="/logo-empresa.png" alt="" className="h-7 w-auto" />
-          <p className="text-sm font-semibold text-slate-900">Gestão de Obra</p>
+          <p className="text-sm font-semibold text-slate-900">VS Gestão de Obra</p>
         </div>
         <button
           type="button"
@@ -67,7 +67,7 @@ export function Sidebar({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/logo-empresa.png" alt="" className="h-9 w-auto" />
             <div>
-              <p className="text-sm font-semibold text-slate-900">Gestão de Obra</p>
+              <p className="text-sm font-semibold text-slate-900">VS Gestão de Obra</p>
               <p className="text-xs text-slate-500">Turn-key</p>
             </div>
           </div>

@@ -3,7 +3,7 @@ import { BackLink } from "@/components/back-link";
 import { UsuarioForm } from "../usuario-form";
 
 export const metadata: Metadata = {
-  title: "Novo usuário — Gestão de Obra",
+  title: "Novo usuário — VS Gestão de Obra",
 };
 
 export default function NovoUsuarioPage() {

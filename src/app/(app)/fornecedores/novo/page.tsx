@@ -3,7 +3,7 @@ import { BackLink } from "@/components/back-link";
 import { FornecedorForm } from "../fornecedor-form";
 
 export const metadata: Metadata = {
-  title: "Novo fornecedor — Gestão de Obra",
+  title: "Novo fornecedor — VS Gestão de Obra",
 };
 
 export default function NovoFornecedorPage() {

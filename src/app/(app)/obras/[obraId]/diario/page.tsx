@@ -6,7 +6,7 @@ import { ObjetivosPanel } from "./objetivos-panel";
 import { deleteDiario } from "@/app/actions/diario";
 
 export const metadata: Metadata = {
-  title: "Diário de obra — Gestão de Obra",
+  title: "Diário de obra — VS Gestão de Obra",
 };
 
 // r.data vem de <input type="date"> (dia puro) — formata em UTC para não

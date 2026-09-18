@@ -6,7 +6,7 @@ import { deleteEvento } from "@/app/actions/agenda";
 import { getEmpresaAtivaId } from "@/lib/empresa";
 
 export const metadata: Metadata = {
-  title: "Agenda — Gestão de Obra",
+  title: "Agenda — VS Gestão de Obra",
 };
 
 function formatDate(date: Date) {

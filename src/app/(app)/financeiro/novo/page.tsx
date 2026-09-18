@@ -5,7 +5,7 @@ import { BackLink } from "@/components/back-link";
 import { ContaForm } from "../conta-form";
 
 export const metadata: Metadata = {
-  title: "Nova conta — Gestão de Obra",
+  title: "Nova conta — VS Gestão de Obra",
 };
 
 export default async function NovaContaPage() {

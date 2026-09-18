@@ -11,7 +11,7 @@ import {
 import { EmpresaNome } from "./empresa-nome";
 
 export const metadata: Metadata = {
-  title: "Empresas — Gestão de Obra",
+  title: "Empresas — VS Gestão de Obra",
 };
 
 export default async function EmpresasPage() {

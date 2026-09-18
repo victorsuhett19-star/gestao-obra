@@ -5,7 +5,7 @@ import { BackLink } from "@/components/back-link";
 import { MaterialForm } from "../../material-form";
 
 export const metadata: Metadata = {
-  title: "Editar material — Gestão de Obra",
+  title: "Editar material — VS Gestão de Obra",
 };
 
 export default async function EditarMaterialPage({

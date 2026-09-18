@@ -5,7 +5,7 @@ import { BackLink } from "@/components/back-link";
 import { PedidoForm } from "../pedido-form";
 
 export const metadata: Metadata = {
-  title: "Novo pedido de material — Gestão de Obra",
+  title: "Novo pedido de material — VS Gestão de Obra",
 };
 
 export default async function NovoPedidoPage({

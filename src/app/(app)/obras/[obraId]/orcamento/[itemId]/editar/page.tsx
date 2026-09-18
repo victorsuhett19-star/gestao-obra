@@ -5,7 +5,7 @@ import { BackLink } from "@/components/back-link";
 import { ItemOrcamentoForm } from "../../item-form";
 
 export const metadata: Metadata = {
-  title: "Editar item de orçamento — Gestão de Obra",
+  title: "Editar item de orçamento — VS Gestão de Obra",
 };
 
 export default async function EditarItemOrcamentoPage({

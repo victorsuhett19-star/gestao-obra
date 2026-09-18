@@ -5,7 +5,7 @@ import { getEmpresaAtivaId } from "@/lib/empresa";
 import { alternarAtivoColaborador } from "@/app/actions/colaboradores";
 
 export const metadata: Metadata = {
-  title: "Colaboradores — Gestão de Obra",
+  title: "Colaboradores — VS Gestão de Obra",
 };
 
 export default async function ColaboradoresPage() {

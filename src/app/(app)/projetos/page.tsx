@@ -5,7 +5,7 @@ import { getEmpresaAtivaId } from "@/lib/empresa";
 import { STATUS_OBRA_LABEL, STATUS_OBRA_COLOR } from "@/lib/labels";
 
 export const metadata: Metadata = {
-  title: "Projetos — Gestão de Obra",
+  title: "Projetos — VS Gestão de Obra",
 };
 
 export default async function ProjetosPage({

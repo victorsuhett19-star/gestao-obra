@@ -5,7 +5,7 @@ import { CATEGORIA_ORCAMENTO_LABEL, formatBRL } from "@/lib/labels";
 import { deleteItemOrcamento } from "@/app/actions/orcamento";
 
 export const metadata: Metadata = {
-  title: "Orçamento — Gestão de Obra",
+  title: "Orçamento — VS Gestão de Obra",
 };
 
 export default async function OrcamentoPage({

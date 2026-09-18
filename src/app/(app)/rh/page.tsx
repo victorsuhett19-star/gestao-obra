@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getEmpresaAtivaId } from "@/lib/empresa";
 
 export const metadata: Metadata = {
-  title: "RH — Gestão de Obra",
+  title: "RH — VS Gestão de Obra",
 };
 
 export default async function RhPage() {

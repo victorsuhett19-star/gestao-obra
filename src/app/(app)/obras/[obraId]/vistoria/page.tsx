@@ -3,7 +3,7 @@ import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 
 export const metadata: Metadata = {
-  title: "Vistoria final — Gestão de Obra",
+  title: "Vistoria final — VS Gestão de Obra",
 };
 
 function formatDate(date: Date) {

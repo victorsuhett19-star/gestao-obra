@@ -5,7 +5,7 @@ import { BackLink } from "@/components/back-link";
 import { DiarioForm } from "../diario-form";
 
 export const metadata: Metadata = {
-  title: "Novo registro de diário — Gestão de Obra",
+  title: "Novo registro de diário — VS Gestão de Obra",
 };
 
 export default async function NovoDiarioPage({

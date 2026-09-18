@@ -5,7 +5,7 @@ import { buildEtapaTree } from "@/lib/etapa-tree";
 import { EtapaRow } from "./etapa-row";
 
 export const metadata: Metadata = {
-  title: "Cronograma — Gestão de Obra",
+  title: "Cronograma — VS Gestão de Obra",
 };
 
 export default async function CronogramaPage({

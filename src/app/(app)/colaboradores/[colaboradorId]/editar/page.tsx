@@ -5,7 +5,7 @@ import { BackLink } from "@/components/back-link";
 import { ColaboradorForm } from "../../colaborador-form";
 
 export const metadata: Metadata = {
-  title: "Editar colaborador — Gestão de Obra",
+  title: "Editar colaborador — VS Gestão de Obra",
 };
 
 export default async function EditarColaboradorPage({

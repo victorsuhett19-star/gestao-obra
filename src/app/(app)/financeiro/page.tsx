@@ -6,7 +6,7 @@ import { formatBRL, formatDateOnly } from "@/lib/labels";
 import { marcarContaPaga, deleteContaFinanceira } from "@/app/actions/financeiro-empresa";
 
 export const metadata: Metadata = {
-  title: "Financeiro — Gestão de Obra",
+  title: "Financeiro — VS Gestão de Obra",
 };
 
 function inicioFimMes(mes: string) {

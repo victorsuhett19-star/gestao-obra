@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { ObraForm } from "../../obra-form";
 
 export const metadata: Metadata = {
-  title: "Editar obra — Gestão de Obra",
+  title: "Editar obra — VS Gestão de Obra",
 };
 
 export default async function EditarObraPage({

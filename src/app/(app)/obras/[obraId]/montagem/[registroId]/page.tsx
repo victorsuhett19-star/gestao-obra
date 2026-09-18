@@ -12,7 +12,7 @@ import {
 } from "@/app/actions/montagem";
 
 export const metadata: Metadata = {
-  title: "Registro de montagem — Gestão de Obra",
+  title: "Registro de montagem — VS Gestão de Obra",
 };
 
 export default async function MontagemDetailPage({

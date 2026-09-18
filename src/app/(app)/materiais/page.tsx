@@ -5,7 +5,7 @@ import { formatBRL } from "@/lib/labels";
 import { getEmpresaAtivaId } from "@/lib/empresa";
 
 export const metadata: Metadata = {
-  title: "Materiais — Gestão de Obra",
+  title: "Materiais — VS Gestão de Obra",
 };
 
 export default async function MateriaisPage() {

@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { LoginClienteForm } from "./login-cliente-form";
 
 export const metadata: Metadata = {
-  title: "Portal do cliente — Gestão de Obra",
+  title: "Portal do cliente — VS Gestão de Obra",
 };
 
 export default async function PortalLoginPage() {

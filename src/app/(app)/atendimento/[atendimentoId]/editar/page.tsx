@@ -7,7 +7,7 @@ import { AtendimentoForm } from "../../atendimento-form";
 import { marcarPerdido } from "@/app/actions/atendimento";
 
 export const metadata: Metadata = {
-  title: "Editar atendimento — Gestão de Obra",
+  title: "Editar atendimento — VS Gestão de Obra",
 };
 
 export default async function EditarAtendimentoPage({

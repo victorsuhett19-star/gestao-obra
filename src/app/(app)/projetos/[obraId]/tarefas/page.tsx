@@ -8,7 +8,7 @@ import { ListaTarefas } from "./lista-tarefas";
 import { CalendarioView } from "./calendario-view";
 
 export const metadata: Metadata = {
-  title: "Tarefas — Gestão de Obra",
+  title: "Tarefas — VS Gestão de Obra",
 };
 
 const VIEWS = [

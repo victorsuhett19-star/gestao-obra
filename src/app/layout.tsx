@@ -13,12 +13,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Gestão de Obra",
+  title: "VS Gestão de Obra",
   description: "Sistema de gestão de obra para marcenaria, obra, projeto, marmoraria e vidraçaria",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Gestão de Obra",
+    title: "VS Gestão de Obra",
   },
 };
 

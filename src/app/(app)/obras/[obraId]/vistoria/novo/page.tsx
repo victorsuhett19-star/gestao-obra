@@ -3,7 +3,7 @@ import { BackLink } from "@/components/back-link";
 import { VistoriaForm } from "../vistoria-form";
 
 export const metadata: Metadata = {
-  title: "Novo relatório de vistoria — Gestão de Obra",
+  title: "Novo relatório de vistoria — VS Gestão de Obra",
 };
 
 export default async function NovaVistoriaPage({

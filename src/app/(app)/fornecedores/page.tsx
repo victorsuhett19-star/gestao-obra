@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { getEmpresaAtivaId } from "@/lib/empresa";
 
 export const metadata: Metadata = {
-  title: "Fornecedores — Gestão de Obra",
+  title: "Fornecedores — VS Gestão de Obra",
 };
 
 export default async function FornecedoresPage() {

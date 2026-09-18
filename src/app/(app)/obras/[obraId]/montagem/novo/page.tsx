@@ -5,7 +5,7 @@ import { BackLink } from "@/components/back-link";
 import { MontagemForm } from "../montagem-form";
 
 export const metadata: Metadata = {
-  title: "Nova montagem — Gestão de Obra",
+  title: "Nova montagem — VS Gestão de Obra",
 };
 
 export default async function NovaMontagemPage({

@@ -9,7 +9,7 @@ import {
 } from "@/lib/labels";
 
 export const metadata: Metadata = {
-  title: "Montagem — Gestão de Obra",
+  title: "Montagem — VS Gestão de Obra",
 };
 
 function formatDate(date: Date | null) {

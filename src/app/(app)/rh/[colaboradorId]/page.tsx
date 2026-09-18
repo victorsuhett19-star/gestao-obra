@@ -19,7 +19,7 @@ import { FolgaForm } from "./folga-form";
 import { FolhaForm } from "./folha-form";
 
 export const metadata: Metadata = {
-  title: "RH do colaborador — Gestão de Obra",
+  title: "RH do colaborador — VS Gestão de Obra",
 };
 
 export default async function RhColaboradorPage({

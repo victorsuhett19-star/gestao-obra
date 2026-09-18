@@ -6,7 +6,7 @@ import { STATUS_ITEM_VISTORIA_LABEL, STATUS_ITEM_VISTORIA_COLOR } from "@/lib/la
 import { assinarVistoria, deleteVistoria } from "@/app/actions/vistoria";
 
 export const metadata: Metadata = {
-  title: "Relatório de vistoria — Gestão de Obra",
+  title: "Relatório de vistoria — VS Gestão de Obra",
 };
 
 function formatDateTime(date: Date | null) {

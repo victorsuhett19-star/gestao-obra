@@ -11,7 +11,7 @@ import {
 import { EtapaTemplateForm } from "./etapa-template-form";
 
 export const metadata: Metadata = {
-  title: "Configurar etapas — Gestão de Obra",
+  title: "Configurar etapas — VS Gestão de Obra",
 };
 
 export default async function ConfigurarEtapasPage({

@@ -5,7 +5,7 @@ import { TIPO_EVENTO_LABEL, formatDate, formatHora } from "@/lib/labels";
 import { deleteEvento } from "@/app/actions/agenda";
 
 export const metadata: Metadata = {
-  title: "Agenda do projeto — Gestão de Obra",
+  title: "Agenda do projeto — VS Gestão de Obra",
 };
 
 export default async function AgendaProjetoPage({

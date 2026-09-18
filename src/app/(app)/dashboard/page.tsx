@@ -14,7 +14,7 @@ import {
 import { CashflowChart, type MesFluxo } from "./cashflow-chart";
 
 export const metadata: Metadata = {
-  title: "Dashboard — Gestão de Obra",
+  title: "Dashboard — VS Gestão de Obra",
 };
 
 function saudacao(hora: number) {

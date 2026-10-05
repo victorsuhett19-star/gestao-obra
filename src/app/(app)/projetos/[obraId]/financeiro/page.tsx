@@ -8,10 +8,16 @@ import {
   formatDateOnly as formatDate,
 } from "@/lib/labels";
 import { deleteLancamento } from "@/app/actions/financeiro";
+import { DonutChart, type DonutSegment } from "@/app/(app)/financeiro/donut-chart";
 
 export const metadata: Metadata = {
   title: "Financeiro do projeto — VS Gestão de Obra",
 };
+
+// Paleta cíclica pras categorias de gasto (livres, definidas pelo usuário no
+// lançamento) — diferente da paleta fixa por especialidade do dashboard
+// financeiro geral, aqui não sabemos os nomes de antemão.
+const PALETA = ["#2563eb", "#b45309", "#7c3aed", "#0891b2", "#dc2626", "#16a34a", "#ca8a04", "#64748b"];
 
 export default async function FinanceiroProjetoPage({
   params,
@@ -19,14 +25,33 @@ export default async function FinanceiroProjetoPage({
   const { obraId } = await params;
   const voltarPara = `/projetos/${obraId}/financeiro`;
 
-  const lancamentos = await prisma.lancamentoFinanceiro.findMany({
-    where: { obraId },
-    orderBy: { data: "desc" },
-  });
+  const [lancamentos, orcadoAgg] = await Promise.all([
+    prisma.lancamentoFinanceiro.findMany({
+      where: { obraId },
+      orderBy: { data: "desc" },
+    }),
+    prisma.itemOrcamento.aggregate({ where: { obraId }, _sum: { valorTotal: true } }),
+  ]);
 
   const custo = lancamentos.filter((l) => l.tipo === "CUSTO").reduce((acc, l) => acc + l.valor, 0);
   const receita = lancamentos.filter((l) => l.tipo === "RECEITA").reduce((acc, l) => acc + l.valor, 0);
   const lucro = receita - custo;
+  const margem = receita > 0 ? (lucro / receita) * 100 : 0;
+  const orcado = orcadoAgg._sum.valorTotal ?? 0;
+
+  const custoPorCategoria = new Map<string, number>();
+  for (const l of lancamentos) {
+    if (l.tipo !== "CUSTO") continue;
+    const chave = l.categoria?.trim() || "Sem categoria";
+    custoPorCategoria.set(chave, (custoPorCategoria.get(chave) ?? 0) + l.valor);
+  }
+  const categoriasOrdenadas = Array.from(custoPorCategoria.entries()).sort((a, b) => b[1] - a[1]);
+  const segments: DonutSegment[] = categoriasOrdenadas.map(([label, valor], i) => ({
+    key: label,
+    label,
+    valor,
+    cor: PALETA[i % PALETA.length],
+  }));
 
   return (
     <div className="flex flex-col gap-6">
@@ -46,7 +71,11 @@ export default async function FinanceiroProjetoPage({
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
+        <div className="card p-4">
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Orçado</p>
+          <p className="mt-1 text-lg font-semibold text-slate-900">{formatBRL(orcado)}</p>
+        </div>
         <div className="card p-4">
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Receita</p>
           <p className="mt-1 text-lg font-semibold text-emerald-600">{formatBRL(receita)}</p>
@@ -56,12 +85,15 @@ export default async function FinanceiroProjetoPage({
           <p className="mt-1 text-lg font-semibold text-red-600">{formatBRL(custo)}</p>
         </div>
         <div className="card p-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Lucro</p>
-          <p className={`mt-1 text-lg font-semibold ${lucro >= 0 ? "text-slate-900" : "text-red-600"}`}>
-            {formatBRL(lucro)}
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Lucro / margem</p>
+          <p className={`mt-1 text-lg font-semibold ${lucro >= 0 ? "text-emerald-600" : "text-red-600"}`}>
+            {formatBRL(lucro)}{" "}
+            <span className="text-sm font-normal text-slate-400">({margem.toFixed(1)}%)</span>
           </p>
         </div>
       </div>
+
+      <DonutChart titulo="Todo gasto deste projeto, por categoria" segments={segments} />
 
       {lancamentos.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-slate-300 bg-surface p-10 text-center">

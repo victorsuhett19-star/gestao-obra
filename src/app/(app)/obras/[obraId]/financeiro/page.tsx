@@ -28,10 +28,21 @@ export default async function FinanceiroPage({
     orderBy: { data: "desc" },
   });
 
-  const custo = lancamentos
+  const hoje = new Date();
+  hoje.setHours(23, 59, 59, 999);
+  const realizados = lancamentos.filter((l) => l.data <= hoje);
+  const previstos = lancamentos.filter((l) => l.data > hoje);
+
+  const custo = realizados
     .filter((l) => l.tipo === "CUSTO")
     .reduce((acc, l) => acc + l.valor, 0);
-  const receita = lancamentos
+  const receita = realizados
+    .filter((l) => l.tipo === "RECEITA")
+    .reduce((acc, l) => acc + l.valor, 0);
+  const custoPrevisto = previstos
+    .filter((l) => l.tipo === "CUSTO")
+    .reduce((acc, l) => acc + l.valor, 0);
+  const receitaPrevista = previstos
     .filter((l) => l.tipo === "RECEITA")
     .reduce((acc, l) => acc + l.valor, 0);
   const pagamento = lancamentos
@@ -40,7 +51,7 @@ export default async function FinanceiroPage({
   const lucro = receita - custo;
 
   const custoPorCategoria = new Map<string, number>();
-  for (const l of lancamentos) {
+  for (const l of realizados) {
     if (l.tipo !== "CUSTO") continue;
     const chave = l.categoria?.trim() || "Sem categoria";
     custoPorCategoria.set(chave, (custoPorCategoria.get(chave) ?? 0) + l.valor);
@@ -59,7 +70,9 @@ export default async function FinanceiroPage({
         <div>
           <h2 className="text-lg font-semibold text-slate-900">Financeiro</h2>
           <p className="text-sm text-slate-500">
-            Lançamentos financeiros e consumo por categoria da obra.
+            Lançamentos financeiros e consumo por categoria da obra. Lance
+            com data futura pra prever receitas e custos que ainda vão
+            acontecer.
           </p>
         </div>
         <Link
@@ -99,7 +112,28 @@ export default async function FinanceiroPage({
         </div>
       </div>
 
-      <DonutChart titulo="Consumo da obra, por categoria" segments={segments} />
+      {(receitaPrevista > 0 || custoPrevisto > 0) && (
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="card border-dashed p-4">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+              📅 Receita prevista (datas futuras)
+            </p>
+            <p className="mt-1 text-lg font-semibold text-emerald-600">
+              {formatBRL(receitaPrevista)}
+            </p>
+          </div>
+          <div className="card border-dashed p-4">
+            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+              📅 Custo previsto (datas futuras)
+            </p>
+            <p className="mt-1 text-lg font-semibold text-red-600">
+              {formatBRL(custoPrevisto)}
+            </p>
+          </div>
+        </div>
+      )}
+
+      <DonutChart titulo="Consumo já realizado da obra, por categoria" segments={segments} />
 
       {pagamento > 0 && (
         <p className="text-sm text-slate-500">
@@ -133,13 +167,20 @@ export default async function FinanceiroPage({
               </tr>
             </thead>
             <tbody>
-              {lancamentos.map((l) => (
+              {lancamentos.map((l) => {
+                const previsto = l.data > hoje;
+                return (
                 <tr
                   key={l.id}
-                  className="border-b border-slate-100 last:border-0 hover:bg-slate-50"
+                  className={`border-b border-slate-100 last:border-0 hover:bg-slate-50 ${previsto ? "bg-amber-50/40" : ""}`}
                 >
                   <td className="px-4 py-3 text-slate-600">
                     {formatDate(l.data)}
+                    {previsto && (
+                      <span className="ml-1.5 rounded-full bg-amber-100 px-1.5 py-0.5 text-[10px] font-medium text-amber-700">
+                        Previsto
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3 font-medium text-slate-900">
                     {l.descricao}
@@ -181,7 +222,8 @@ export default async function FinanceiroPage({
                     </div>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>

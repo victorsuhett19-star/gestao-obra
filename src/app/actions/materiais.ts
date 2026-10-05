@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession, getUser } from "@/lib/dal";
 import { getEmpresaAtivaId } from "@/lib/empresa";
+import { parseValorBR } from "@/lib/labels";
 import { MaterialFormSchema, type MaterialFormState } from "@/lib/definitions";
 
 export async function saveMaterial(
@@ -33,7 +34,7 @@ export async function saveMaterial(
     nome,
     unidade,
     categoria: categoria || null,
-    precoReferencia: precoReferencia ? Number(precoReferencia.replace(",", ".")) : null,
+    precoReferencia: precoReferencia ? parseValorBR(precoReferencia) : null,
   };
 
   if (isEdicao) {

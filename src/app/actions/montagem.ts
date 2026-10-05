@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession, requireRole } from "@/lib/dal";
+import { parseValorBR } from "@/lib/labels";
 import type { MontagemFormState } from "@/lib/definitions";
 
 export async function saveMontagem(
@@ -28,7 +29,7 @@ export async function saveMontagem(
       numeroPedido: ambientePedidos[i] || null,
       notaFiscal: ambienteNotas[i] || null,
       qtdVolumes: ambienteVolumes[i] ? Number(ambienteVolumes[i]) : null,
-      valor: Number((ambienteValores[i] ?? "0").replace(",", ".")) || 0,
+      valor: parseValorBR((ambienteValores[i] ?? "0")) || 0,
     }))
     .filter((a) => a.nome.trim());
 

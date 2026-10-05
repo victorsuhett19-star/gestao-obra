@@ -107,9 +107,9 @@ export function ItemOrcamentoForm({
           <input
             id="valorUnitario"
             name="valorUnitario"
-            type="number"
-            step="any"
-            min={0}
+            type="text"
+            inputMode="decimal"
+            placeholder="Ex: 5.430,00"
             defaultValue={item?.valorUnitario ?? 0}
             className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500 focus:ring-2 focus:ring-slate-200"
           />

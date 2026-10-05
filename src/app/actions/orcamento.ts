@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession, requireRole } from "@/lib/dal";
+import { parseValorBR } from "@/lib/labels";
 import {
   ItemOrcamentoFormSchema,
   type ItemOrcamentoFormState,
@@ -35,8 +36,8 @@ export async function saveItemOrcamento(
   const { obraId, etapaId, categoria, descricao, unidade, quantidade, valorUnitario } =
     validatedFields.data;
 
-  const qtd = Number(quantidade.replace(",", "."));
-  const valorUnit = Number(valorUnitario.replace(",", "."));
+  const qtd = parseValorBR(quantidade);
+  const valorUnit = parseValorBR(valorUnitario);
 
   if (Number.isNaN(qtd) || Number.isNaN(valorUnit)) {
     return { message: "Quantidade e valor unitário precisam ser números." };

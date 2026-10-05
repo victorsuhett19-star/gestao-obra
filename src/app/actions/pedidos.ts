@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession, getUser, requireRole } from "@/lib/dal";
+import { parseValorBR } from "@/lib/labels";
 import { STATUS_PEDIDO, type PedidoFormState } from "@/lib/definitions";
 
 export async function savePedido(
@@ -30,8 +31,8 @@ export async function savePedido(
   const itens = materialIds
     .map((materialId, i) => ({
       materialId,
-      quantidade: Number((quantidades[i] ?? "0").replace(",", ".")),
-      valorUnitario: Number((valores[i] ?? "0").replace(",", ".")),
+      quantidade: parseValorBR((quantidades[i] ?? "0")),
+      valorUnitario: parseValorBR((valores[i] ?? "0")),
     }))
     .filter((item) => item.materialId && item.quantidade > 0);
 

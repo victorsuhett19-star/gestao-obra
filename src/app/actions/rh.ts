@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession, requireRole } from "@/lib/dal";
+import { parseValorBR } from "@/lib/labels";
 import {
   PontoFormSchema,
   type PontoFormState,
@@ -125,8 +126,8 @@ export async function addFolha(
   const { colaboradorId, mesReferencia, salarioBase, descontos } =
     validatedFields.data;
 
-  const salario = Number(salarioBase.replace(",", "."));
-  const desc = descontos ? Number(descontos.replace(",", ".")) : 0;
+  const salario = parseValorBR(salarioBase);
+  const desc = descontos ? parseValorBR(descontos) : 0;
 
   await prisma.folhaPagamento.upsert({
     where: { colaboradorId_mesReferencia: { colaboradorId, mesReferencia } },

@@ -130,9 +130,9 @@ export function MontagemForm({
             />
             <input
               name="ambienteValor"
-              type="number"
-              step="any"
-              placeholder="Valor (R$)"
+              type="text"
+              inputMode="decimal"
+              placeholder="Ex: 5.430,00"
               value={a.valor}
               onChange={(e) =>
                 setAmbientes((prev) =>

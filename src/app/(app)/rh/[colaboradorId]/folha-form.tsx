@@ -30,9 +30,9 @@ export function FolhaForm({ colaboradorId }: { colaboradorId: string }) {
         <label className="text-xs text-slate-500">Salário base (R$)</label>
         <input
           name="salarioBase"
-          type="number"
-          step="any"
-          min={0}
+          type="text"
+          inputMode="decimal"
+          placeholder="Ex: 5.430,00"
           className="rounded-lg border border-slate-300 px-2 py-1.5 text-sm outline-none focus:border-slate-500"
         />
         {state?.errors?.salarioBase && (
@@ -43,9 +43,9 @@ export function FolhaForm({ colaboradorId }: { colaboradorId: string }) {
         <label className="text-xs text-slate-500">Descontos (R$)</label>
         <input
           name="descontos"
-          type="number"
-          step="any"
-          min={0}
+          type="text"
+          inputMode="decimal"
+          placeholder="Ex: 0,00"
           className="rounded-lg border border-slate-300 px-2 py-1.5 text-sm outline-none focus:border-slate-500"
         />
       </div>

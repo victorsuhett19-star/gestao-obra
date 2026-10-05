@@ -288,3 +288,21 @@ export function formatBRL(valor: number) {
     currency: "BRL",
   }).format(valor);
 }
+
+/** Converte um número digitado no formato brasileiro ("5.430,00" ou "5430,00"
+ * ou "5430.00") pro valor numérico correspondente. Usado em todos os campos
+ * de valor (R$) do sistema, que aceitam texto livre em vez de <input
+ * type="number"> — esse último rejeita o ponto como separador de milhar. */
+export function parseValorBR(valor: string): number {
+  const limpo = valor.trim();
+  // Se tem vírgula, ela é o separador decimal — remove os pontos de milhar
+  // antes dela e troca a vírgula por ponto.
+  if (limpo.includes(",")) {
+    return Number(limpo.replace(/\./g, "").replace(",", "."));
+  }
+  // Sem vírgula: um único ponto é tratado como decimal (ex: "5430.00"),
+  // mais de um ponto é tratado como milhar (ex: "5.430" vira 5430).
+  const pontos = (limpo.match(/\./g) ?? []).length;
+  if (pontos > 1) return Number(limpo.replace(/\./g, ""));
+  return Number(limpo);
+}

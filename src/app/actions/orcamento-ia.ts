@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { verifySession, getUser } from "@/lib/dal";
 import { getEmpresaAtivaId } from "@/lib/empresa";
 import { salvarArquivo } from "@/lib/uploads";
+import { parseValorBR } from "@/lib/labels";
 import type { AnalisePdfExecutivoState } from "@/lib/definitions";
 
 // --- Tabela de preços (tipos de material) ---------------------------------
@@ -27,10 +28,10 @@ export async function salvarTipoMaterial(formData: FormData) {
 
   const data = {
     nome: nome.trim(),
-    valorM2: Number(valorM2.replace(",", ".")),
-    ferragemPercent: typeof ferragem === "string" && ferragem ? Number(ferragem.replace(",", ".")) / 100 : 0,
+    valorM2: parseValorBR(valorM2),
+    ferragemPercent: typeof ferragem === "string" && ferragem ? parseValorBR(ferragem) / 100 : 0,
     complexidadePercent:
-      typeof complexidade === "string" && complexidade ? Number(complexidade.replace(",", ".")) / 100 : 0,
+      typeof complexidade === "string" && complexidade ? parseValorBR(complexidade) / 100 : 0,
   };
 
   if (typeof id === "string" && id) {
@@ -338,7 +339,7 @@ export async function atualizarConfigOrcamento(orcamentoId: string, formData: Fo
     where: { id: orcamentoId },
     data: {
       tipoCliente: typeof tipoCliente === "string" ? (tipoCliente as never) : undefined,
-      margemPercent: typeof margem === "string" && margem ? Number(margem.replace(",", ".")) / 100 : 0,
+      margemPercent: typeof margem === "string" && margem ? parseValorBR(margem) / 100 : 0,
     },
   });
 
@@ -364,8 +365,8 @@ export async function adicionarPeca(orcamentoId: string, formData: FormData) {
     data: {
       orcamentoId,
       nome: nome.trim(),
-      comprimento: Number(comprimento.replace(",", ".")),
-      largura: Number(largura.replace(",", ".")),
+      comprimento: parseValorBR(comprimento),
+      largura: parseValorBR(largura),
       tipoMaterialId,
     },
   });

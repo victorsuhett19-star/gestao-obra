@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession, getUser, requireRole } from "@/lib/dal";
 import { getEmpresaAtivaId } from "@/lib/empresa";
+import { parseValorBR } from "@/lib/labels";
 import {
   STATUS_ATENDIMENTO,
   AtendimentoFormSchema,
@@ -65,7 +66,7 @@ export async function saveAtendimento(
     vendedorId: tipoVendedor === "usuario" && idVendedor ? idVendedor : null,
     vendedorColaboradorId:
       tipoVendedor === "colaborador" && idVendedor ? idVendedor : null,
-    valorEstimado: valorEstimado ? Number(valorEstimado.replace(",", ".")) : null,
+    valorEstimado: valorEstimado ? parseValorBR(valorEstimado) : null,
     faixaInvestimento: faixaInvestimento || null,
     cor: typeof cor === "string" && cor ? cor : null,
   };

@@ -141,9 +141,9 @@ export function PedidoForm({
                 <label className="text-xs text-slate-500">Vlr. unit. (R$)</label>
                 <input
                   name="itemValorUnitario"
-                  type="number"
-                  step="any"
-                  min={0}
+                  type="text"
+                  inputMode="decimal"
+                  placeholder="Ex: 5.430,00"
                   value={linha.valorUnitario}
                   onChange={(e) =>
                     atualizarLinha(linha.key, "valorUnitario", e.target.value)

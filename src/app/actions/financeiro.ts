@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { verifySession, getUser, requireRole } from "@/lib/dal";
+import { parseValorBR } from "@/lib/labels";
 import {
   LancamentoFormSchema,
   type LancamentoFormState,
@@ -44,7 +45,7 @@ export async function saveLancamento(
     formaPagamento,
   } = validatedFields.data;
 
-  const valorNumerico = Number(valor.replace(",", "."));
+  const valorNumerico = parseValorBR(valor);
   if (Number.isNaN(valorNumerico)) {
     return { message: "Valor precisa ser um número." };
   }

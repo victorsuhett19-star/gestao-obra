@@ -69,9 +69,9 @@ export default async function MateriaisOrcamentoIAPage() {
             <label className="text-xs text-slate-500">Valor do m² (R$)</label>
             <input
               name="valorM2"
-              type="number"
-              step="any"
-              min={0}
+              type="text"
+              inputMode="decimal"
+              placeholder="Ex: 400,00"
               className="w-32 rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500"
             />
           </div>

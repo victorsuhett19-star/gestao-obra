@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { requireRole } from "@/lib/dal";
 import { getEmpresaAtivaId } from "@/lib/empresa";
+import { parseValorBR } from "@/lib/labels";
 import {
   ContaFinanceiraFormSchema,
   type ContaFinanceiraFormState,
@@ -44,7 +45,7 @@ export async function saveContaFinanceira(
       tipo,
       descricao,
       categoria: categoria || null,
-      valor: Number(valor.replace(",", ".")),
+      valor: parseValorBR(valor),
       dataVencimento: new Date(dataVencimento),
       fornecedorId: fornecedorId || null,
       obraId: obraId || null,

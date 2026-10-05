@@ -24,6 +24,7 @@ export const TRADES = [
   "PROJETO",
   "MARMORARIA",
   "VIDRACARIA",
+  "SERRALHERIA",
 ] as const;
 
 // Orçamento IA — o "RT" é o percentual aplicado sobre o custo total do

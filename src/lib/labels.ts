@@ -20,6 +20,7 @@ export const TRADE_LABEL: Record<string, string> = {
   PROJETO: "Projeto",
   MARMORARIA: "Marmoraria",
   VIDRACARIA: "Vidraçaria",
+  SERRALHERIA: "Serralheria",
 };
 
 export const TIPO_CLIENTE_ORCAMENTO_LABEL: Record<string, string> = {
@@ -39,6 +40,7 @@ export const TRADE_CHART_COLOR: Record<string, string> = {
   PROJETO: "#7c3aed",
   MARMORARIA: "#64748b",
   VIDRACARIA: "#06b6d4",
+  SERRALHERIA: "#dc2626",
   MULTIPLAS: "#16a34a",
   GERAL: "#94a3b8",
 };

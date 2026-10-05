@@ -1,10 +1,7 @@
-import type { Metadata } from "next";
-import { TradeWorkspacePage } from "@/components/trade-workspace-page";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Marmoraria — VS Gestão de Obra",
-};
-
+// Marmoraria foi unificada com Projetos, Obras, Marcenaria, Vidraçaria e
+// Serralheria numa aba só ("Projetos", com filtro por especialidade).
 export default function MarmorariaPage() {
-  return <TradeWorkspacePage trade="MARMORARIA" />;
+  redirect("/projetos?trade=MARMORARIA");
 }

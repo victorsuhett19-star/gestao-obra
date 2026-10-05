@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import { getEmpresaAtivaId } from "@/lib/empresa";
-import { STATUS_OBRA_LABEL, STATUS_OBRA_COLOR } from "@/lib/labels";
+import { STATUS_OBRA_LABEL, STATUS_OBRA_COLOR, TRADE_LABEL } from "@/lib/labels";
+import { TRADES } from "@/lib/definitions";
 
 export const metadata: Metadata = {
   title: "Projetos — VS Gestão de Obra",
@@ -14,12 +15,15 @@ export default async function ProjetosPage({
   const sp = await searchParams;
   const q = typeof sp.q === "string" ? sp.q.trim() : "";
   const status = typeof sp.status === "string" ? sp.status : "";
+  const tradeParam = typeof sp.trade === "string" ? sp.trade : "";
+  const trade = TRADES.includes(tradeParam as (typeof TRADES)[number]) ? tradeParam : "";
   const empresaAtivaId = await getEmpresaAtivaId();
 
   const obras = await prisma.obra.findMany({
     where: {
       empresaId: empresaAtivaId ?? undefined,
       ...(status ? { status: status as never } : {}),
+      ...(trade ? { trades: { some: { trade: trade as never } } } : {}),
       ...(q
         ? {
             OR: [
@@ -33,6 +37,7 @@ export default async function ProjetosPage({
         : {}),
     },
     include: {
+      trades: true,
       etapasProjeto: { where: { status: "EM_ANDAMENTO" }, take: 1 },
       _count: { select: { etapasProjeto: true } },
     },
@@ -45,16 +50,24 @@ export default async function ProjetosPage({
         <div>
           <h1 className="text-xl font-semibold text-slate-900">Projetos</h1>
           <p className="text-sm text-slate-500">
-            Linha do tempo de entrega de cada projeto — do briefing até a
-            montagem final.
+            Todos os projetos e obras — Marcenaria, Obra, Projeto, Marmoraria,
+            Vidraçaria e Serralheria, num lugar só.
           </p>
         </div>
-        <Link
-          href="/projetos/configurar"
-          className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100"
-        >
-          ⚙️ Configurar etapas
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/projetos/configurar"
+            className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100"
+          >
+            ⚙️ Configurar etapas
+          </Link>
+          <Link
+            href="/obras/novo"
+            className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white hover:bg-ink-700"
+          >
+            + Novo projeto
+          </Link>
+        </div>
       </div>
 
       <form method="get" className="flex flex-wrap items-center gap-2">
@@ -64,6 +77,18 @@ export default async function ProjetosPage({
           placeholder="Buscar por nome, cliente, telefone ou e-mail..."
           className="min-w-[260px] flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500"
         />
+        <select
+          name="trade"
+          defaultValue={trade}
+          className="rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-slate-500"
+        >
+          <option value="">Todas as especialidades</option>
+          {TRADES.map((t) => (
+            <option key={t} value={t}>
+              {TRADE_LABEL[t]}
+            </option>
+          ))}
+        </select>
         <select
           name="status"
           defaultValue={status}
@@ -82,6 +107,14 @@ export default async function ProjetosPage({
         >
           Filtrar
         </button>
+        {(q || status || trade) && (
+          <Link
+            href="/projetos"
+            className="text-sm text-slate-500 underline-offset-2 hover:underline"
+          >
+            Limpar filtros
+          </Link>
+        )}
         <span className="ml-auto text-sm text-slate-500">
           {obras.length} projeto(s)
         </span>
@@ -92,6 +125,7 @@ export default async function ProjetosPage({
           <thead>
             <tr className="border-b border-slate-200 bg-slate-50 text-left text-xs font-medium uppercase tracking-wide text-slate-500">
               <th className="px-4 py-3">Projeto / Cliente</th>
+              <th className="px-4 py-3">Especialidades</th>
               <th className="px-4 py-3">Contato</th>
               <th className="px-4 py-3">Etapa atual</th>
               <th className="px-4 py-3">Status</th>
@@ -101,7 +135,7 @@ export default async function ProjetosPage({
           <tbody>
             {obras.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-4 py-8 text-center text-slate-500">
+                <td colSpan={6} className="px-4 py-8 text-center text-slate-500">
                   Nenhum projeto encontrado.
                 </td>
               </tr>
@@ -125,6 +159,18 @@ export default async function ProjetosPage({
                       <p className="text-xs text-slate-500">
                         {obra.clienteNome || "Sem cliente"}
                       </p>
+                    </td>
+                    <td className="px-4 py-3">
+                      <div className="flex flex-wrap gap-1">
+                        {obra.trades.map((t) => (
+                          <span
+                            key={t.id}
+                            className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-600"
+                          >
+                            {TRADE_LABEL[t.trade]}
+                          </span>
+                        ))}
+                      </div>
                     </td>
                     <td className="px-4 py-3 text-slate-600">
                       <p>{obra.clienteTelefone || "—"}</p>

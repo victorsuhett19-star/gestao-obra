@@ -133,6 +133,7 @@ enum Trade {
   PROJETO
   MARMORARIA
   VIDRACARIA
+  SERRALHERIA
 }
 
 model Obra {

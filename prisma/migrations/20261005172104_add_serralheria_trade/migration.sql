@@ -1,0 +1,2 @@
+-- AlterEnum
+ALTER TYPE "Trade" ADD VALUE 'SERRALHERIA';

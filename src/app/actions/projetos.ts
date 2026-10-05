@@ -112,6 +112,39 @@ export async function salvarDataEtapa(
   revalidatePath(`/projetos/${obraId}`);
 }
 
+/** Adiciona um item/etapa personalizado ao final do fluxo de entrega dessa
+ * obra — além das etapas que vêm prontas do template da especialidade. */
+export async function adicionarEtapaProjeto(obraId: string, formData: FormData) {
+  await verifySession();
+
+  const nome = formData.get("nome");
+  const grupo = formData.get("grupo");
+  if (typeof nome !== "string" || !nome.trim()) return;
+
+  const ultima = await prisma.etapaProjeto.findFirst({
+    where: { obraId },
+    orderBy: { ordem: "desc" },
+  });
+
+  await prisma.etapaProjeto.create({
+    data: {
+      obraId,
+      nome: nome.trim(),
+      grupo: typeof grupo === "string" && grupo.trim() ? grupo.trim() : null,
+      ordem: (ultima?.ordem ?? -1) + 1,
+      status: ultima ? "AGUARDANDO" : "EM_ANDAMENTO",
+    },
+  });
+
+  revalidatePath(`/projetos/${obraId}`);
+}
+
+export async function excluirEtapaProjeto(etapaProjetoId: string, obraId: string) {
+  await verifySession();
+  await prisma.etapaProjeto.delete({ where: { id: etapaProjetoId } });
+  revalidatePath(`/projetos/${obraId}`);
+}
+
 export async function uploadAnexo(obraId: string, formData: FormData) {
   const user = await verifySession().then(() => getUser());
   if (!user) return;

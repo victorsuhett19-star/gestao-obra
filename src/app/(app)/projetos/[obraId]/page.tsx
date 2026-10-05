@@ -7,6 +7,8 @@ import {
   gerarFluxoObra,
   avancarEtapa,
   salvarDataEtapa,
+  adicionarEtapaProjeto,
+  excluirEtapaProjeto,
   excluirAnexo,
 } from "@/app/actions/projetos";
 import { removerAcessoCliente } from "@/app/actions/cliente";
@@ -158,8 +160,8 @@ export default async function ProjetoDetalhePage({
                             </p>
                           )}
 
-                          {ehAtual && (
-                            <div className="mt-2 flex flex-wrap items-center gap-2">
+                          <div className="mt-2 flex flex-wrap items-center gap-2">
+                            {ehAtual && (
                               <form action={avancarEtapa.bind(null, obra.id, etapa.id)}>
                                 <button
                                   type="submit"
@@ -168,35 +170,71 @@ export default async function ProjetoDetalhePage({
                                   Avançar →
                                 </button>
                               </form>
-                              <form
-                                action={salvarDataEtapa.bind(null, obra.id, etapa.id)}
-                                className="flex items-center gap-1.5"
+                            )}
+                            <form
+                              action={salvarDataEtapa.bind(null, obra.id, etapa.id)}
+                              className="flex items-center gap-1.5"
+                            >
+                              <input
+                                type="date"
+                                name="data"
+                                defaultValue={
+                                  etapa.data
+                                    ? etapa.data.toISOString().slice(0, 10)
+                                    : ""
+                                }
+                                className="rounded-lg border border-slate-300 px-2 py-1 text-xs outline-none focus:border-slate-500"
+                              />
+                              <button
+                                type="submit"
+                                className="rounded-lg border border-slate-300 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100"
                               >
-                                <input
-                                  type="date"
-                                  name="data"
-                                  defaultValue={
-                                    etapa.data
-                                      ? etapa.data.toISOString().slice(0, 10)
-                                      : ""
-                                  }
-                                  className="rounded-lg border border-slate-300 px-2 py-1 text-xs outline-none focus:border-slate-500"
-                                />
-                                <button
-                                  type="submit"
-                                  className="rounded-lg border border-slate-300 px-2.5 py-1 text-xs font-medium text-slate-600 hover:bg-slate-100"
-                                >
-                                  Salvar data
-                                </button>
-                              </form>
-                            </div>
-                          )}
+                                Salvar data
+                              </button>
+                            </form>
+                            <form action={excluirEtapaProjeto.bind(null, etapa.id, obra.id)}>
+                              <button
+                                type="submit"
+                                className="text-xs font-medium text-red-500 hover:underline"
+                              >
+                                Excluir
+                              </button>
+                            </form>
+                          </div>
                         </div>
                       </div>
                     </li>
                   );
                 })}
               </ol>
+
+              <form
+                action={adicionarEtapaProjeto.bind(null, obra.id)}
+                className="mt-4 flex flex-wrap items-end gap-2 border-t border-slate-100 pt-4"
+              >
+                <div className="flex flex-col gap-1">
+                  <label className="text-xs text-slate-500">Novo item do fluxo</label>
+                  <input
+                    name="nome"
+                    placeholder="Ex: Aprovação do projeto 3D"
+                    className="w-56 rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs outline-none focus:border-slate-500"
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <label className="text-xs text-slate-500">Grupo (opcional)</label>
+                  <input
+                    name="grupo"
+                    placeholder="Ex: Projeto"
+                    className="w-36 rounded-lg border border-slate-300 px-2.5 py-1.5 text-xs outline-none focus:border-slate-500"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="rounded-lg border border-slate-300 px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-100"
+                >
+                  + Adicionar ao fluxo
+                </button>
+              </form>
             </>
           )}
         </div>

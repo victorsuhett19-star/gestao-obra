@@ -607,7 +607,7 @@ model Atendimento {
   // Cor escolhida livremente pra identificar esse cliente no quadro Kanban.
   cor               String?
   obraId            String?           @unique
-  obra              Obra?             @relation(fields: [obraId], references: [id])
+  obra              Obra?             @relation(fields: [obraId], references: [id], onDelete: SetNull)
   criadoEm          DateTime          @default(now())
 
   especialidades    AtendimentoTrade[]
@@ -649,7 +649,7 @@ model Evento {
   // usada pra pintar o evento no calendário de tarefas do projeto.
   cor         String?
   obraId      String?
-  obra        Obra?      @relation(fields: [obraId], references: [id])
+  obra        Obra?      @relation(fields: [obraId], references: [id], onDelete: SetNull)
   criadoPorId String?
   criadoPor   Usuario?   @relation("EventoCriadoPor", fields: [criadoPorId], references: [id])
   criadoEm    DateTime   @default(now())
@@ -817,7 +817,7 @@ model ContaFinanceira {
   fornecedorId    String?
   fornecedor      Fornecedor?           @relation(fields: [fornecedorId], references: [id])
   obraId          String?
-  obra            Obra?                 @relation(fields: [obraId], references: [id])
+  obra            Obra?                 @relation(fields: [obraId], references: [id], onDelete: SetNull)
   criadoEm        DateTime              @default(now())
 }
 
@@ -1010,7 +1010,7 @@ model OrcamentoIA {
   empresa       Empresa               @relation(fields: [empresaId], references: [id])
   nome          String
   obraId        String?
-  obra          Obra?                 @relation(fields: [obraId], references: [id])
+  obra          Obra?                 @relation(fields: [obraId], references: [id], onDelete: SetNull)
   tipoCliente   TipoClienteOrcamento  @default(METRAGEM_COMUM)
   margemPercent Float                 @default(0)
   // PDF do executivo anexado como referência — a soma/custo continua vindo

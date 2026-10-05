@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { verifySession, getUser } from "@/lib/dal";
+import { verifySession, getUser, requireRole } from "@/lib/dal";
 import { getEmpresaAtivaId } from "@/lib/empresa";
 import { ObraFormSchema, type ObraFormState } from "@/lib/definitions";
 
@@ -101,4 +101,17 @@ export async function saveObra(
   revalidatePath(`/obras/${id}/editar`);
   revalidatePath("/dashboard");
   redirect(`/obras/${id}`);
+}
+
+/** Exclui a obra/projeto e tudo que está ligado a ela por cascade (etapas,
+ * orçamento, financeiro, tarefas, anexos, diário, fotos etc). Atendimento,
+ * Evento, ContaFinanceira e OrcamentoIA só perdem o vínculo (obraId vira
+ * null) — continuam existindo. Ação irreversível, só admin/gestor. */
+export async function excluirObra(obraId: string) {
+  await requireRole(["ADMIN", "GESTOR"]);
+  await prisma.obra.delete({ where: { id: obraId } });
+  revalidatePath("/projetos");
+  revalidatePath("/obras");
+  revalidatePath("/dashboard");
+  redirect("/projetos");
 }

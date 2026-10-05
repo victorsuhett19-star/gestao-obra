@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
+import { getUser } from "@/lib/dal";
 import { getEmpresaAtivaId } from "@/lib/empresa";
 import { STATUS_OBRA_LABEL, STATUS_OBRA_COLOR, TRADE_LABEL } from "@/lib/labels";
 import { TRADES } from "@/lib/definitions";
+import { ExcluirObraButton } from "@/components/excluir-obra-button";
 
 export const metadata: Metadata = {
   title: "Projetos — VS Gestão de Obra",
@@ -18,6 +20,8 @@ export default async function ProjetosPage({
   const tradeParam = typeof sp.trade === "string" ? sp.trade : "";
   const trade = TRADES.includes(tradeParam as (typeof TRADES)[number]) ? tradeParam : "";
   const empresaAtivaId = await getEmpresaAtivaId();
+  const user = await getUser();
+  const isAdmin = user?.papel === "ADMIN" || user?.papel === "GESTOR";
 
   const obras = await prisma.obra.findMany({
     where: {
@@ -200,13 +204,26 @@ export default async function ProjetosPage({
                         {STATUS_OBRA_LABEL[obra.status]}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-right">
-                      <Link
-                        href={`/projetos/${obra.id}`}
-                        className="rounded-lg bg-ink-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-ink-700"
-                      >
-                        Abrir →
-                      </Link>
+                    <td className="px-4 py-3">
+                      <div className="flex items-center justify-end gap-3">
+                        {isAdmin && (
+                          <>
+                            <Link
+                              href={`/obras/${obra.id}/editar`}
+                              className="text-xs font-medium text-slate-600 hover:underline"
+                            >
+                              Editar
+                            </Link>
+                            <ExcluirObraButton obraId={obra.id} nome={obra.nome} />
+                          </>
+                        )}
+                        <Link
+                          href={`/projetos/${obra.id}`}
+                          className="rounded-lg bg-ink-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-ink-700"
+                        >
+                          Abrir →
+                        </Link>
+                      </div>
                     </td>
                   </tr>
                 );

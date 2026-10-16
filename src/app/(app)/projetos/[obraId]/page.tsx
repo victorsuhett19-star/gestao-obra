@@ -14,6 +14,7 @@ import {
 import { removerAcessoCliente } from "@/app/actions/cliente";
 import { AnexoUploadForm } from "./anexo-upload-form";
 import { ClienteAcessoForm } from "@/components/cliente-acesso-form";
+import { PrazosEspecialidades } from "@/components/prazos-especialidades";
 import { NotasObra } from "@/components/notas-obra";
 import { ComentariosObra } from "@/components/comentarios-obra";
 import { adicionarComentario, excluirComentario } from "@/app/actions/projetos";
@@ -76,6 +77,7 @@ export default async function ProjetoDetalhePage({
           📄 Gerar relatório digital (PDF)
         </a>
       </div>
+      <PrazosEspecialidades obraId={obra.id} prazos={obra.trades} />
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
         <div className="card p-5 lg:col-span-2">
           <div className="flex items-center justify-between">

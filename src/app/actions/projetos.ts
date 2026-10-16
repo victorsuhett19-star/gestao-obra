@@ -280,3 +280,22 @@ export async function excluirComentario(comentarioId: string, obraId: string) {
   revalidatePath(`/obras/${obraId}`);
   revalidatePath(`/portal/obras/${obraId}`);
 }
+
+/** Salva data de início e fim de uma especialidade (obra, marcenaria...) do projeto. */
+export async function salvarPrazoTrade(
+  obraId: string,
+  obraTradeId: string,
+  formData: FormData
+) {
+  await verifySession();
+
+  const parse = (v: FormDataEntryValue | null) =>
+    typeof v === "string" && v ? new Date(v) : null;
+
+  await prisma.obraTrade.update({
+    where: { id: obraTradeId, obraId },
+    data: { dataInicio: parse(formData.get("dataInicio")), dataFim: parse(formData.get("dataFim")) },
+  });
+
+  revalidatePath(`/projetos/${obraId}`);
+}

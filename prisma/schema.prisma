@@ -191,6 +191,9 @@ model ObraTrade {
   obraId  String
   obra    Obra   @relation(fields: [obraId], references: [id], onDelete: Cascade)
   trade   Trade
+  // Prazo próprio de cada especialidade dentro do projeto.
+  dataInicio DateTime?
+  dataFim    DateTime?
 
   @@unique([obraId, trade])
 }

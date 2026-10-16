@@ -11,6 +11,31 @@ import {
 } from "@/lib/labels";
 import { deleteLancamento } from "@/app/actions/financeiro";
 import { DonutChart, type DonutSegment } from "@/app/(app)/financeiro/donut-chart";
+import { AreaChart } from "@/app/(app)/financeiro/area-chart";
+
+const MESES_CURTO = ["jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez"];
+
+function delta(atual: number, anterior: number) {
+  if (anterior === 0) return atual === 0 ? null : 100;
+  return ((atual - anterior) / Math.abs(anterior)) * 100;
+}
+
+function DeltaBadge({ valor, invertido = false }: { valor: number | null; invertido?: boolean }) {
+  if (valor === null) return <span className="text-xs text-slate-400">— vs mês anterior</span>;
+  const bom = invertido ? valor <= 0 : valor >= 0;
+  return (
+    <span className="flex items-center gap-1.5 text-xs text-slate-400">
+      <span className={`rounded-full px-2 py-0.5 font-semibold ${bom ? "bg-emerald-500/15 text-emerald-500" : "bg-red-500/15 text-red-500"}`}>
+        {valor >= 0 ? "▲" : "▼"} {Math.abs(valor).toFixed(1)}%
+      </span>
+      vs mês anterior
+    </span>
+  );
+}
+
+function Glow({ cor }: { cor: string }) {
+  return <div className={`pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full blur-2xl ${cor}`} />;
+}
 
 export const metadata: Metadata = {
   title: "Financeiro do projeto — VS Gestão de Obra",
@@ -54,6 +79,24 @@ export default async function FinanceiroProjetoPage({
     somarPorCategoria(custoPorCategoria, l.categoria, l.valor);
   }
   const categoriasOrd = categoriasOrdenadas(custoPorCategoria);
+  // Série mensal: 3 meses atrás até 2 à frente (inclui os previstos).
+  const agora = new Date();
+  const mesesSerie = Array.from({ length: 6 }, (_, i) => {
+    const d = new Date(Date.UTC(agora.getFullYear(), agora.getMonth() - 3 + i, 1));
+    return { ano: d.getUTCFullYear(), mes: d.getUTCMonth() };
+  });
+  const serieReceita = mesesSerie.map(() => 0);
+  const serieDespesa = mesesSerie.map(() => 0);
+  for (const l of lancamentos) {
+    const i = mesesSerie.findIndex((m) => m.ano === l.data.getUTCFullYear() && m.mes === l.data.getUTCMonth());
+    if (i < 0) continue;
+    if (l.tipo === "RECEITA") serieReceita[i] += l.valor;
+    else if (l.tipo === "CUSTO") serieDespesa[i] += l.valor;
+  }
+  const serieLucro = serieReceita.map((r, i) => r - serieDespesa[i]);
+  const dReceita = delta(serieReceita[3], serieReceita[2]);
+  const dDespesa = delta(serieDespesa[3], serieDespesa[2]);
+  const dLucro = delta(serieLucro[3], serieLucro[2]);
   const segments: DonutSegment[] = categoriasOrd.map(([label, valor], i) => ({
     key: label,
     label,
@@ -80,27 +123,45 @@ export default async function FinanceiroProjetoPage({
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
-        <div className="card p-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="card relative overflow-hidden p-5">
+          <Glow cor="bg-sky-500/20" />
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Orçado</p>
-          <p className="mt-1 text-lg font-semibold text-slate-900">{formatBRL(orcado)}</p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">{formatBRL(orcado)}</p>
+          <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
+            <div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-red-500" style={{ width: `${orcado > 0 ? Math.min(100, (custo / orcado) * 100) : 0}%` }} />
+          </div>
+          <p className="mt-1 text-xs text-slate-400">{orcado > 0 ? `${((custo / orcado) * 100).toFixed(0)}% do orçado gasto` : "Sem orçamento"}</p>
         </div>
-        <div className="card p-4">
+        <div className="card relative overflow-hidden p-5">
+          <Glow cor="bg-emerald-500/20" />
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Receita</p>
-          <p className="mt-1 text-lg font-semibold text-emerald-600">{formatBRL(receita)}</p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">{formatBRL(receita)}</p>
+          <div className="mt-2"><DeltaBadge valor={dReceita} /></div>
         </div>
-        <div className="card p-4">
+        <div className="card relative overflow-hidden p-5">
+          <Glow cor="bg-red-500/20" />
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Gasto total</p>
-          <p className="mt-1 text-lg font-semibold text-red-600">{formatBRL(custo)}</p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">{formatBRL(custo)}</p>
+          <div className="mt-2"><DeltaBadge valor={dDespesa} invertido /></div>
         </div>
-        <div className="card p-4">
+        <div className="card relative overflow-hidden p-5">
+          <Glow cor="bg-amber-500/20" />
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Lucro / margem</p>
-          <p className={`mt-1 text-lg font-semibold ${lucro >= 0 ? "text-emerald-600" : "text-red-600"}`}>
-            {formatBRL(lucro)}{" "}
-            <span className="text-sm font-normal text-slate-400">({margem.toFixed(1)}%)</span>
-          </p>
+          <p className={`mt-2 text-2xl font-semibold ${lucro >= 0 ? "text-emerald-500" : "text-red-500"}`}>{formatBRL(lucro)}</p>
+          <div className="mt-2 flex items-center gap-2"><DeltaBadge valor={dLucro} /><span className="text-xs text-slate-400">· margem {margem.toFixed(1)}%</span></div>
         </div>
       </div>
+
+      <AreaChart
+        titulo="Receita, gastos e lucro do projeto — por mês (inclui previstos)"
+        labels={mesesSerie.map((m) => MESES_CURTO[m.mes])}
+        series={[
+          { key: "receita", label: "Receita", cor: "#10b981", valores: serieReceita },
+          { key: "despesa", label: "Gastos", cor: "#ef4444", valores: serieDespesa },
+          { key: "lucro", label: "Lucro", cor: "#f59e0b", valores: serieLucro },
+        ]}
+      />
 
       {(receitaPrevista > 0 || custoPrevisto > 0) && (
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

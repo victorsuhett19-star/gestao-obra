@@ -1,4 +1,5 @@
 import { TRADE_LABEL } from "@/lib/labels";
+import { RemoverEspecialidadeButton } from "./remover-especialidade-button";
 import { salvarPrazoTrade } from "@/app/actions/projetos";
 
 type Prazo = {
@@ -71,10 +72,10 @@ export function PrazosEspecialidades({
         {ordenados.map((p) => {
           const c = contagem(p.dataInicio, p.dataFim);
           return (
+            <div key={p.id} className="relative rounded-xl border border-slate-200 p-4">
             <form
-              key={p.id}
               action={salvarPrazoTrade.bind(null, obraId, p.id)}
-              className="flex flex-col gap-3 rounded-xl border border-slate-200 p-4"
+              className="flex flex-col gap-3"
             >
               <div className="flex items-center justify-between gap-2">
                 <p className="text-sm font-semibold text-slate-900">
@@ -119,6 +120,15 @@ export function PrazosEspecialidades({
                 Salvar datas
               </button>
             </form>
+            {/* Fora do form de datas: o botão tem o próprio form de confirmação. */}
+            <div className="absolute bottom-4 right-4">
+              <RemoverEspecialidadeButton
+                obraId={obraId}
+                obraTradeId={p.id}
+                nome={TRADE_LABEL[p.trade] ?? p.trade}
+              />
+            </div>
+            </div>
           );
         })}
       </div>

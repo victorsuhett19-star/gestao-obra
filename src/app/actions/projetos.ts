@@ -299,3 +299,11 @@ export async function salvarPrazoTrade(
 
   revalidatePath(`/projetos/${obraId}`);
 }
+
+/** Remove uma especialidade do projeto (e suas datas de prazo). */
+export async function removerEspecialidade(obraId: string, obraTradeId: string) {
+  await verifySession();
+  await prisma.obraTrade.delete({ where: { id: obraTradeId, obraId } });
+  revalidatePath(`/projetos/${obraId}`);
+  revalidatePath("/projetos");
+}

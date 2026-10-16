@@ -308,3 +308,32 @@ export function parseValorBR(valor: string): number {
   if (pontos > 1) return Number(limpo.replace(/\./g, ""));
   return Number(limpo);
 }
+
+/** Soma valores por categoria ignorando diferença de maiúsculas, acentos e
+ * espaços ("Comida", "comida " e "COMIDA" viram uma categoria só). O nome
+ * exibido é o da primeira ocorrência, com a primeira letra maiúscula. */
+export function somarPorCategoria(
+  grupos: Map<string, { label: string; valor: number }>,
+  categoria: string | null | undefined,
+  valor: number
+) {
+  const limpa = (categoria ?? "").trim().replace(/\s+/g, " ");
+  const label = limpa
+    ? limpa.charAt(0).toUpperCase() + limpa.slice(1)
+    : "Sem categoria";
+  const chave = label
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+  const atual = grupos.get(chave);
+  if (atual) atual.valor += valor;
+  else grupos.set(chave, { label, valor });
+}
+
+export function categoriasOrdenadas(
+  grupos: Map<string, { label: string; valor: number }>
+): [string, number][] {
+  return Array.from(grupos.values())
+    .map((g): [string, number] => [g.label, g.valor])
+    .sort((a, b) => b[1] - a[1]);
+}

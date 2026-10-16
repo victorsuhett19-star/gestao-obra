@@ -5,6 +5,8 @@ import {
   TIPO_LANCAMENTO_LABEL,
   TIPO_LANCAMENTO_COLOR,
   formatBRL,
+  somarPorCategoria,
+  categoriasOrdenadas,
   formatDateOnly as formatDate,
 } from "@/lib/labels";
 import { deleteLancamento } from "@/app/actions/financeiro";
@@ -50,14 +52,13 @@ export default async function FinanceiroPage({
     .reduce((acc, l) => acc + l.valor, 0);
   const lucro = receita - custo;
 
-  const custoPorCategoria = new Map<string, number>();
+  const custoPorCategoria = new Map<string, { label: string; valor: number }>();
   for (const l of realizados) {
     if (l.tipo !== "CUSTO") continue;
-    const chave = l.categoria?.trim() || "Sem categoria";
-    custoPorCategoria.set(chave, (custoPorCategoria.get(chave) ?? 0) + l.valor);
+    somarPorCategoria(custoPorCategoria, l.categoria, l.valor);
   }
-  const categoriasOrdenadas = Array.from(custoPorCategoria.entries()).sort((a, b) => b[1] - a[1]);
-  const segments: DonutSegment[] = categoriasOrdenadas.map(([label, valor], i) => ({
+  const categoriasOrd = categoriasOrdenadas(custoPorCategoria);
+  const segments: DonutSegment[] = categoriasOrd.map(([label, valor], i) => ({
     key: label,
     label,
     valor,

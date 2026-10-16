@@ -4,6 +4,8 @@ import { prisma } from "@/lib/prisma";
 import { getEmpresaAtivaId } from "@/lib/empresa";
 import {
   formatBRL,
+  somarPorCategoria,
+  categoriasOrdenadas as ordenarCategorias,
   TRADE_CHART_COLOR,
   TRADE_CHART_LABEL,
 } from "@/lib/labels";
@@ -79,7 +81,7 @@ export default async function DashboardFinanceiroPage({
 
   const receitaPorBucket = new Map<string, number>();
   const despesaPorBucket = new Map<string, number>();
-  const despesaPorCategoria = new Map<string, number>();
+  const despesaPorCategoria = new Map<string, { label: string; valor: number }>();
 
   function addReceita(bucket: string, valor: number) {
     receitaPorBucket.set(bucket, (receitaPorBucket.get(bucket) ?? 0) + valor);
@@ -88,8 +90,7 @@ export default async function DashboardFinanceiroPage({
     despesaPorBucket.set(bucket, (despesaPorBucket.get(bucket) ?? 0) + valor);
   }
   function addCategoria(categoria: string | null, valor: number) {
-    const chave = categoria?.trim() || "Sem categoria";
-    despesaPorCategoria.set(chave, (despesaPorCategoria.get(chave) ?? 0) + valor);
+    somarPorCategoria(despesaPorCategoria, categoria, valor);
   }
 
   for (const l of lancamentos) {
@@ -125,9 +126,7 @@ export default async function DashboardFinanceiroPage({
     cor: TRADE_CHART_COLOR[key],
   }));
 
-  const categoriasOrdenadas = Array.from(despesaPorCategoria.entries()).sort(
-    (a, b) => b[1] - a[1]
-  );
+  const categoriasOrdenadas = ordenarCategorias(despesaPorCategoria);
   const totalDespesaCategorias = categoriasOrdenadas.reduce(
     (acc, [, v]) => acc + v,
     0

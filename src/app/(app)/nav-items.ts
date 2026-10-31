@@ -10,6 +10,7 @@ export const navItems: { href: string; label: string; modulo?: ModuloKey }[] = [
   { href: "/projetos", label: "Projetos", modulo: "projetos" },
   { href: "/orcamento-ia", label: "Orçamento IA", modulo: "orcamentoia" },
   { href: "/agenda", label: "Agenda", modulo: "agenda" },
+  { href: "/area-cliente", label: "Área do cliente", modulo: "areacliente" },
   { href: "/financeiro", label: "Financeiro", modulo: "financeiro" },
   { href: "/colaboradores", label: "Colaboradores", modulo: "colaboradores" },
   { href: "/rh", label: "RH", modulo: "rh" },

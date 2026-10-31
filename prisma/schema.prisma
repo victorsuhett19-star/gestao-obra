@@ -177,6 +177,7 @@ model Obra {
   atendimentoOrigem    Atendimento?
   eventos              Evento[]
   contasFinanceiras    ContaFinanceira[]
+  lancamentosCliente   LancamentoCliente[]
   etapasProjeto        EtapaProjeto[]
   anexos               AnexoObra[]
   tarefas              Tarefa[]
@@ -1037,4 +1038,27 @@ model PecaOrcamentoIA {
   tipoMaterialId String
   tipoMaterial   TipoMaterialOrcamento @relation(fields: [tipoMaterialId], references: [id])
   criadoEm       DateTime              @default(now())
+}
+
+// ---------------------------------------------------------------------------
+// Área do cliente — financeiro paralelo (começa do zero) usado pra equipe
+// controlar o custo da obra repassado ao cliente e apresentar a ele. Não
+// mistura com o financeiro interno (LancamentoFinanceiro).
+// ---------------------------------------------------------------------------
+
+enum TipoLancamentoCliente {
+  CUSTO
+  PAGAMENTO
+}
+
+model LancamentoCliente {
+  id        String                @id @default(cuid())
+  obraId    String
+  obra      Obra                  @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  tipo      TipoLancamentoCliente @default(CUSTO)
+  categoria String?
+  descricao String
+  valor     Float
+  data      DateTime              @default(now())
+  criadoEm  DateTime              @default(now())
 }

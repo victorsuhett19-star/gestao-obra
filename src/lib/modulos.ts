@@ -19,6 +19,7 @@ export const MODULOS = [
   { key: "usuarios", label: "Usuários" },
   { key: "empresas", label: "Empresas" },
   { key: "orcamentoia", label: "Orçamento IA" },
+  { key: "areacliente", label: "Área do cliente" },
 ] as const;
 
 export type ModuloKey = (typeof MODULOS)[number]["key"];
@@ -27,6 +28,7 @@ export type ModuloKey = (typeof MODULOS)[number]["key"];
 // o admin precisa liberar explicitamente para cada funcionário.
 export const MODULOS_SENSIVEIS: ModuloKey[] = [
   "financeiro",
+  "areacliente",
   "rh",
   "usuarios",
   "empresas",

@@ -103,3 +103,38 @@ export async function salvarUfCalendario(obraId: string, formData: FormData) {
   });
   revalidatePath(`/area-cliente/${obraId}`);
 }
+
+// --- Notas (cliente ↔ equipe) ---
+
+function revalidarNotas(obraId: string) {
+  revalidatePath(`/area-cliente/${obraId}`);
+  revalidatePath(`/portal/obras/${obraId}`);
+}
+
+export async function adicionarNotaEquipe(obraId: string, formData: FormData) {
+  await exigirAcesso();
+  const user = await getUser();
+  const texto = String(formData.get("texto") ?? "").trim();
+  if (!user || !texto) return;
+  await prisma.notaCliente.create({
+    data: { obraId, texto, autorUsuarioId: user.id },
+  });
+  revalidarNotas(obraId);
+}
+
+export async function alternarNotaResolvida(obraId: string, notaId: string) {
+  await exigirAcesso();
+  const nota = await prisma.notaCliente.findFirst({ where: { id: notaId, obraId } });
+  if (!nota) return;
+  await prisma.notaCliente.update({
+    where: { id: notaId },
+    data: { resolvida: !nota.resolvida },
+  });
+  revalidarNotas(obraId);
+}
+
+export async function excluirNotaCliente(obraId: string, notaId: string) {
+  await exigirAcesso();
+  await prisma.notaCliente.delete({ where: { id: notaId, obraId } });
+  revalidarNotas(obraId);
+}

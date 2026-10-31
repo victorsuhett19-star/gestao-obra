@@ -8,10 +8,15 @@ import {
   excluirLancamentoCliente,
   alternarFinanceiroPortal,
   salvarUfCalendario,
+  adicionarNotaEquipe,
+  alternarNotaResolvida,
+  excluirNotaCliente,
 } from "@/app/actions/area-cliente";
 import { prisma } from "@/lib/prisma";
 import { TRADE_LABEL, formatHora } from "@/lib/labels";
 import { ESTADOS, feriadosComUF } from "@/lib/feriados-uf";
+import { TarefasView } from "@/components/tarefas-view";
+import { NotasCliente } from "@/components/notas-cliente";
 import { PrazosEspecialidades } from "@/components/prazos-especialidades";
 import { RelatorioTab } from "@/components/relatorio-tab";
 import { CalendarioMensal, type ItemCalendario } from "@/components/calendario-mensal";
@@ -26,7 +31,9 @@ const ABAS = [
   { key: "financeiro", label: "Financeiro" },
   { key: "prazos", label: "Prazos" },
   { key: "relatorio", label: "Relatório" },
+  { key: "tarefas", label: "Tarefas" },
   { key: "calendario", label: "Calendário" },
+  { key: "notas", label: "Notas" },
 ] as const;
 
 export default async function AreaClienteObraPage({
@@ -40,6 +47,16 @@ export default async function AreaClienteObraPage({
   if (!dados) notFound();
   const { obra, lanc, custo, segments, serieGastos, serieLabels, gastoMes, variacaoMes } = dados;
   const hoje = new Date().toISOString().slice(0, 10);
+
+  // Notas do cliente
+  const notas =
+    aba === "notas"
+      ? await prisma.notaCliente.findMany({
+          where: { obraId },
+          orderBy: { criadoEm: "desc" },
+          include: { autorUsuario: { select: { nome: true } }, autorCliente: { select: { nome: true } } },
+        })
+      : [];
 
   // Relatório
   const [templates, relatorios] =
@@ -143,6 +160,26 @@ export default async function AreaClienteObraPage({
           </Link>
         ))}
       </nav>
+
+      {aba === "tarefas" && (
+        <TarefasView
+          obraId={obra.id}
+          view={typeof sp.view === "string" ? sp.view : "kanban"}
+          ano={typeof sp.ano === "string" ? Number(sp.ano) : new Date().getUTCFullYear()}
+          mes={typeof sp.mes === "string" ? Number(sp.mes) : new Date().getUTCMonth()}
+          baseHref={"/area-cliente/" + obra.id + "?aba=tarefas"}
+        />
+      )}
+
+      {aba === "notas" && (
+        <NotasCliente
+          notas={notas}
+          lado="equipe"
+          onAdicionar={adicionarNotaEquipe.bind(null, obra.id)}
+          criarAcaoResolver={(id) => alternarNotaResolvida.bind(null, obra.id, id)}
+          criarAcaoExcluir={(id) => excluirNotaCliente.bind(null, obra.id, id)}
+        />
+      )}
 
       {aba === "prazos" && <PrazosEspecialidades obraId={obra.id} prazos={obra.trades} />}
 

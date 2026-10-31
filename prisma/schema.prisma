@@ -111,6 +111,7 @@ model Usuario {
   tarefasResponsavel   Tarefa[]          @relation("TarefaResponsavel")
   notasObraCriadas     NotaObra[]        @relation("NotaObraCriadaPor")
   comentariosObra      ComentarioObra[]  @relation("ComentarioObraAutorUsuario")
+  notasCliente         NotaCliente[]     @relation("NotaClienteAutorUsuario")
   relatoriosGerados    RelatorioObra[]   @relation("RelatorioObraCriadoPor")
   orcamentosIACriados  OrcamentoIA[]     @relation("OrcamentoIACriadoPor")
 }
@@ -187,6 +188,7 @@ model Obra {
   tarefas              Tarefa[]
   notas                NotaObra[]
   comentarios          ComentarioObra[]
+  notasCliente         NotaCliente[]
   relatorios           RelatorioObra[]
   orcamentosIA         OrcamentoIA[]
 }
@@ -869,6 +871,7 @@ model Cliente {
   obras          Obra[]
   anexosEnviados AnexoObra[]
   comentariosObra ComentarioObra[]
+  notasCliente    NotaCliente[]
 }
 
 // ---------------------------------------------------------------------------
@@ -1065,4 +1068,19 @@ model LancamentoCliente {
   valor     Float
   data      DateTime              @default(now())
   criadoEm  DateTime              @default(now())
+}
+
+// Notas da Área do cliente: dúvidas/recados do cliente pra equipe (e as
+// respostas da equipe), com marcação de resolvida.
+model NotaCliente {
+  id             String   @id @default(cuid())
+  obraId         String
+  obra           Obra     @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  texto          String
+  autorUsuarioId String?
+  autorUsuario   Usuario? @relation("NotaClienteAutorUsuario", fields: [autorUsuarioId], references: [id])
+  autorClienteId String?
+  autorCliente   Cliente? @relation(fields: [autorClienteId], references: [id])
+  resolvida      Boolean  @default(false)
+  criadoEm       DateTime @default(now())
 }

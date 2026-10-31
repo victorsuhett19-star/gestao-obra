@@ -204,3 +204,23 @@ export async function assinarEtapa(
   revalidatePath(`/projetos/${obraId}`);
   return { ok: true };
 }
+
+/** O cliente deixa uma dúvida/recado pra equipe (aba Notas da Área do cliente). */
+export async function adicionarNotaPortal(obraId: string, formData: FormData) {
+  await verifyClientSession();
+  const cliente = await getCliente();
+  if (!cliente) return;
+
+  const obra = await prisma.obra.findUnique({ where: { id: obraId } });
+  if (!obra || obra.clienteAcessoId !== cliente.id) return;
+
+  const texto = String(formData.get("texto") ?? "").trim();
+  if (!texto) return;
+
+  await prisma.notaCliente.create({
+    data: { obraId, texto, autorClienteId: cliente.id },
+  });
+
+  revalidatePath(`/portal/obras/${obraId}`);
+  revalidatePath(`/area-cliente/${obraId}`);
+}

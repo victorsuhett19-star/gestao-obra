@@ -18,6 +18,7 @@ export function CalendarioView({
   eventos,
   tarefas,
   uf,
+  mesHref = (a, m) => `/projetos/${obraId}/tarefas?view=calendario&ano=${a}&mes=${m}`,
 }: {
   obraId: string;
   ano: number;
@@ -25,6 +26,8 @@ export function CalendarioView({
   eventos: Evento[];
   tarefas: Tarefa[];
   uf?: string | null;
+  /** Monta o link de um mês — padrão: a própria aba Tarefas do projeto. */
+  mesHref?: (ano: number, mes: number) => string;
 }) {
   // Nacionais + feriados estaduais da UF configurada na Área do cliente do projeto.
   const feriados = [
@@ -66,7 +69,7 @@ export function CalendarioView({
     <div className="card p-5">
       <div className="mb-4 flex items-center justify-between">
         <Link
-          href={`/projetos/${obraId}/tarefas?view=calendario&ano=${mesAnterior.ano}&mes=${mesAnterior.mes}`}
+          href={mesHref(mesAnterior.ano, mesAnterior.mes)}
           className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-100"
         >
           ← Anterior
@@ -75,7 +78,7 @@ export function CalendarioView({
           {NOMES_MES[mes]} de {ano}
         </p>
         <Link
-          href={`/projetos/${obraId}/tarefas?view=calendario&ano=${mesSeguinte.ano}&mes=${mesSeguinte.mes}`}
+          href={mesHref(mesSeguinte.ano, mesSeguinte.mes)}
           className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm text-slate-600 hover:bg-slate-100"
         >
           Próximo →

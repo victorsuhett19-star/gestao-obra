@@ -6,7 +6,8 @@ import { STATUS_ETAPA_PROJETO_LABEL, formatDateOnly, formatBRL } from "@/lib/lab
 import { carregarAreaCliente } from "@/lib/area-cliente";
 import { DonutChart } from "@/app/(app)/financeiro/donut-chart";
 import { AreaChart } from "@/app/(app)/financeiro/area-chart";
-import { uploadAnexoCliente, adicionarComentarioCliente } from "@/app/actions/cliente";
+import { uploadAnexoCliente, adicionarComentarioCliente, adicionarNotaPortal } from "@/app/actions/cliente";
+import { NotasCliente } from "@/components/notas-cliente";
 import { BackLink } from "@/components/back-link";
 import { ComentariosObra } from "@/components/comentarios-obra";
 import { PortalHeader } from "../../portal-header";
@@ -36,6 +37,10 @@ export default async function PortalObraPage({
       comentarios: {
         orderBy: { criadoEm: "desc" },
         include: { autorUsuario: true, autorCliente: true },
+      },
+      notasCliente: {
+        orderBy: { criadoEm: "desc" },
+        include: { autorUsuario: { select: { nome: true } }, autorCliente: { select: { nome: true } } },
       },
     },
   });
@@ -236,6 +241,12 @@ export default async function PortalObraPage({
             )}
           </div>
         </div>
+
+        <NotasCliente
+          notas={obra.notasCliente}
+          lado="cliente"
+          onAdicionar={adicionarNotaPortal.bind(null, obra.id)}
+        />
 
         <ComentariosObra
           comentarios={obra.comentarios}

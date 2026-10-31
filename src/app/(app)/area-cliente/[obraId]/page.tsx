@@ -8,6 +8,11 @@ import {
   excluirLancamentoCliente,
   alternarFinanceiroPortal,
 } from "@/app/actions/area-cliente";
+import { prisma } from "@/lib/prisma";
+import { TRADE_LABEL, formatHora } from "@/lib/labels";
+import { PrazosEspecialidades } from "@/components/prazos-especialidades";
+import { RelatorioTab } from "@/components/relatorio-tab";
+import { CalendarioMensal, type ItemCalendario } from "@/components/calendario-mensal";
 import { DonutChart } from "@/app/(app)/financeiro/donut-chart";
 import { AreaChart } from "@/app/(app)/financeiro/area-chart";
 
@@ -15,14 +20,75 @@ export const metadata: Metadata = {
   title: "Área do cliente — VS Gestão de Obra",
 };
 
+const ABAS = [
+  { key: "financeiro", label: "Financeiro" },
+  { key: "prazos", label: "Prazos" },
+  { key: "relatorio", label: "Relatório" },
+  { key: "calendario", label: "Calendário" },
+] as const;
+
 export default async function AreaClienteObraPage({
   params,
+  searchParams,
 }: PageProps<"/area-cliente/[obraId]">) {
   const { obraId } = await params;
+  const sp = await searchParams;
+  const aba = ABAS.some((a) => a.key === sp.aba) ? (sp.aba as string) : "financeiro";
   const dados = await carregarAreaCliente(obraId);
   if (!dados) notFound();
   const { obra, lanc, custo, segments, serieGastos, serieLabels, gastoMes, variacaoMes } = dados;
   const hoje = new Date().toISOString().slice(0, 10);
+
+  // Relatório
+  const [templates, relatorios] =
+    aba === "relatorio"
+      ? await Promise.all([
+          prisma.relatorioTemplate.findMany({
+            where: { empresaId: obra.empresaId },
+            orderBy: { nome: "asc" },
+          }),
+          prisma.relatorioObra.findMany({
+            where: { obraId },
+            orderBy: { criadoEm: "desc" },
+            include: { criadoPor: true },
+          }),
+        ])
+      : [[], []];
+
+  // Calendário: eventos da agenda + prazos das especialidades + datas do fluxo de entrega.
+  const agora = new Date();
+  const mesParam = typeof sp.mes === "string" && /^d{4}-d{2}$/.test(sp.mes) ? sp.mes : null;
+  const calAno = mesParam ? Number(mesParam.slice(0, 4)) : agora.getFullYear();
+  const calMes = mesParam ? Number(mesParam.slice(5, 7)) : agora.getMonth() + 1;
+  let itensCalendario: ItemCalendario[] = [];
+  if (aba === "calendario") {
+    const [eventos, etapas] = await Promise.all([
+      prisma.evento.findMany({ where: { obraId }, orderBy: { data: "asc" } }),
+      prisma.etapaProjeto.findMany({
+        where: { obraId, data: { not: null } },
+        select: { nome: true, data: true },
+      }),
+    ]);
+    const p2 = (n: number) => String(n).padStart(2, "0");
+    const diaLocal = (d: Date) => `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}`;
+    const diaUTC = (d: Date) => d.toISOString().slice(0, 10);
+    itensCalendario = [
+      ...eventos.map((e) => ({
+        dia: diaLocal(e.data),
+        label: `${formatHora(e.data)} ${e.titulo}`,
+        cor: e.cor ?? "#2563eb",
+      })),
+      ...obra.trades.flatMap((t) => [
+        ...(t.dataInicio
+          ? [{ dia: diaUTC(t.dataInicio), label: `Início ${TRADE_LABEL[t.trade] ?? t.trade}`, cor: "#16a34a" }]
+          : []),
+        ...(t.dataFim
+          ? [{ dia: diaUTC(t.dataFim), label: `Fim ${TRADE_LABEL[t.trade] ?? t.trade}`, cor: "#dc2626" }]
+          : []),
+      ]),
+      ...etapas.map((e) => ({ dia: diaUTC(e.data as Date), label: e.nome, cor: "#b45309" })),
+    ];
+  }
   const campo =
     "rounded-lg border border-slate-300 bg-transparent px-3 py-2 text-sm text-slate-800 outline-none focus:border-slate-500";
 
@@ -57,6 +123,61 @@ export default async function AreaClienteObraPage({
         </div>
       </div>
 
+      <nav className="flex flex-wrap gap-1 border-b border-slate-200">
+        {ABAS.map((a) => (
+          <Link
+            key={a.key}
+            href={`/area-cliente/${obra.id}?aba=${a.key}`}
+            className={`-mb-px border-b-2 px-4 py-2 text-sm font-medium ${aba === a.key ? "border-amber-500 text-slate-900" : "border-transparent text-slate-500 hover:text-slate-800"}`}
+          >
+            {a.label}
+          </Link>
+        ))}
+      </nav>
+
+      {aba === "prazos" && <PrazosEspecialidades obraId={obra.id} prazos={obra.trades} />}
+
+      {aba === "relatorio" && (
+        <div className="flex flex-col gap-4">
+          <a
+            href={`/api/obras/${obra.id}/relatorio`}
+            target="_blank"
+            rel="noreferrer"
+            className="self-start rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100"
+          >
+            📄 Gerar relatório digital (PDF)
+          </a>
+          <RelatorioTab obraId={obra.id} templates={templates} relatorios={relatorios} />
+        </div>
+      )}
+
+      {aba === "calendario" && (
+        <div className="flex flex-col gap-3">
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
+              <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-blue-600" />Agenda</span>
+              <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-green-600" />Início de especialidade</span>
+              <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-red-600" />Fim de especialidade</span>
+              <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-700" />Fluxo de entrega</span>
+            </div>
+            <Link
+              href={`/projetos/${obra.id}/agenda/novo`}
+              className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white hover:bg-ink-700"
+            >
+              + Novo evento
+            </Link>
+          </div>
+          <CalendarioMensal
+            ano={calAno}
+            mes={calMes}
+            itens={itensCalendario}
+            baseHref={`/area-cliente/${obra.id}?aba=calendario`}
+          />
+        </div>
+      )}
+
+      {aba === "financeiro" && (
+      <>
       <div className="card flex flex-wrap items-center justify-between gap-3 p-4">
         <div>
           <p className="text-sm font-semibold text-slate-800">Visível no portal do cliente</p>
@@ -179,6 +300,8 @@ export default async function AreaClienteObraPage({
           </table>
         )}
       </div>
+      </>
+      )}
     </div>
   );
 }

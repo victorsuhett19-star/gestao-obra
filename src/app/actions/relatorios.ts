@@ -44,6 +44,7 @@ export async function salvarTemplate(_obraId: string, formData: FormData) {
 
   revalidatePath(`/obras/${_obraId}/relatorio`);
   revalidatePath(`/projetos/${_obraId}/relatorio`);
+  revalidatePath(`/area-cliente/${_obraId}`);
 }
 
 export async function excluirTemplate(templateId: string, obraId: string) {
@@ -51,6 +52,7 @@ export async function excluirTemplate(templateId: string, obraId: string) {
   await prisma.relatorioTemplate.delete({ where: { id: templateId } });
   revalidatePath(`/obras/${obraId}/relatorio`);
   revalidatePath(`/projetos/${obraId}/relatorio`);
+  revalidatePath(`/area-cliente/${obraId}`);
 }
 
 export async function gerarRelatorio(obraId: string, formData: FormData) {
@@ -78,6 +80,7 @@ export async function gerarRelatorio(obraId: string, formData: FormData) {
 
   revalidatePath(`/obras/${obraId}/relatorio`);
   revalidatePath(`/projetos/${obraId}/relatorio`);
+  revalidatePath(`/area-cliente/${obraId}`);
 }
 
 export async function excluirRelatorio(relatorioId: string, obraId: string) {
@@ -85,4 +88,5 @@ export async function excluirRelatorio(relatorioId: string, obraId: string) {
   await prisma.relatorioObra.delete({ where: { id: relatorioId } });
   revalidatePath(`/obras/${obraId}/relatorio`);
   revalidatePath(`/projetos/${obraId}/relatorio`);
+  revalidatePath(`/area-cliente/${obraId}`);
 }

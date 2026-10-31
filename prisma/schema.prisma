@@ -1092,7 +1092,10 @@ model CronogramaItem {
   id         String   @id @default(cuid())
   obraId     String
   obra       Obra     @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  // Fase (bloco) a que a tarefa pertence — ex: "FUNDAÇÕES E MUROS DE ARRIMO".
+  grupo       String?
   nome       String
+  responsavel String?
   dataInicio DateTime
   dataFim    DateTime
   progresso  Int      @default(0)

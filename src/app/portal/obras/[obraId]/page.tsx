@@ -39,7 +39,7 @@ export default async function PortalObraPage({
         orderBy: { criadoEm: "desc" },
         include: { autorUsuario: true, autorCliente: true },
       },
-      cronograma: { orderBy: [{ dataInicio: "asc" }, { ordem: "asc" }] },
+      cronograma: { orderBy: { ordem: "asc" } },
       notasCliente: {
         orderBy: { criadoEm: "desc" },
         include: { autorUsuario: { select: { nome: true } }, autorCliente: { select: { nome: true } } },

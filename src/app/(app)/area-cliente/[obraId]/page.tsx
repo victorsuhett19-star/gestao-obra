@@ -59,7 +59,7 @@ export default async function AreaClienteObraPage({
     aba === "cronograma"
       ? await prisma.cronogramaItem.findMany({
           where: { obraId },
-          orderBy: [{ dataInicio: "asc" }, { ordem: "asc" }],
+          orderBy: { ordem: "asc" },
         })
       : [];
   const dataInput = (d: Date) => d.toISOString().slice(0, 10);
@@ -206,7 +206,15 @@ export default async function AreaClienteObraPage({
           </div>
 
           <div className="card p-5">
-            <p className="text-sm font-semibold text-slate-800">Editar fases</p>
+            <p className="text-sm font-semibold text-slate-800">Editar tarefas</p>
+            <p className="text-xs text-slate-500">
+              Use a mesma &quot;Fase&quot; em várias tarefas para agrupá-las, como nos blocos da planilha.
+            </p>
+            <datalist id="fases-cronograma">
+              {Array.from(new Set(cronograma.map((c) => c.grupo).filter(Boolean))).map((g) => (
+                <option key={g as string} value={g as string} />
+              ))}
+            </datalist>
             <div className="mt-3 flex flex-col gap-2">
               {cronograma.map((i) => (
                 <div key={i.id} className="flex flex-wrap items-end gap-2 rounded-lg border border-slate-200 p-3">
@@ -214,20 +222,28 @@ export default async function AreaClienteObraPage({
                     action={salvarItemCronograma.bind(null, obra.id, i.id)}
                     className="flex flex-1 flex-wrap items-end gap-2"
                   >
-                    <label className="flex min-w-40 flex-1 flex-col gap-1 text-xs text-slate-500">
+                    <label className="flex min-w-36 flex-1 flex-col gap-1 text-xs text-slate-500">
                       Fase
+                      <input name="grupo" list="fases-cronograma" defaultValue={i.grupo ?? ""} className={campoCrono} />
+                    </label>
+                    <label className="flex min-w-44 flex-[2] flex-col gap-1 text-xs text-slate-500">
+                      Tarefa
                       <input name="nome" required defaultValue={i.nome} className={campoCrono} />
+                    </label>
+                    <label className="flex min-w-32 flex-1 flex-col gap-1 text-xs text-slate-500">
+                      Responsável
+                      <input name="responsavel" defaultValue={i.responsavel ?? ""} className={campoCrono} />
                     </label>
                     <label className="flex flex-col gap-1 text-xs text-slate-500">
                       Início
                       <input name="dataInicio" type="date" required defaultValue={dataInput(i.dataInicio)} className={campoCrono} />
                     </label>
                     <label className="flex flex-col gap-1 text-xs text-slate-500">
-                      Fim
+                      Término
                       <input name="dataFim" type="date" required defaultValue={dataInput(i.dataFim)} className={campoCrono} />
                     </label>
                     <label className="flex w-20 flex-col gap-1 text-xs text-slate-500">
-                      Avanço %
+                      Progresso %
                       <input name="progresso" type="number" min={0} max={100} defaultValue={i.progresso} className={campoCrono} />
                     </label>
                     <button
@@ -249,20 +265,28 @@ export default async function AreaClienteObraPage({
                 action={adicionarItemCronograma.bind(null, obra.id)}
                 className="flex flex-wrap items-end gap-2 rounded-lg border border-dashed border-slate-300 p-3"
               >
-                <label className="flex min-w-40 flex-1 flex-col gap-1 text-xs text-slate-500">
-                  Nova fase
-                  <input name="nome" required placeholder="Ex: Demolição, Elétrica, Acabamento..." className={campoCrono} />
+                <label className="flex min-w-36 flex-1 flex-col gap-1 text-xs text-slate-500">
+                  Fase
+                  <input name="grupo" list="fases-cronograma" placeholder="Ex: FUNDAÇÕES" className={campoCrono} />
+                </label>
+                <label className="flex min-w-44 flex-[2] flex-col gap-1 text-xs text-slate-500">
+                  Nova tarefa
+                  <input name="nome" required placeholder="Ex: Concretagem dos blocos" className={campoCrono} />
+                </label>
+                <label className="flex min-w-32 flex-1 flex-col gap-1 text-xs text-slate-500">
+                  Responsável
+                  <input name="responsavel" placeholder="Ex: Empreiteiro" className={campoCrono} />
                 </label>
                 <label className="flex flex-col gap-1 text-xs text-slate-500">
                   Início
                   <input name="dataInicio" type="date" required defaultValue={hoje} className={campoCrono} />
                 </label>
                 <label className="flex flex-col gap-1 text-xs text-slate-500">
-                  Fim
+                  Término
                   <input name="dataFim" type="date" required defaultValue={hoje} className={campoCrono} />
                 </label>
                 <label className="flex w-20 flex-col gap-1 text-xs text-slate-500">
-                  Avanço %
+                  Progresso %
                   <input name="progresso" type="number" min={0} max={100} defaultValue={0} className={campoCrono} />
                 </label>
                 <button

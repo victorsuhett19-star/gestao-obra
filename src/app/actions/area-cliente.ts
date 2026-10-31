@@ -149,6 +149,8 @@ function revalidarCronograma(obraId: string) {
 
 function lerItemCronograma(formData: FormData) {
   const nome = String(formData.get("nome") ?? "").trim();
+  const grupo = String(formData.get("grupo") ?? "").trim() || null;
+  const responsavel = String(formData.get("responsavel") ?? "").trim() || null;
   const ini = String(formData.get("dataInicio") ?? "");
   const fim = String(formData.get("dataFim") ?? "");
   const progresso = Math.min(100, Math.max(0, Math.round(Number(formData.get("progresso") ?? 0)) || 0));
@@ -156,7 +158,7 @@ function lerItemCronograma(formData: FormData) {
   let dataInicio = new Date(ini);
   let dataFim = new Date(fim);
   if (dataFim < dataInicio) [dataInicio, dataFim] = [dataFim, dataInicio];
-  return { nome, dataInicio, dataFim, progresso };
+  return { nome, grupo, responsavel, dataInicio, dataFim, progresso };
 }
 
 export async function adicionarItemCronograma(obraId: string, formData: FormData) {

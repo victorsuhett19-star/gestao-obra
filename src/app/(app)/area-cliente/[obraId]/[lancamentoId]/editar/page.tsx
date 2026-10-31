@@ -26,18 +26,11 @@ export default async function EditarLancamentoClientePage({
       <Link href={`/area-cliente/${obraId}`} className="text-sm text-slate-500 hover:underline">
         ← Voltar
       </Link>
-      <h1 className="text-xl font-semibold text-slate-900">Editar lançamento</h1>
+      <h1 className="text-xl font-semibold text-slate-900">Editar gasto</h1>
       <form
         action={editarLancamentoCliente.bind(null, obraId, lancamentoId)}
         className="card flex flex-col gap-3 p-5"
       >
-        <label className="flex flex-col gap-1 text-xs text-slate-500">
-          Tipo
-          <select name="tipo" defaultValue={l.tipo} className={campo}>
-            <option value="CUSTO">Custo da obra</option>
-            <option value="PAGAMENTO">Pagamento do cliente</option>
-          </select>
-        </label>
         <label className="flex flex-col gap-1 text-xs text-slate-500">
           Descrição
           <input name="descricao" required defaultValue={l.descricao} className={campo} />

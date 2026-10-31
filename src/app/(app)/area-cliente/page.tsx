@@ -30,8 +30,8 @@ export default async function AreaClientePage({
         <div>
           <h1 className="text-xl font-semibold text-slate-900">Área do cliente</h1>
           <p className="text-sm text-slate-500">
-            Financeiro próprio de cada projeto em execução — a equipe lança o custo
-            da obra e o que o cliente já pagou, e apresenta o resumo a ele.
+            Financeiro próprio de cada projeto em execução — a equipe lança os
+            gastos da obra, acompanha mês a mês e apresenta o resumo ao cliente.
           </p>
         </div>
         <Link
@@ -54,11 +54,7 @@ export default async function AreaClientePage({
             const custo = o.lancamentosCliente
               .filter((l) => l.tipo === "CUSTO")
               .reduce((a, l) => a + l.valor, 0);
-            const pago = o.lancamentosCliente
-              .filter((l) => l.tipo === "PAGAMENTO")
-              .reduce((a, l) => a + l.valor, 0);
-            const saldo = custo - pago;
-            const pct = custo > 0 ? Math.min(100, (pago / custo) * 100) : 0;
+            const qtd = o.lancamentosCliente.filter((l) => l.tipo === "CUSTO").length;
             return (
               <Link
                 key={o.id}
@@ -75,27 +71,10 @@ export default async function AreaClientePage({
                     {STATUS_OBRA_LABEL[o.status]}
                   </span>
                 </div>
-                <div className="grid grid-cols-3 gap-2 text-xs">
-                  <div>
-                    <p className="text-slate-500">Custo</p>
-                    <p className="font-semibold text-slate-900">{formatBRL(custo)}</p>
-                  </div>
-                  <div>
-                    <p className="text-slate-500">Pago</p>
-                    <p className="font-semibold text-emerald-500">{formatBRL(pago)}</p>
-                  </div>
-                  <div>
-                    <p className="text-slate-500">Saldo</p>
-                    <p className={`font-semibold ${saldo > 0 ? "text-amber-500" : "text-emerald-500"}`}>
-                      {formatBRL(saldo)}
-                    </p>
-                  </div>
-                </div>
-                <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-amber-500 to-emerald-500"
-                    style={{ width: `${pct}%` }}
-                  />
+                <div className="text-xs">
+                  <p className="text-slate-500">Gasto total</p>
+                  <p className="text-lg font-semibold text-slate-900">{formatBRL(custo)}</p>
+                  <p className="text-slate-400">{qtd} {qtd === 1 ? "lançamento" : "lançamentos"}</p>
                 </div>
               </Link>
             );

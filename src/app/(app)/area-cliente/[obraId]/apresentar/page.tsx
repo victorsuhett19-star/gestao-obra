@@ -9,6 +9,7 @@ import {
   TRADE_LABEL,
 } from "@/lib/labels";
 import { DonutChart } from "@/app/(app)/financeiro/donut-chart";
+import { AreaChart } from "@/app/(app)/financeiro/area-chart";
 import { BotaoImprimir } from "@/components/botao-imprimir";
 
 export const metadata: Metadata = {
@@ -21,8 +22,7 @@ export default async function ApresentarClientePage({
   const { obraId } = await params;
   const dados = await carregarAreaCliente(obraId);
   if (!dados) notFound();
-  const { obra, lanc, custo, pago, saldo, segments, progresso, totalEtapas } = dados;
-  const pctPago = custo > 0 ? Math.min(100, (pago / custo) * 100) : 0;
+  const { obra, lanc, custo, segments, progresso, totalEtapas, serieGastos, serieLabels, gastoMes, variacaoMes } = dados;
   const prazos = obra.trades.filter((t) => t.dataInicio || t.dataFim);
 
   return (
@@ -65,25 +65,35 @@ export default async function ApresentarClientePage({
           )}
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div className="card p-5">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Custo da obra</p>
-            <p className="mt-2 text-2xl font-semibold text-slate-900">{formatBRL(custo)}</p>
-          </div>
-          <div className="card p-5">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Já pago</p>
-            <p className="mt-2 text-2xl font-semibold text-emerald-500">{formatBRL(pago)}</p>
-            <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-              <div className="h-full rounded-full bg-emerald-500" style={{ width: `${pctPago}%` }} />
-            </div>
-          </div>
-          <div className="card p-5">
-            <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Saldo a pagar</p>
-            <p className={`mt-2 text-2xl font-semibold ${saldo > 0 ? "text-amber-500" : "text-emerald-500"}`}>
-              {formatBRL(saldo)}
-            </p>
-          </div>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="card relative overflow-hidden p-5">
+          <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-red-500/20 blur-2xl" />
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Gasto total da obra</p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">{formatBRL(custo)}</p>
+
         </div>
+        <div className="card relative overflow-hidden p-5">
+          <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-amber-500/20 blur-2xl" />
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Gasto no mês</p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">{formatBRL(gastoMes)}</p>
+          <p className="mt-2 text-xs text-slate-400">
+            {variacaoMes === null ? "— vs mês anterior" : (
+              <>
+                <span className={`rounded-full px-2 py-0.5 font-semibold ${variacaoMes <= 0 ? "bg-emerald-500/15 text-emerald-500" : "bg-red-500/15 text-red-500"}`}>
+                  {variacaoMes >= 0 ? "▲" : "▼"} {Math.abs(variacaoMes).toFixed(1)}%
+                </span>{" "}
+                vs mês anterior
+              </>
+            )}
+          </p>
+        </div>
+        </div>
+
+        <AreaChart
+          titulo="Gastos por mês — últimos 6 meses"
+          labels={serieLabels}
+          series={[{ key: "gastos", label: "Gastos", cor: "#f59e0b", valores: serieGastos }]}
+        />
 
         {prazos.length > 0 && (
           <div className="card p-5">
@@ -117,7 +127,7 @@ export default async function ApresentarClientePage({
               {lanc.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="px-4 py-6 text-center text-slate-500">
-                    Nenhum lançamento registrado.
+                    Nenhum gasto registrado.
                   </td>
                 </tr>
               ) : (
@@ -125,13 +135,8 @@ export default async function ApresentarClientePage({
                   <tr key={l.id} className="border-b border-slate-100 last:border-0">
                     <td className="px-4 py-3 text-slate-500">{formatDateOnly(l.data)}</td>
                     <td className="px-4 py-3 font-medium text-slate-900">{l.descricao}</td>
-                    <td className="px-4 py-3 text-slate-500">
-                      {l.tipo === "PAGAMENTO" ? "Pagamento recebido" : (l.categoria ?? "—")}
-                    </td>
-                    <td
-                      className={`px-4 py-3 text-right font-medium ${l.tipo === "PAGAMENTO" ? "text-emerald-500" : "text-slate-900"}`}
-                    >
-                      {l.tipo === "PAGAMENTO" ? "− " : ""}
+                    <td className="px-4 py-3 text-slate-500">{l.categoria ?? "—"}</td>
+                    <td className="px-4 py-3 text-right font-medium text-slate-900">
                       {formatBRL(l.valor)}
                     </td>
                   </tr>

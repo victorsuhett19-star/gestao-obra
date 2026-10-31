@@ -9,6 +9,7 @@ import {
   alternarFinanceiroPortal,
 } from "@/app/actions/area-cliente";
 import { DonutChart } from "@/app/(app)/financeiro/donut-chart";
+import { AreaChart } from "@/app/(app)/financeiro/area-chart";
 
 export const metadata: Metadata = {
   title: "Área do cliente — VS Gestão de Obra",
@@ -20,7 +21,7 @@ export default async function AreaClienteObraPage({
   const { obraId } = await params;
   const dados = await carregarAreaCliente(obraId);
   if (!dados) notFound();
-  const { obra, lanc, custo, pago, saldo, segments } = dados;
+  const { obra, lanc, custo, segments, serieGastos, serieLabels, gastoMes, variacaoMes } = dados;
   const hoje = new Date().toISOString().slice(0, 10);
   const campo =
     "rounded-lg border border-slate-300 bg-transparent px-3 py-2 text-sm text-slate-800 outline-none focus:border-slate-500";
@@ -80,40 +81,52 @@ export default async function AreaClienteObraPage({
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         <div className="card relative overflow-hidden p-5">
           <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-red-500/20 blur-2xl" />
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Custo da obra</p>
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Gasto total da obra</p>
           <p className="mt-2 text-2xl font-semibold text-slate-900">{formatBRL(custo)}</p>
-        </div>
-        <div className="card relative overflow-hidden p-5">
-          <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-emerald-500/20 blur-2xl" />
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Pago pelo cliente</p>
-          <p className="mt-2 text-2xl font-semibold text-emerald-500">{formatBRL(pago)}</p>
+
         </div>
         <div className="card relative overflow-hidden p-5">
           <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-amber-500/20 blur-2xl" />
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Saldo a pagar</p>
-          <p className={`mt-2 text-2xl font-semibold ${saldo > 0 ? "text-amber-500" : "text-emerald-500"}`}>
-            {formatBRL(saldo)}
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Gasto no mês</p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">{formatBRL(gastoMes)}</p>
+          <p className="mt-2 text-xs text-slate-400">
+            {variacaoMes === null ? "— vs mês anterior" : (
+              <>
+                <span className={`rounded-full px-2 py-0.5 font-semibold ${variacaoMes <= 0 ? "bg-emerald-500/15 text-emerald-500" : "bg-red-500/15 text-red-500"}`}>
+                  {variacaoMes >= 0 ? "▲" : "▼"} {Math.abs(variacaoMes).toFixed(1)}%
+                </span>{" "}
+                vs mês anterior
+              </>
+            )}
           </p>
+        </div>
+        <div className="card relative overflow-hidden p-5">
+          <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-sky-500/20 blur-2xl" />
+          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Lançamentos</p>
+          <p className="mt-2 text-2xl font-semibold text-slate-900">{lanc.length}</p>
+
         </div>
       </div>
 
+      <AreaChart
+        titulo="Gastos por mês — últimos 6 meses"
+        labels={serieLabels}
+        series={[{ key: "gastos", label: "Gastos", cor: "#f59e0b", valores: serieGastos }]}
+      />
+
       <div className="card p-5">
-        <p className="text-sm font-semibold text-slate-800">Novo lançamento</p>
+        <p className="text-sm font-semibold text-slate-800">Novo gasto</p>
         <form
           action={adicionarLancamentoCliente.bind(null, obra.id)}
-          className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-6"
+          className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-5"
         >
-          <select name="tipo" className={campo} defaultValue="CUSTO">
-            <option value="CUSTO">Custo da obra</option>
-            <option value="PAGAMENTO">Pagamento do cliente</option>
-          </select>
           <input name="descricao" required placeholder="Descrição" className={`${campo} sm:col-span-2`} />
           <input name="categoria" placeholder="Categoria (ex: Material)" className={campo} />
           <input name="valor" required inputMode="decimal" placeholder="Valor (ex: 5.430,00)" className={campo} />
           <input name="data" type="date" defaultValue={hoje} className={campo} />
           <button
             type="submit"
-            className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white hover:bg-ink-700 sm:col-span-6 sm:justify-self-start"
+            className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white hover:bg-ink-700 sm:col-span-5 sm:justify-self-start"
           >
             + Adicionar
           </button>
@@ -125,7 +138,7 @@ export default async function AreaClienteObraPage({
       <div className="card overflow-x-auto">
         {lanc.length === 0 ? (
           <p className="p-6 text-center text-sm text-slate-500">
-            Nenhum lançamento ainda — este financeiro começa do zero.
+            Nenhum gasto lançado ainda — este financeiro começa do zero.
           </p>
         ) : (
           <table className="w-full text-sm">
@@ -134,7 +147,6 @@ export default async function AreaClienteObraPage({
                 <th className="px-4 py-3">Data</th>
                 <th className="px-4 py-3">Descrição</th>
                 <th className="px-4 py-3">Categoria</th>
-                <th className="px-4 py-3">Tipo</th>
                 <th className="px-4 py-3 text-right">Valor</th>
                 <th className="px-4 py-3" />
               </tr>
@@ -145,13 +157,6 @@ export default async function AreaClienteObraPage({
                   <td className="px-4 py-3 text-slate-500">{formatDateOnly(l.data)}</td>
                   <td className="px-4 py-3 font-medium text-slate-900">{l.descricao}</td>
                   <td className="px-4 py-3 text-slate-500">{l.categoria ?? "—"}</td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${l.tipo === "CUSTO" ? "bg-red-500/15 text-red-500" : "bg-emerald-500/15 text-emerald-500"}`}
-                    >
-                      {l.tipo === "CUSTO" ? "Custo" : "Pagamento"}
-                    </span>
-                  </td>
                   <td className="px-4 py-3 text-right font-medium text-slate-900">{formatBRL(l.valor)}</td>
                   <td className="px-4 py-3 text-right">
                     <div className="flex items-center justify-end gap-3">

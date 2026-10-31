@@ -5,6 +5,7 @@ import { verifyClientSession, getCliente } from "@/lib/client-dal";
 import { STATUS_ETAPA_PROJETO_LABEL, formatDateOnly, formatBRL } from "@/lib/labels";
 import { carregarAreaCliente } from "@/lib/area-cliente";
 import { DonutChart } from "@/app/(app)/financeiro/donut-chart";
+import { AreaChart } from "@/app/(app)/financeiro/area-chart";
 import { uploadAnexoCliente, adicionarComentarioCliente } from "@/app/actions/cliente";
 import { BackLink } from "@/components/back-link";
 import { ComentariosObra } from "@/components/comentarios-obra";
@@ -151,22 +152,21 @@ export default async function PortalObraPage({
         {fin && (
           <div className="card flex flex-col gap-4 p-5">
             <p className="text-sm font-semibold text-slate-800">Financeiro da obra</p>
-            <div className="grid grid-cols-3 gap-3">
+            <div className="grid grid-cols-2 gap-3">
               <div>
-                <p className="text-xs text-slate-500">Custo da obra</p>
+                <p className="text-xs text-slate-500">Gasto total da obra</p>
                 <p className="text-base font-semibold text-slate-900">{formatBRL(fin.custo)}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-500">Já pago</p>
-                <p className="text-base font-semibold text-emerald-500">{formatBRL(fin.pago)}</p>
-              </div>
-              <div>
-                <p className="text-xs text-slate-500">Saldo</p>
-                <p className={`text-base font-semibold ${fin.saldo > 0 ? "text-amber-500" : "text-emerald-500"}`}>
-                  {formatBRL(fin.saldo)}
-                </p>
+                <p className="text-xs text-slate-500">Gasto no mês</p>
+                <p className="text-base font-semibold text-slate-900">{formatBRL(fin.gastoMes)}</p>
               </div>
             </div>
+            <AreaChart
+              titulo="Gastos por mês"
+              labels={fin.serieLabels}
+              series={[{ key: "gastos", label: "Gastos", cor: "#f59e0b", valores: fin.serieGastos }]}
+            />
             <DonutChart titulo="Para onde vai o custo da obra" segments={fin.segments} />
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -176,12 +176,11 @@ export default async function PortalObraPage({
                       <td className="py-2 pr-3 text-slate-500">{formatDateOnly(l.data)}</td>
                       <td className="py-2 pr-3 font-medium text-slate-900">
                         {l.descricao}
-                        {l.categoria && l.tipo === "CUSTO" && (
+                        {l.categoria && (
                           <span className="text-slate-400"> · {l.categoria}</span>
                         )}
                       </td>
-                      <td className={`py-2 text-right font-medium ${l.tipo === "PAGAMENTO" ? "text-emerald-500" : "text-slate-900"}`}>
-                        {l.tipo === "PAGAMENTO" ? "− " : ""}
+                      <td className="py-2 text-right font-medium text-slate-900">
                         {formatBRL(l.valor)}
                       </td>
                     </tr>

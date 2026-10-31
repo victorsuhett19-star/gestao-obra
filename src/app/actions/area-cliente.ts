@@ -17,7 +17,6 @@ async function exigirAcesso() {
 export async function adicionarLancamentoCliente(obraId: string, formData: FormData) {
   await exigirAcesso();
 
-  const tipo = formData.get("tipo") === "PAGAMENTO" ? "PAGAMENTO" : "CUSTO";
   const descricao = String(formData.get("descricao") ?? "").trim();
   const categoria = String(formData.get("categoria") ?? "").trim();
   const valor = parseValorBR(String(formData.get("valor") ?? ""));
@@ -27,7 +26,7 @@ export async function adicionarLancamentoCliente(obraId: string, formData: FormD
   await prisma.lancamentoCliente.create({
     data: {
       obraId,
-      tipo,
+      tipo: "CUSTO",
       descricao,
       categoria: categoria || null,
       valor,
@@ -55,7 +54,6 @@ export async function editarLancamentoCliente(
 ) {
   await exigirAcesso();
 
-  const tipo = formData.get("tipo") === "PAGAMENTO" ? "PAGAMENTO" : "CUSTO";
   const descricao = String(formData.get("descricao") ?? "").trim();
   const categoria = String(formData.get("categoria") ?? "").trim();
   const valor = parseValorBR(String(formData.get("valor") ?? ""));
@@ -64,7 +62,6 @@ export async function editarLancamentoCliente(
     await prisma.lancamentoCliente.update({
       where: { id: lancamentoId, obraId },
       data: {
-        tipo,
         descricao,
         categoria: categoria || null,
         valor,

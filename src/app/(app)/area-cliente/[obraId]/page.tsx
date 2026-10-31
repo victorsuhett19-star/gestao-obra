@@ -6,6 +6,7 @@ import { formatBRL, formatDateOnly, STATUS_OBRA_LABEL, STATUS_OBRA_COLOR } from 
 import {
   adicionarLancamentoCliente,
   excluirLancamentoCliente,
+  alternarFinanceiroPortal,
 } from "@/app/actions/area-cliente";
 import { DonutChart } from "@/app/(app)/financeiro/donut-chart";
 
@@ -53,6 +54,27 @@ export default async function AreaClienteObraPage({
             📊 Apresentar ao cliente
           </Link>
         </div>
+      </div>
+
+      <div className="card flex flex-wrap items-center justify-between gap-3 p-4">
+        <div>
+          <p className="text-sm font-semibold text-slate-800">Visível no portal do cliente</p>
+          <p className="text-xs text-slate-500">
+            {obra.clienteAcessoId
+              ? obra.financeiroPortalVisivel
+                ? "O cliente está vendo este financeiro no portal dele."
+                : "Oculto: o cliente ainda não vê este financeiro no portal."
+              : "Este projeto ainda não tem login de cliente vinculado (faça isso na visão geral do projeto)."}
+          </p>
+        </div>
+        <form action={alternarFinanceiroPortal.bind(null, obra.id)}>
+          <button
+            type="submit"
+            className={`rounded-lg px-4 py-2 text-sm font-medium ${obra.financeiroPortalVisivel ? "border border-slate-300 text-slate-700 hover:bg-slate-100" : "bg-ink-900 text-white hover:bg-ink-700"}`}
+          >
+            {obra.financeiroPortalVisivel ? "Ocultar do cliente" : "Mostrar ao cliente"}
+          </button>
+        </form>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
@@ -132,11 +154,19 @@ export default async function AreaClienteObraPage({
                   </td>
                   <td className="px-4 py-3 text-right font-medium text-slate-900">{formatBRL(l.valor)}</td>
                   <td className="px-4 py-3 text-right">
+                    <div className="flex items-center justify-end gap-3">
+                    <Link
+                      href={`/area-cliente/${obra.id}/${l.id}/editar`}
+                      className="text-xs font-medium text-slate-600 hover:underline"
+                    >
+                      Editar
+                    </Link>
                     <form action={excluirLancamentoCliente.bind(null, obra.id, l.id)}>
                       <button type="submit" className="text-xs font-medium text-red-500 hover:underline">
                         Excluir
                       </button>
                     </form>
+                    </div>
                   </td>
                 </tr>
               ))}

@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { verifyClientSession, getCliente } from "@/lib/client-dal";
-import { STATUS_ETAPA_PROJETO_LABEL, formatDateOnly } from "@/lib/labels";
+import { STATUS_ETAPA_PROJETO_LABEL, formatDateOnly, formatBRL } from "@/lib/labels";
+import { carregarAreaCliente } from "@/lib/area-cliente";
+import { DonutChart } from "@/app/(app)/financeiro/donut-chart";
 import { uploadAnexoCliente, adicionarComentarioCliente } from "@/app/actions/cliente";
 import { BackLink } from "@/components/back-link";
 import { ComentariosObra } from "@/components/comentarios-obra";
@@ -40,6 +42,9 @@ export default async function PortalObraPage({
   if (!obra || obra.clienteAcessoId !== cliente.id) {
     notFound();
   }
+
+  // Financeiro só aparece se a equipe liberou explicitamente em Área do cliente.
+  const fin = obra.financeiroPortalVisivel ? await carregarAreaCliente(obra.id) : null;
 
   const total = obra.etapasProjeto.length;
   const concluidas = obra.etapasProjeto.filter((e) => e.status === "CONCLUIDA").length;
@@ -142,6 +147,50 @@ export default async function PortalObraPage({
             </ol>
           )}
         </div>
+
+        {fin && (
+          <div className="card flex flex-col gap-4 p-5">
+            <p className="text-sm font-semibold text-slate-800">Financeiro da obra</p>
+            <div className="grid grid-cols-3 gap-3">
+              <div>
+                <p className="text-xs text-slate-500">Custo da obra</p>
+                <p className="text-base font-semibold text-slate-900">{formatBRL(fin.custo)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500">Já pago</p>
+                <p className="text-base font-semibold text-emerald-500">{formatBRL(fin.pago)}</p>
+              </div>
+              <div>
+                <p className="text-xs text-slate-500">Saldo</p>
+                <p className={`text-base font-semibold ${fin.saldo > 0 ? "text-amber-500" : "text-emerald-500"}`}>
+                  {formatBRL(fin.saldo)}
+                </p>
+              </div>
+            </div>
+            <DonutChart titulo="Para onde vai o custo da obra" segments={fin.segments} />
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm">
+                <tbody>
+                  {fin.lanc.map((l) => (
+                    <tr key={l.id} className="border-b border-slate-100 last:border-0">
+                      <td className="py-2 pr-3 text-slate-500">{formatDateOnly(l.data)}</td>
+                      <td className="py-2 pr-3 font-medium text-slate-900">
+                        {l.descricao}
+                        {l.categoria && l.tipo === "CUSTO" && (
+                          <span className="text-slate-400"> · {l.categoria}</span>
+                        )}
+                      </td>
+                      <td className={`py-2 text-right font-medium ${l.tipo === "PAGAMENTO" ? "text-emerald-500" : "text-slate-900"}`}>
+                        {l.tipo === "PAGAMENTO" ? "− " : ""}
+                        {formatBRL(l.valor)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
 
         <div className="card p-5">
           <p className="text-sm font-semibold text-slate-800">Anexos</p>

@@ -7,9 +7,11 @@ import {
   adicionarLancamentoCliente,
   excluirLancamentoCliente,
   alternarFinanceiroPortal,
+  salvarUfCalendario,
 } from "@/app/actions/area-cliente";
 import { prisma } from "@/lib/prisma";
 import { TRADE_LABEL, formatHora } from "@/lib/labels";
+import { ESTADOS, feriadosComUF } from "@/lib/feriados-uf";
 import { PrazosEspecialidades } from "@/components/prazos-especialidades";
 import { RelatorioTab } from "@/components/relatorio-tab";
 import { CalendarioMensal, type ItemCalendario } from "@/components/calendario-mensal";
@@ -57,7 +59,7 @@ export default async function AreaClienteObraPage({
 
   // Calendário: eventos da agenda + prazos das especialidades + datas do fluxo de entrega.
   const agora = new Date();
-  const mesParam = typeof sp.mes === "string" && /^d{4}-d{2}$/.test(sp.mes) ? sp.mes : null;
+  const mesParam = typeof sp.mes === "string" && /^\d{4}-\d{2}$/.test(sp.mes) ? sp.mes : null;
   const calAno = mesParam ? Number(mesParam.slice(0, 4)) : agora.getFullYear();
   const calMes = mesParam ? Number(mesParam.slice(5, 7)) : agora.getMonth() + 1;
   let itensCalendario: ItemCalendario[] = [];
@@ -72,7 +74,14 @@ export default async function AreaClienteObraPage({
     const p2 = (n: number) => String(n).padStart(2, "0");
     const diaLocal = (d: Date) => `${d.getFullYear()}-${p2(d.getMonth() + 1)}-${p2(d.getDate())}`;
     const diaUTC = (d: Date) => d.toISOString().slice(0, 10);
+    const COR_FERIADO = { nacional: "#7c3aed", estadual: "#0891b2" };
+    const feriados = feriadosComUF(calAno, obra.ufCalendario).map((f) => ({
+      dia: f.dia,
+      label: f.nome,
+      cor: COR_FERIADO[f.tipo],
+    }));
     itensCalendario = [
+      ...feriados,
       ...eventos.map((e) => ({
         dia: diaLocal(e.data),
         label: `${formatHora(e.data)} ${e.titulo}`,
@@ -159,7 +168,26 @@ export default async function AreaClienteObraPage({
               <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-green-600" />Início de especialidade</span>
               <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-red-600" />Fim de especialidade</span>
               <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-amber-700" />Fluxo de entrega</span>
+              <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-violet-600" />Feriado nacional</span>
+              <span className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-cyan-600" />Feriado estadual</span>
             </div>
+            <form action={salvarUfCalendario.bind(null, obra.id)} className="flex items-center gap-2">
+              <label className="text-xs text-slate-500" htmlFor="uf">Feriados do estado</label>
+              <select
+                id="uf"
+                name="uf"
+                defaultValue={obra.ufCalendario ?? ""}
+                className="rounded-lg border border-slate-300 bg-transparent px-2 py-1.5 text-sm text-slate-800"
+              >
+                <option value="">Só nacionais</option>
+                {Object.entries(ESTADOS).map(([sigla, nome]) => (
+                  <option key={sigla} value={sigla}>{sigla} — {nome}</option>
+                ))}
+              </select>
+              <button type="submit" className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100">
+                Aplicar
+              </button>
+            </form>
             <Link
               href={`/projetos/${obra.id}/agenda/novo`}
               className="rounded-lg bg-ink-900 px-4 py-2 text-sm font-medium text-white hover:bg-ink-700"

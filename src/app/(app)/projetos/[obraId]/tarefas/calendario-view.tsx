@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { feriadosDoAno, feriadoNoDia } from "@/lib/feriados";
+import { feriadosComUF } from "@/lib/feriados-uf";
 
 const NOMES_MES = [
   "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -16,14 +17,22 @@ export function CalendarioView({
   mes,
   eventos,
   tarefas,
+  uf,
 }: {
   obraId: string;
   ano: number;
   mes: number;
   eventos: Evento[];
   tarefas: Tarefa[];
+  uf?: string | null;
 }) {
-  const feriados = feriadosDoAno(ano);
+  // Nacionais + feriados estaduais da UF configurada na Área do cliente do projeto.
+  const feriados = [
+    ...feriadosDoAno(ano),
+    ...feriadosComUF(ano, uf ?? null)
+      .filter((f) => f.tipo === "estadual")
+      .map((f) => ({ data: new Date(f.dia + "T00:00:00Z"), nome: f.nome })),
+  ];
   const primeiroDiaSemana = new Date(Date.UTC(ano, mes, 1)).getUTCDay();
   const totalDias = new Date(Date.UTC(ano, mes + 1, 0)).getUTCDate();
 

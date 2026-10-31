@@ -31,7 +31,7 @@ export default async function TarefasPage({
 
   const empresaAtivaId = await getEmpresaAtivaId();
 
-  const [tarefas, eventos] = await Promise.all([
+  const [tarefas, eventos, obraUf] = await Promise.all([
     prisma.tarefa.findMany({
       where: { obraId },
       include: {
@@ -47,6 +47,7 @@ export default async function TarefasPage({
           select: { id: true, titulo: true, data: true, cor: true },
         })
       : Promise.resolve([]),
+    prisma.obra.findUnique({ where: { id: obraId }, select: { ufCalendario: true } }),
   ]);
 
   return (
@@ -87,7 +88,7 @@ export default async function TarefasPage({
       {view === "gantt" && <GanttChart tarefas={tarefas} />}
       {view === "lista" && <ListaTarefas obraId={obraId} tarefas={tarefas} />}
       {view === "calendario" && (
-        <CalendarioView obraId={obraId} ano={ano} mes={mes} eventos={eventos} tarefas={tarefas} />
+        <CalendarioView obraId={obraId} ano={ano} mes={mes} eventos={eventos} tarefas={tarefas} uf={obraUf?.ufCalendario ?? null} />
       )}
     </div>
   );

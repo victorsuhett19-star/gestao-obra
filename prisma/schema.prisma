@@ -162,6 +162,8 @@ model Obra {
   // não substitui os campos de texto livre acima (usados no CRM/Atendimento).
   // Se true, o cliente vê o financeiro da Área do cliente no portal dele.
   financeiroPortalVisivel Boolean @default(false)
+  // UF usada pra mostrar os feriados estaduais no calendário da Área do cliente.
+  ufCalendario String?
   clienteAcessoId      String?
   clienteAcesso        Cliente?   @relation(fields: [clienteAcessoId], references: [id])
 

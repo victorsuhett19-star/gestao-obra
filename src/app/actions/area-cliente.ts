@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma";
 import { getUser } from "@/lib/dal";
 import { podeVerModulo } from "@/lib/modulos";
 import { parseValorBR } from "@/lib/labels";
+import { ESTADOS } from "@/lib/feriados-uf";
 
 async function exigirAcesso() {
   const user = await getUser();
@@ -90,4 +91,15 @@ export async function alternarFinanceiroPortal(obraId: string) {
   });
   revalidatePath(`/area-cliente/${obraId}`);
   revalidatePath("/portal");
+}
+
+/** Guarda a UF do projeto, usada pra mostrar feriados estaduais no calendário. */
+export async function salvarUfCalendario(obraId: string, formData: FormData) {
+  await exigirAcesso();
+  const uf = String(formData.get("uf") ?? "");
+  await prisma.obra.update({
+    where: { id: obraId },
+    data: { ufCalendario: uf && uf in ESTADOS ? uf : null },
+  });
+  revalidatePath(`/area-cliente/${obraId}`);
 }

@@ -30,6 +30,7 @@
   --ink-800: #28324e;
   --ink-900: #1f2a44;
   --ink-text: #e8dcc8;
+  --accent-text: #7a6224;
 
   --background: var(--slate-50);
   --foreground: var(--slate-900);
@@ -55,6 +56,7 @@
     --ink-800: #cdb272;
     --ink-900: #c6a75e;
     --ink-text: #1f2a44;
+  --accent-text: #d7be82;
 
     --background: var(--slate-50);
     --foreground: var(--slate-900);
@@ -80,6 +82,7 @@
   --ink-800: #cdb272;
   --ink-900: #c6a75e;
   --ink-text: #1f2a44;
+  --accent-text: #d7be82;
 
   --background: var(--slate-50);
   --foreground: var(--slate-900);
@@ -109,6 +112,8 @@
   --color-gold-400: #d7be82;
   --color-gold-500: #c6a75e;
   --color-gold-600: #a98b46;
+  /* Dourado para TEXTO: escurece no modo claro e clareia no escuro (contraste). */
+  --color-accent: var(--accent-text);
 
   /* Os acentos "âmbar" e "laranja" espalhados pelo app viram o dourado da marca. */
   --color-amber-400: #d7be82;

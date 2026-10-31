@@ -169,23 +169,27 @@ export default async function DashboardPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <div className="rounded-2xl border border-slate-200 bg-gradient-to-br from-emerald-50 to-white p-6">
-          <div className="flex items-start justify-between">
-            <p className="flex items-center gap-1.5 text-xs font-medium uppercase tracking-wide text-slate-500">
+        <div className="card relative overflow-hidden p-6">
+          <div className="pointer-events-none absolute -right-10 -top-10 h-32 w-32 rounded-full bg-gold-500/25 blur-3xl" />
+          <div className="relative flex items-start justify-between">
+            <p className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-accent">
               {hora >= 6 && hora < 18 ? "☀️" : "🌙"} {dataFormatada}
             </p>
           </div>
-          <h1 className="mt-1 text-2xl font-semibold text-slate-900">
+          <h1 className="relative mt-1 text-3xl font-semibold text-slate-900">
             {saudacao(hora)}, {primeiroNome || "usuário"}.
           </h1>
-          <p className="mt-1 text-sm text-slate-500">
+          <p className="relative mt-1 text-sm text-slate-700">
             Agenda e tarefas de hoje estão logo abaixo.
           </p>
-          <div className="mt-4 flex flex-wrap gap-x-4 gap-y-1 text-sm text-slate-600">
-            <span>● {obrasAtivas} projeto(s) ativo(s)</span>
+          <div className="relative mt-4 flex flex-wrap gap-2 text-sm font-medium text-slate-900">
+            <span className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1">
+              <span className="text-accent">●</span> {obrasAtivas} projeto(s) ativo(s)
+            </span>
             {podeVerFinanceiro && (
-              <span>
-                ● {formatBRL(aReceberMes._sum.valor ?? 0)} a receber este mês
+              <span className="rounded-full border border-slate-300 bg-slate-100 px-3 py-1">
+                <span className="text-accent">●</span>{" "}
+                {formatBRL(aReceberMes._sum.valor ?? 0)} a receber este mês
               </span>
             )}
           </div>
@@ -207,16 +211,16 @@ export default async function DashboardPage() {
             <p className="text-xs text-slate-500">a receber este mês</p>
             <div className="mt-4 flex flex-col gap-2">
               {proximosRecebiveis.length === 0 ? (
-                <p className="text-sm text-slate-400">Nenhum recebimento pendente.</p>
+                <p className="text-sm text-slate-500">Nenhum recebimento pendente.</p>
               ) : (
                 proximosRecebiveis.map((c) => (
                   <div key={c.id} className="flex items-center justify-between text-sm">
                     <div>
                       <p className="text-slate-700">
                         {c.descricao}
-                        {c.obra && <span className="text-slate-400"> — {c.obra.nome}</span>}
+                        {c.obra && <span className="text-slate-500"> — {c.obra.nome}</span>}
                       </p>
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-slate-500">
                         vence {formatDateOnly(c.dataVencimento)}
                       </p>
                     </div>
@@ -243,7 +247,7 @@ export default async function DashboardPage() {
           </div>
           <div className="mt-4 flex flex-col gap-4">
             {obrasWorkspace.length === 0 ? (
-              <p className="text-sm text-slate-400">Nenhum projeto em andamento.</p>
+              <p className="text-sm text-slate-500">Nenhum projeto em andamento.</p>
             ) : (
               obrasWorkspace.map((obra) => {
                 const totalEtapas = obra.etapasProjeto.length;
@@ -259,7 +263,7 @@ export default async function DashboardPage() {
                   >
                     <div className="min-w-0">
                       <p className="truncate text-sm font-medium text-slate-800">{obra.nome}</p>
-                      <p className="truncate text-xs text-slate-400">{obra.clienteNome}</p>
+                      <p className="truncate text-xs text-slate-500">{obra.clienteNome}</p>
                     </div>
                     <span className="shrink-0 rounded-full bg-slate-100 px-2 py-0.5 text-[11px] font-medium uppercase text-slate-600">
                       {tag}
@@ -271,7 +275,7 @@ export default async function DashboardPage() {
                           style={{ width: `${pct}%` }}
                         />
                       </div>
-                      <p className="mt-0.5 text-right text-[11px] text-slate-400">{pct}%</p>
+                      <p className="mt-0.5 text-right text-[11px] text-slate-500">{pct}%</p>
                     </div>
                   </Link>
                 );
@@ -322,12 +326,12 @@ export default async function DashboardPage() {
             </p>
             <div className="mt-4 flex flex-col gap-2">
               {eventosHoje.length === 0 ? (
-                <p className="text-sm text-slate-400">Nenhum evento hoje.</p>
+                <p className="text-sm text-slate-500">Nenhum evento hoje.</p>
               ) : (
                 eventosHoje.map((e) => (
                   <div key={e.id} className="flex items-center justify-between text-sm">
                     <span className="text-slate-700">{e.titulo}</span>
-                    <span className="text-xs text-slate-400">
+                    <span className="text-xs text-slate-500">
                       {TIPO_EVENTO_LABEL[e.tipo]} · {formatHora(e.data)}
                     </span>
                   </div>
@@ -347,7 +351,7 @@ export default async function DashboardPage() {
             {eventosHoje.map((e) => (
               <div key={e.id} className="flex items-center justify-between text-sm">
                 <span className="text-slate-700">{e.titulo}</span>
-                <span className="text-xs text-slate-400">
+                <span className="text-xs text-slate-500">
                   {TIPO_EVENTO_LABEL[e.tipo]} · {formatHora(e.data)}
                 </span>
               </div>

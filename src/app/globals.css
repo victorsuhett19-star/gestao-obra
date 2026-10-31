@@ -1,29 +1,35 @@
 @import "tailwindcss";
 
-/* Paleta da marca (baseada nos tons Pantone: Black 6C, Black Coffee,
-   Hot Chocolate, Humus, Gold Leaf e Bright White). A escala "slate" usada
-   em todo o app é redefinida aqui via variáveis CSS — isso troca a cor de
-   toda a interface sem precisar mexer em cada arquivo. No modo escuro a
-   escala é invertida (claro vira escuro e vice-versa), então o mesmo
-   `text-slate-900` que é "texto escuro sobre fundo claro" no modo claro
-   vira "texto claro sobre fundo escuro" no modo escuro automaticamente.
+/* Paleta da marca — apenas três cores:
+     Navy        #1F2A44
+     Warm Beige  #E8DCC8
+     Soft Gold   #C6A75E
+   A escala "slate" usada em todo o app é redefinida aqui via variáveis CSS
+   (tons de navy e de bege) — isso troca a cor de toda a interface sem
+   precisar mexer em cada arquivo. No modo escuro a escala é invertida
+   (navy vira o fundo, bege vira o texto), então o mesmo `text-slate-900` que
+   é "navy sobre bege" no modo claro vira "bege sobre navy" no escuro.
 
-   `bg-ink-*` é uma escala separada, fixa (não inverte) — usada nos botões
-   primários (bg-slate-900 + text-white antes), que precisam continuar
-   escuros com texto branco nos dois modos. */
+   `bg-ink-*` é a cor dos botões primários: navy com texto bege no modo
+   claro e dourado com texto navy no modo escuro. */
 :root {
-  --slate-50: #f8f5f0;
-  --slate-100: #efe7da;
-  --slate-200: #e1d2bc;
-  --slate-300: #cbb595;
-  --slate-400: #ae8e68;
-  --slate-500: #8a6a4c;
-  --slate-600: #6c4b3a;
-  --slate-700: #593a2e;
-  --slate-800: #3d2a22;
-  --slate-900: #251811;
-  --slate-950: #150f0b;
-  --surface: #ffffff;
+  --slate-50: #e8dcc8;
+  --slate-100: #dfd2bb;
+  --slate-200: #cfc0a4;
+  --slate-300: #b9a885;
+  --slate-400: #8d8672;
+  --slate-500: #565c70;
+  --slate-600: #485068;
+  --slate-700: #353f5a;
+  --slate-800: #28324e;
+  --slate-900: #1f2a44;
+  --slate-950: #131b2e;
+  --surface: #f6f0e4;
+
+  --ink-700: #2d3a5c;
+  --ink-800: #28324e;
+  --ink-900: #1f2a44;
+  --ink-text: #e8dcc8;
 
   --background: var(--slate-50);
   --foreground: var(--slate-900);
@@ -32,18 +38,23 @@
 
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
-    --slate-50: #150f0b;
-    --slate-100: #251811;
-    --slate-200: #3d2a22;
-    --slate-300: #593a2e;
-    --slate-400: #6c4b3a;
-    --slate-500: #a6876a;
-    --slate-600: #ae8e68;
-    --slate-700: #cbb595;
-    --slate-800: #e1d2bc;
-    --slate-900: #f3eae0;
-    --slate-950: #f8f5f0;
-    --surface: #1b140f;
+    --slate-50: #131b2e;
+    --slate-100: #1a2339;
+    --slate-200: #2b3858;
+    --slate-300: #3c4b73;
+    --slate-400: #5a6a93;
+    --slate-500: #979593;
+    --slate-600: #b6b0a7;
+    --slate-700: #cfc6b6;
+    --slate-800: #e1d6c1;
+    --slate-900: #e8dcc8;
+    --slate-950: #f6f0e4;
+    --surface: #1f2a44;
+
+    --ink-700: #d7be82;
+    --ink-800: #cdb272;
+    --ink-900: #c6a75e;
+    --ink-text: #1f2a44;
 
     --background: var(--slate-50);
     --foreground: var(--slate-900);
@@ -52,18 +63,23 @@
 }
 
 :root.dark {
-  --slate-50: #150f0b;
-  --slate-100: #251811;
-  --slate-200: #3d2a22;
-  --slate-300: #593a2e;
-  --slate-400: #6c4b3a;
-  --slate-500: #a6876a;
-  --slate-600: #ae8e68;
-  --slate-700: #cbb595;
-  --slate-800: #e1d2bc;
-  --slate-900: #f3eae0;
-  --slate-950: #f8f5f0;
-  --surface: #1b140f;
+  --slate-50: #131b2e;
+  --slate-100: #1a2339;
+  --slate-200: #2b3858;
+  --slate-300: #3c4b73;
+  --slate-400: #5a6a93;
+  --slate-500: #979593;
+  --slate-600: #b6b0a7;
+  --slate-700: #cfc6b6;
+  --slate-800: #e1d6c1;
+  --slate-900: #e8dcc8;
+  --slate-950: #f6f0e4;
+  --surface: #1f2a44;
+
+  --ink-700: #d7be82;
+  --ink-800: #cdb272;
+  --ink-900: #c6a75e;
+  --ink-text: #1f2a44;
 
   --background: var(--slate-50);
   --foreground: var(--slate-900);
@@ -84,15 +100,28 @@
   --color-slate-950: var(--slate-950);
   --color-surface: var(--surface);
 
-  /* Escala fixa (não inverte no escuro) usada nos botões/pills primários. */
-  --color-ink-700: #4e3226;
-  --color-ink-800: #3a271e;
-  --color-ink-900: #221712;
+  /* Botões/pills primários (muda conforme o tema, ver variáveis acima). */
+  --color-ink-700: var(--ink-700);
+  --color-ink-800: var(--ink-800);
+  --color-ink-900: var(--ink-900);
 
-  /* Dourado do selo — disponível como acento (bordas, destaques, hover). */
-  --color-gold-400: #d9bd8a;
-  --color-gold-500: #c6a06c;
-  --color-gold-600: #a67f4c;
+  /* Dourado da marca (Soft Gold #C6A75E) — acento principal. */
+  --color-gold-400: #d7be82;
+  --color-gold-500: #c6a75e;
+  --color-gold-600: #a98b46;
+
+  /* Os acentos "âmbar" e "laranja" espalhados pelo app viram o dourado da marca. */
+  --color-amber-400: #d7be82;
+  --color-amber-500: #c6a75e;
+  --color-amber-600: #a98b46;
+  --color-amber-700: #8a7038;
+  --color-orange-500: #c6a75e;
+  --color-orange-600: #a98b46;
+
+  /* Cantos mais arredondados, no estilo da referência. */
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.25rem;
+  --radius-2xl: 1.75rem;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -103,22 +132,24 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
 }
 
-/* Card padrão dos módulos — flat design com glassmorphism bem sutil.
-   Cantos bem arredondados, borda quase invisível, pouquíssima sombra e um
-   fundo levemente translúcido (levemente diferente do background, não um
-   contraste forte). A sensação de profundidade vem da diferença mínima de
-   tonalidade entre background → card → elementos internos, não de sombra
-   forte + borda + gradiente. */
+/* Botões primários: pílula, com o texto na cor certa para cada tema. */
+.bg-ink-900,
+.bg-ink-800,
+.bg-ink-700 {
+  color: var(--ink-text);
+  border-radius: 9999px;
+}
+
+/* Card padrão dos módulos — superfície navy (escuro) ou bege claro (claro),
+   cantos bem arredondados e borda sutil. */
 @utility card {
-  border-radius: 1.375rem;
-  border: 1px solid color-mix(in oklab, var(--slate-200) 55%, transparent);
-  background-color: color-mix(in oklab, var(--surface) 90%, transparent);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 1px 2px color-mix(in oklab, black 4%, transparent);
+  border-radius: 1.5rem;
+  border: 1px solid color-mix(in oklab, var(--slate-200) 70%, transparent);
+  background-color: var(--surface);
+  box-shadow: 0 1px 2px color-mix(in oklab, black 6%, transparent);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -128,6 +159,17 @@ body {
 }
 :root.dark .card {
   box-shadow: none;
+}
+
+/* Barra de progresso listrada (parte que ainda falta), como na referência. */
+.barra-listrada {
+  background-image: repeating-linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--slate-500) 55%, transparent) 0,
+    color-mix(in oklab, var(--slate-500) 55%, transparent) 2px,
+    transparent 2px,
+    transparent 6px
+  );
 }
 
 /* Esconde a barra de rolagem visualmente, mantendo o scroll funcionando

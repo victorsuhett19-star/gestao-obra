@@ -269,7 +269,7 @@ export default async function DashboardFinanceiroPage({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div className="card relative overflow-hidden p-5">
           <div className="pointer-events-none absolute -right-8 -top-8 h-24 w-24 rounded-full bg-emerald-500/20 blur-2xl" />
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Receita {mes ? "do mês" : "total"}</p>

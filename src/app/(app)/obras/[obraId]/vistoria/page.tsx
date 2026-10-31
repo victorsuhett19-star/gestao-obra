@@ -70,12 +70,12 @@ export default async function VistoriaPage({
               </div>
               <div className="flex gap-2 text-xs">
                 <span
-                  className={`rounded-full px-2 py-0.5 font-medium ${v.assinadoResponsavelEm ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-500"}`}
+                  className={`rounded-full px-2 py-0.5 font-medium ${v.assinadoResponsavelEm ? "bg-emerald-500/15 text-emerald-600" : "bg-slate-100 text-slate-500"}`}
                 >
                   {v.assinadoResponsavelEm ? "Responsável assinou" : "Aguarda responsável"}
                 </span>
                 <span
-                  className={`rounded-full px-2 py-0.5 font-medium ${v.assinadoClienteEm ? "bg-emerald-100 text-emerald-700" : "bg-slate-100 text-slate-500"}`}
+                  className={`rounded-full px-2 py-0.5 font-medium ${v.assinadoClienteEm ? "bg-emerald-500/15 text-emerald-600" : "bg-slate-100 text-slate-500"}`}
                 >
                   {v.assinadoClienteEm ? "Cliente assinou" : "Aguarda cliente"}
                 </span>

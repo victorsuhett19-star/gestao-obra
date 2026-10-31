@@ -58,7 +58,7 @@ export function Sidebar({
       )}
 
       <aside
-        className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col border-r border-slate-200 bg-surface transition-transform duration-200 sm:static sm:z-auto sm:w-60 ${
+        className={`fixed inset-y-0 left-0 z-50 flex w-64 shrink-0 flex-col border-r border-slate-200 bg-slate-100 transition-transform duration-200 sm:static sm:z-auto sm:w-60 ${
           open ? "" : "max-sm:-translate-x-full"
         }`}
       >
@@ -91,10 +91,10 @@ export function Sidebar({
                 key={item.href}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className={`rounded-lg px-3 py-2 text-sm font-medium transition ${
+                className={`rounded-full px-4 py-2 text-sm font-medium transition ${
                   active
-                    ? "bg-slate-100 text-slate-900"
-                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
+                    ? "bg-gold-500 text-[#1f2a44]"
+                    : "text-slate-600 hover:bg-slate-200/60 hover:text-slate-900"
                 }`}
               >
                 {item.label}
@@ -113,7 +113,7 @@ export function Sidebar({
           <form action={logoutAction}>
             <button
               type="submit"
-              className="w-full rounded-lg px-3 py-2 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-100 hover:text-slate-900"
+              className="w-full rounded-full px-4 py-2 text-left text-sm font-medium text-slate-600 transition hover:bg-slate-200/60 hover:text-slate-900"
             >
               Sair
             </button>

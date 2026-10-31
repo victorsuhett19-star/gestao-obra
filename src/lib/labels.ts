@@ -8,10 +8,10 @@ export const STATUS_OBRA_LABEL: Record<string, string> = {
 
 export const STATUS_OBRA_COLOR: Record<string, string> = {
   PLANEJAMENTO: "bg-slate-100 text-slate-700",
-  EM_ANDAMENTO: "bg-blue-100 text-blue-700",
-  PAUSADA: "bg-amber-100 text-amber-700",
-  CONCLUIDA: "bg-emerald-100 text-emerald-700",
-  CANCELADA: "bg-red-100 text-red-700",
+  EM_ANDAMENTO: "bg-blue-500/15 text-blue-600",
+  PAUSADA: "bg-amber-500/15 text-amber-600",
+  CONCLUIDA: "bg-emerald-500/15 text-emerald-600",
+  CANCELADA: "bg-red-500/15 text-red-600",
 };
 
 export const TRADE_LABEL: Record<string, string> = {
@@ -60,9 +60,9 @@ export const STATUS_TAREFA_LABEL: Record<string, string> = {
 
 export const STATUS_TAREFA_COLOR: Record<string, string> = {
   A_FAZER: "bg-slate-100 text-slate-600",
-  EM_ANDAMENTO: "bg-blue-100 text-blue-700",
-  EM_REVISAO: "bg-amber-100 text-amber-700",
-  CONCLUIDA: "bg-emerald-100 text-emerald-700",
+  EM_ANDAMENTO: "bg-blue-500/15 text-blue-600",
+  EM_REVISAO: "bg-amber-500/15 text-amber-600",
+  CONCLUIDA: "bg-emerald-500/15 text-emerald-600",
 };
 
 export const PRIORIDADE_TAREFA_LABEL: Record<string, string> = {
@@ -101,9 +101,9 @@ export const STATUS_ETAPA_LABEL: Record<string, string> = {
 
 export const STATUS_ETAPA_COLOR: Record<string, string> = {
   NAO_INICIADA: "bg-slate-100 text-slate-700",
-  EM_ANDAMENTO: "bg-blue-100 text-blue-700",
-  CONCLUIDA: "bg-emerald-100 text-emerald-700",
-  ATRASADA: "bg-red-100 text-red-700",
+  EM_ANDAMENTO: "bg-blue-500/15 text-blue-600",
+  CONCLUIDA: "bg-emerald-500/15 text-emerald-600",
+  ATRASADA: "bg-red-500/15 text-red-600",
 };
 
 export const CATEGORIA_ORCAMENTO_LABEL: Record<string, string> = {
@@ -121,9 +121,9 @@ export const TIPO_LANCAMENTO_LABEL: Record<string, string> = {
 };
 
 export const TIPO_LANCAMENTO_COLOR: Record<string, string> = {
-  CUSTO: "bg-red-100 text-red-700",
-  RECEITA: "bg-emerald-100 text-emerald-700",
-  PAGAMENTO: "bg-blue-100 text-blue-700",
+  CUSTO: "bg-red-500/15 text-red-600",
+  RECEITA: "bg-emerald-500/15 text-emerald-600",
+  PAGAMENTO: "bg-blue-500/15 text-blue-600",
 };
 
 export const STATUS_PEDIDO_LABEL: Record<string, string> = {
@@ -136,10 +136,10 @@ export const STATUS_PEDIDO_LABEL: Record<string, string> = {
 
 export const STATUS_PEDIDO_COLOR: Record<string, string> = {
   RASCUNHO: "bg-slate-100 text-slate-700",
-  ENVIADO: "bg-blue-100 text-blue-700",
-  CONFIRMADO: "bg-amber-100 text-amber-700",
-  ENTREGUE: "bg-emerald-100 text-emerald-700",
-  CANCELADO: "bg-red-100 text-red-700",
+  ENVIADO: "bg-blue-500/15 text-blue-600",
+  CONFIRMADO: "bg-amber-500/15 text-amber-600",
+  ENTREGUE: "bg-emerald-500/15 text-emerald-600",
+  CANCELADO: "bg-red-500/15 text-red-600",
 };
 
 export const CLIMA_LABEL: Record<string, string> = {
@@ -166,8 +166,8 @@ export const STATUS_MONTAGEM_LABEL: Record<string, string> = {
 
 export const STATUS_MONTAGEM_COLOR: Record<string, string> = {
   FILA: "bg-slate-100 text-slate-700",
-  EM_ANDAMENTO: "bg-blue-100 text-blue-700",
-  CONCLUIDA: "bg-emerald-100 text-emerald-700",
+  EM_ANDAMENTO: "bg-blue-500/15 text-blue-600",
+  CONCLUIDA: "bg-emerald-500/15 text-emerald-600",
 };
 
 export const STATUS_ITEM_VISTORIA_LABEL: Record<string, string> = {
@@ -178,8 +178,8 @@ export const STATUS_ITEM_VISTORIA_LABEL: Record<string, string> = {
 
 export const STATUS_ITEM_VISTORIA_COLOR: Record<string, string> = {
   PENDENTE: "bg-slate-100 text-slate-700",
-  CONCLUIDO_SEM_OCORRENCIA: "bg-emerald-100 text-emerald-700",
-  CONCLUIDO_COM_OCORRENCIA: "bg-amber-100 text-amber-700",
+  CONCLUIDO_SEM_OCORRENCIA: "bg-emerald-500/15 text-emerald-600",
+  CONCLUIDO_COM_OCORRENCIA: "bg-amber-500/15 text-amber-600",
 };
 
 export const STATUS_ATENDIMENTO_LABEL: Record<string, string> = {
@@ -222,10 +222,10 @@ export const TIPO_REGISTRO_PONTO_LABEL: Record<string, string> = {
 };
 
 export const TIPO_REGISTRO_PONTO_COLOR: Record<string, string> = {
-  TRABALHO: "bg-emerald-100 text-emerald-700",
-  FALTA: "bg-red-100 text-red-700",
-  ATESTADO: "bg-amber-100 text-amber-700",
-  FERIADO: "bg-blue-100 text-blue-700",
+  TRABALHO: "bg-emerald-500/15 text-emerald-600",
+  FALTA: "bg-red-500/15 text-red-600",
+  ATESTADO: "bg-amber-500/15 text-amber-600",
+  FERIADO: "bg-blue-500/15 text-blue-600",
   FOLGA: "bg-slate-100 text-slate-700",
 };
 
@@ -241,9 +241,9 @@ export const STATUS_FOLGA_LABEL: Record<string, string> = {
 };
 
 export const STATUS_FOLGA_COLOR: Record<string, string> = {
-  SOLICITADA: "bg-amber-100 text-amber-700",
-  APROVADA: "bg-emerald-100 text-emerald-700",
-  RECUSADA: "bg-red-100 text-red-700",
+  SOLICITADA: "bg-amber-500/15 text-amber-600",
+  APROVADA: "bg-emerald-500/15 text-emerald-600",
+  RECUSADA: "bg-red-500/15 text-red-600",
 };
 
 export const STATUS_FOLHA_LABEL: Record<string, string> = {
@@ -252,8 +252,8 @@ export const STATUS_FOLHA_LABEL: Record<string, string> = {
 };
 
 export const STATUS_FOLHA_COLOR: Record<string, string> = {
-  PENDENTE: "bg-amber-100 text-amber-700",
-  PAGA: "bg-emerald-100 text-emerald-700",
+  PENDENTE: "bg-amber-500/15 text-amber-600",
+  PAGA: "bg-emerald-500/15 text-emerald-600",
 };
 
 // Formata um timestamp real (ex: criadoEm, horário de assinatura) no fuso do

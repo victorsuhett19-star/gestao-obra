@@ -143,7 +143,7 @@ export function AreaChart({
                 strokeLinejoin="round"
               />
               {pts.map(([px, py], i) => (
-                <circle key={i} cx={px} cy={py} r="4" fill={s.cor} stroke="#100b08" strokeWidth="2">
+                <circle key={i} cx={px} cy={py} r="4" fill={s.cor} style={{ stroke: "var(--surface)" }} strokeWidth="2">
                   <title>{`${s.label} — ${labels[i]}: ${formatBRL(s.valores[i])}`}</title>
                 </circle>
               ))}

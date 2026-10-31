@@ -123,7 +123,7 @@ export default async function FinanceiroProjetoPage({
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <div className="card relative overflow-hidden p-5">
           <Glow cor="bg-sky-500/20" />
           <p className="text-xs font-medium uppercase tracking-wide text-slate-500">Orçado</p>

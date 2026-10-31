@@ -12,7 +12,7 @@ function iniciaisDe(nome: string) {
 // sessão, especialmente útil em telas/celulares compartilhados pela equipe.
 export function TopBar({ nome, papel }: { nome: string; papel: string }) {
   return (
-    <header className="sticky top-0 z-20 flex items-center justify-end gap-3 border-b border-slate-200 bg-surface/90 px-4 py-2.5 backdrop-blur sm:px-8">
+    <header className="sticky top-0 z-20 mx-4 mt-3 flex items-center justify-end gap-3 rounded-full border border-slate-200 bg-surface/95 px-4 py-2 backdrop-blur sm:mx-8">
       <ThemeToggle />
       <div className="text-right leading-tight">
         <p className="text-sm font-medium text-slate-900">{nome}</p>

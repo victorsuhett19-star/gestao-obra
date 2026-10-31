@@ -8,6 +8,7 @@ import {
   STATUS_OBRA_LABEL,
   TRADE_LABEL,
 } from "@/lib/labels";
+import { CronogramaGantt } from "@/components/cronograma-gantt";
 import { DonutChart } from "@/app/(app)/financeiro/donut-chart";
 import { AreaChart } from "@/app/(app)/financeiro/area-chart";
 import { BotaoImprimir } from "@/components/botao-imprimir";
@@ -107,6 +108,15 @@ export default async function ApresentarClientePage({
                   </span>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+
+        {obra.cronograma.length > 0 && (
+          <div className="card p-5">
+            <p className="text-sm font-semibold text-slate-800">Cronograma da obra</p>
+            <div className="mt-3">
+              <CronogramaGantt itens={obra.cronograma} />
             </div>
           </div>
         )}

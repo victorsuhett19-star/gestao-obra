@@ -11,10 +11,15 @@ import {
   adicionarNotaEquipe,
   alternarNotaResolvida,
   excluirNotaCliente,
+  adicionarItemCronograma,
+  salvarItemCronograma,
+  excluirItemCronograma,
+  gerarCronogramaDasEspecialidades,
 } from "@/app/actions/area-cliente";
 import { prisma } from "@/lib/prisma";
 import { TRADE_LABEL, formatHora } from "@/lib/labels";
 import { ESTADOS, feriadosComUF } from "@/lib/feriados-uf";
+import { CronogramaGantt } from "@/components/cronograma-gantt";
 import { TarefasView } from "@/components/tarefas-view";
 import { NotasCliente } from "@/components/notas-cliente";
 import { PrazosEspecialidades } from "@/components/prazos-especialidades";
@@ -31,6 +36,7 @@ const ABAS = [
   { key: "financeiro", label: "Financeiro" },
   { key: "prazos", label: "Prazos" },
   { key: "relatorio", label: "Relatório" },
+  { key: "cronograma", label: "Cronograma" },
   { key: "tarefas", label: "Tarefas" },
   { key: "calendario", label: "Calendário" },
   { key: "notas", label: "Notas" },
@@ -47,6 +53,18 @@ export default async function AreaClienteObraPage({
   if (!dados) notFound();
   const { obra, lanc, custo, segments, serieGastos, serieLabels, gastoMes, variacaoMes } = dados;
   const hoje = new Date().toISOString().slice(0, 10);
+
+  // Cronograma de obra
+  const cronograma =
+    aba === "cronograma"
+      ? await prisma.cronogramaItem.findMany({
+          where: { obraId },
+          orderBy: [{ dataInicio: "asc" }, { ordem: "asc" }],
+        })
+      : [];
+  const dataInput = (d: Date) => d.toISOString().slice(0, 10);
+  const campoCrono = "rounded-lg border border-slate-300 bg-transparent px-2 py-1.5 text-sm text-slate-800 outline-none focus:border-slate-500";
+  const especialidadesComDatas = obra.trades.filter((t) => t.dataInicio && t.dataFim).length;
 
   // Notas do cliente
   const notas =
@@ -160,6 +178,104 @@ export default async function AreaClienteObraPage({
           </Link>
         ))}
       </nav>
+
+      {aba === "cronograma" && (
+        <div className="flex flex-col gap-4">
+          <div className="card p-5">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <p className="text-sm font-semibold text-slate-800">Cronograma da obra</p>
+                <p className="text-xs text-slate-500">
+                  Fases com início, fim e % de avanço. O cliente vê este cronograma no portal e na apresentação.
+                </p>
+              </div>
+              {cronograma.length === 0 && especialidadesComDatas > 0 && (
+                <form action={gerarCronogramaDasEspecialidades.bind(null, obra.id)}>
+                  <button
+                    type="submit"
+                    className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-100"
+                  >
+                    Montar a partir dos prazos das especialidades
+                  </button>
+                </form>
+              )}
+            </div>
+            <div className="mt-4">
+              <CronogramaGantt itens={cronograma} />
+            </div>
+          </div>
+
+          <div className="card p-5">
+            <p className="text-sm font-semibold text-slate-800">Editar fases</p>
+            <div className="mt-3 flex flex-col gap-2">
+              {cronograma.map((i) => (
+                <div key={i.id} className="flex flex-wrap items-end gap-2 rounded-lg border border-slate-200 p-3">
+                  <form
+                    action={salvarItemCronograma.bind(null, obra.id, i.id)}
+                    className="flex flex-1 flex-wrap items-end gap-2"
+                  >
+                    <label className="flex min-w-40 flex-1 flex-col gap-1 text-xs text-slate-500">
+                      Fase
+                      <input name="nome" required defaultValue={i.nome} className={campoCrono} />
+                    </label>
+                    <label className="flex flex-col gap-1 text-xs text-slate-500">
+                      Início
+                      <input name="dataInicio" type="date" required defaultValue={dataInput(i.dataInicio)} className={campoCrono} />
+                    </label>
+                    <label className="flex flex-col gap-1 text-xs text-slate-500">
+                      Fim
+                      <input name="dataFim" type="date" required defaultValue={dataInput(i.dataFim)} className={campoCrono} />
+                    </label>
+                    <label className="flex w-20 flex-col gap-1 text-xs text-slate-500">
+                      Avanço %
+                      <input name="progresso" type="number" min={0} max={100} defaultValue={i.progresso} className={campoCrono} />
+                    </label>
+                    <button
+                      type="submit"
+                      className="rounded-lg bg-ink-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-ink-700"
+                    >
+                      Salvar
+                    </button>
+                  </form>
+                  <form action={excluirItemCronograma.bind(null, obra.id, i.id)}>
+                    <button type="submit" className="px-1 py-1.5 text-xs font-medium text-red-500 hover:underline">
+                      Excluir
+                    </button>
+                  </form>
+                </div>
+              ))}
+
+              <form
+                action={adicionarItemCronograma.bind(null, obra.id)}
+                className="flex flex-wrap items-end gap-2 rounded-lg border border-dashed border-slate-300 p-3"
+              >
+                <label className="flex min-w-40 flex-1 flex-col gap-1 text-xs text-slate-500">
+                  Nova fase
+                  <input name="nome" required placeholder="Ex: Demolição, Elétrica, Acabamento..." className={campoCrono} />
+                </label>
+                <label className="flex flex-col gap-1 text-xs text-slate-500">
+                  Início
+                  <input name="dataInicio" type="date" required defaultValue={hoje} className={campoCrono} />
+                </label>
+                <label className="flex flex-col gap-1 text-xs text-slate-500">
+                  Fim
+                  <input name="dataFim" type="date" required defaultValue={hoje} className={campoCrono} />
+                </label>
+                <label className="flex w-20 flex-col gap-1 text-xs text-slate-500">
+                  Avanço %
+                  <input name="progresso" type="number" min={0} max={100} defaultValue={0} className={campoCrono} />
+                </label>
+                <button
+                  type="submit"
+                  className="rounded-lg bg-ink-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-ink-700"
+                >
+                  + Adicionar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
 
       {aba === "tarefas" && (
         <TarefasView

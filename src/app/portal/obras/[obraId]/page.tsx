@@ -7,6 +7,7 @@ import { carregarAreaCliente } from "@/lib/area-cliente";
 import { DonutChart } from "@/app/(app)/financeiro/donut-chart";
 import { AreaChart } from "@/app/(app)/financeiro/area-chart";
 import { uploadAnexoCliente, adicionarComentarioCliente, adicionarNotaPortal } from "@/app/actions/cliente";
+import { CronogramaGantt } from "@/components/cronograma-gantt";
 import { NotasCliente } from "@/components/notas-cliente";
 import { BackLink } from "@/components/back-link";
 import { ComentariosObra } from "@/components/comentarios-obra";
@@ -38,6 +39,7 @@ export default async function PortalObraPage({
         orderBy: { criadoEm: "desc" },
         include: { autorUsuario: true, autorCliente: true },
       },
+      cronograma: { orderBy: [{ dataInicio: "asc" }, { ordem: "asc" }] },
       notasCliente: {
         orderBy: { criadoEm: "desc" },
         include: { autorUsuario: { select: { nome: true } }, autorCliente: { select: { nome: true } } },
@@ -153,6 +155,15 @@ export default async function PortalObraPage({
             </ol>
           )}
         </div>
+
+        {obra.cronograma.length > 0 && (
+          <div className="card p-5">
+            <p className="text-sm font-semibold text-slate-800">Cronograma da obra</p>
+            <div className="mt-3">
+              <CronogramaGantt itens={obra.cronograma} />
+            </div>
+          </div>
+        )}
 
         {fin && (
           <div className="card flex flex-col gap-4 p-5">

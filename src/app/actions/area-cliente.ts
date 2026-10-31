@@ -138,3 +138,71 @@ export async function excluirNotaCliente(obraId: string, notaId: string) {
   await prisma.notaCliente.delete({ where: { id: notaId, obraId } });
   revalidarNotas(obraId);
 }
+
+// --- Cronograma de obra (editável) ---
+
+function revalidarCronograma(obraId: string) {
+  revalidatePath(`/area-cliente/${obraId}`);
+  revalidatePath(`/area-cliente/${obraId}/apresentar`);
+  revalidatePath(`/portal/obras/${obraId}`);
+}
+
+function lerItemCronograma(formData: FormData) {
+  const nome = String(formData.get("nome") ?? "").trim();
+  const ini = String(formData.get("dataInicio") ?? "");
+  const fim = String(formData.get("dataFim") ?? "");
+  const progresso = Math.min(100, Math.max(0, Math.round(Number(formData.get("progresso") ?? 0)) || 0));
+  if (!nome || !ini || !fim) return null;
+  let dataInicio = new Date(ini);
+  let dataFim = new Date(fim);
+  if (dataFim < dataInicio) [dataInicio, dataFim] = [dataFim, dataInicio];
+  return { nome, dataInicio, dataFim, progresso };
+}
+
+export async function adicionarItemCronograma(obraId: string, formData: FormData) {
+  await exigirAcesso();
+  const item = lerItemCronograma(formData);
+  if (!item) return;
+  const ultimo = await prisma.cronogramaItem.aggregate({ where: { obraId }, _max: { ordem: true } });
+  await prisma.cronogramaItem.create({
+    data: { obraId, ...item, ordem: (ultimo._max.ordem ?? -1) + 1 },
+  });
+  revalidarCronograma(obraId);
+}
+
+export async function salvarItemCronograma(obraId: string, itemId: string, formData: FormData) {
+  await exigirAcesso();
+  const item = lerItemCronograma(formData);
+  if (!item) return;
+  await prisma.cronogramaItem.update({ where: { id: itemId, obraId }, data: item });
+  revalidarCronograma(obraId);
+}
+
+export async function excluirItemCronograma(obraId: string, itemId: string) {
+  await exigirAcesso();
+  await prisma.cronogramaItem.delete({ where: { id: itemId, obraId } });
+  revalidarCronograma(obraId);
+}
+
+/** Monta o cronograma inicial a partir das especialidades que já têm datas. */
+export async function gerarCronogramaDasEspecialidades(obraId: string) {
+  await exigirAcesso();
+  const existentes = await prisma.cronogramaItem.count({ where: { obraId } });
+  if (existentes > 0) return;
+  const { TRADE_LABEL } = await import("@/lib/labels");
+  const trades = await prisma.obraTrade.findMany({ where: { obraId } });
+  const comDatas = trades
+    .filter((t) => t.dataInicio && t.dataFim)
+    .sort((a, b) => (a.dataInicio as Date).getTime() - (b.dataInicio as Date).getTime());
+  if (comDatas.length === 0) return;
+  await prisma.cronogramaItem.createMany({
+    data: comDatas.map((t, i) => ({
+      obraId,
+      nome: TRADE_LABEL[t.trade] ?? t.trade,
+      dataInicio: t.dataInicio as Date,
+      dataFim: t.dataFim as Date,
+      ordem: i,
+    })),
+  });
+  revalidarCronograma(obraId);
+}

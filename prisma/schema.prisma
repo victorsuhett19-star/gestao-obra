@@ -189,6 +189,7 @@ model Obra {
   notas                NotaObra[]
   comentarios          ComentarioObra[]
   notasCliente         NotaCliente[]
+  cronograma           CronogramaItem[]
   relatorios           RelatorioObra[]
   orcamentosIA         OrcamentoIA[]
 }
@@ -1083,4 +1084,18 @@ model NotaCliente {
   autorCliente   Cliente? @relation(fields: [autorClienteId], references: [id])
   resolvida      Boolean  @default(false)
   criadoEm       DateTime @default(now())
+}
+
+// Cronograma de obra editável da Área do cliente (fases com início, fim e
+// % de avanço) — apresentado ao cliente em barras de Gantt.
+model CronogramaItem {
+  id         String   @id @default(cuid())
+  obraId     String
+  obra       Obra     @relation(fields: [obraId], references: [id], onDelete: Cascade)
+  nome       String
+  dataInicio DateTime
+  dataFim    DateTime
+  progresso  Int      @default(0)
+  ordem      Int      @default(0)
+  criadoEm   DateTime @default(now())
 }

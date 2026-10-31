@@ -12,6 +12,7 @@ export async function carregarAreaCliente(obraId: string) {
       trades: true,
       etapasProjeto: { select: { status: true } },
       lancamentosCliente: { orderBy: { data: "desc" } },
+      cronograma: { orderBy: [{ dataInicio: "asc" }, { ordem: "asc" }] },
     },
   });
   if (!obra) return null;
